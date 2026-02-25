@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cabral & Souza Antiguidades — Quadros, Esculturas & Arte</title>
+  <meta name="description" content="Galeria e antiquário especializado em quadros a óleo, esculturas em bronze e arte clássica brasileira. Rio de Janeiro.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --cream: #F7F2E8; --cream-dark: #EDE6D6; --cream-deeper: #E0D8C4;
+      --ink: #1A1612; --ink-soft: #3D342A; --ink-muted: #7A6E63;
+      --gold: #A8843A; --gold-light: #C9A84C; --gold-pale: #E8D9B0;
+      --white: #FDFAF4; --border: rgba(168,132,58,0.25);
+      --ff-display: 'Playfair Display', Georgia, serif;
+      --ff-body: 'Cormorant Garamond', Georgia, serif;
+      --ff-text: 'EB Garamond', Georgia, serif;
+      --ease-luxury: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--cream); color: var(--ink);
+      font-family: var(--ff-text); font-size: 1.05rem; line-height: 1.7;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: 0.6;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { border: none; background: none; font-family: inherit; }
+
+
+
+    /* PRELOADER */
+    #preloader {
+      position: fixed; inset: 0; background: var(--ink); z-index: 9998;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
+      transition: opacity .8s var(--ease-luxury), visibility .8s;
+    }
+    #preloader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    .preloader-monogram { font-family: var(--ff-display); font-size: clamp(2rem,5vw,3.2rem); color: var(--gold-light); font-weight: 400; letter-spacing: .2em; opacity: 0; animation: fadeInUp 1s var(--ease-luxury) .3s forwards; }
+    .preloader-line { width: 0; height: 1px; background: var(--gold); animation: expandLine 1.2s var(--ease-luxury) .8s forwards; }
+    .preloader-sub { font-family: var(--ff-body); color: var(--ink-muted); font-size: .85rem; letter-spacing: .4em; text-transform: uppercase; opacity: 0; animation: fadeInUp .8s var(--ease-luxury) 1.4s forwards; }
+    @keyframes expandLine { to { width: 220px; } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { to { opacity: .3; } }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 500; padding: 1.5rem 3rem; display: flex; align-items: center; justify-content: space-between; transition: background .5s, padding .4s, box-shadow .4s; }
+    nav.scrolled { background: rgba(247,242,232,.96); backdrop-filter: blur(12px); padding: 1rem 3rem; box-shadow: 0 1px 0 var(--border); }
+    .nav-logo { display: flex; flex-direction: column; gap: .1rem; }
+    .nav-logo-main { font-family: var(--ff-display); font-size: 1.25rem; font-weight: 500; letter-spacing: .08em; color: var(--ink); }
+    .nav-logo-sub { font-family: var(--ff-body); font-size: .65rem; letter-spacing: .45em; text-transform: uppercase; color: var(--gold); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-family: var(--ff-body); font-size: .8rem; letter-spacing: .3em; text-transform: uppercase; color: var(--ink-soft); position: relative; padding-bottom: 2px; }
+    .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--gold); transition: width .4s var(--ease-luxury); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta { font-family: var(--ff-body); font-size: .75rem; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); border: 1px solid var(--gold); padding: .6rem 1.4rem; transition: background .3s, color .3s; }
+    .nav-cta:hover { background: var(--gold); color: var(--white); }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; padding: 4px; cursor: pointer; justify-content: center; align-items: center; }
+    .nav-hamburger span { display: block; width: 24px; height: 1px; background: var(--ink); transition: transform .3s, opacity .3s; }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    /* HERO */
+    .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; position: relative; overflow: hidden; }
+    .hero-left { background: var(--ink); display: flex; flex-direction: column; justify-content: flex-end; padding: 8rem 4rem 5rem; position: relative; overflow: hidden; }
+    .hero-left::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 40% at 20% 80%, rgba(168,132,58,.12) 0%, transparent 70%), radial-gradient(ellipse 40% 60% at 80% 20%, rgba(168,132,58,.06) 0%, transparent 70%); pointer-events: none; }
+    .hero-eyebrow { font-family: var(--ff-body); font-size: .72rem; letter-spacing: .5em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; opacity: 0; animation: fadeInUp .9s var(--ease-luxury) 2.2s forwards; }
+    .hero-title { font-family: var(--ff-display); font-size: clamp(3.5rem,5.5vw,7rem); font-weight: 400; line-height: 1; color: var(--white); margin-bottom: 2rem; opacity: 0; animation: fadeInUp 1s var(--ease-luxury) 2.4s forwards; }
+    .hero-title em { font-style: italic; color: var(--gold-light); }
+    .hero-desc { font-family: var(--ff-body); font-size: 1.1rem; font-weight: 300; color: rgba(253,250,244,.6); max-width: 36ch; line-height: 1.8; margin-bottom: 3rem; opacity: 0; animation: fadeInUp .9s var(--ease-luxury) 2.6s forwards; }
+    .hero-actions { display: flex; gap: 1.5rem; align-items: center; opacity: 0; animation: fadeInUp .9s var(--ease-luxury) 2.8s forwards; }
+    .btn-primary { background: var(--gold); color: var(--ink); font-family: var(--ff-body); font-size: .78rem; letter-spacing: .35em; text-transform: uppercase; padding: 1rem 2.2rem; transition: background .3s, transform .3s; display: inline-block; }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+    .btn-ghost { color: var(--gold-pale); font-family: var(--ff-body); font-size: .78rem; letter-spacing: .3em; text-transform: uppercase; border-bottom: 1px solid rgba(168,132,58,.4); padding-bottom: 2px; transition: color .3s, border-color .3s; }
+    .btn-ghost:hover { color: var(--gold-light); border-color: var(--gold-light); }
+    .hero-year { position: absolute; top: 50%; right: 3rem; transform: translateY(-50%) rotate(90deg); font-family: var(--ff-body); font-size: .65rem; letter-spacing: .4em; color: rgba(168,132,58,.5); text-transform: uppercase; opacity: 0; animation: fadeInUp .9s var(--ease-luxury) 3s forwards; }
+    .hero-right { position: relative; overflow: hidden; }
+    .hero-right-inner { position: absolute; inset: 0; background: var(--cream-dark); }
+    .hero-frames { position: absolute; inset: 0; display: grid; grid-template-rows: 1fr 1fr; }
+    .hero-frame { overflow: hidden; position: relative; }
+    .hero-frame img { width: 100%; height: 100%; object-fit: cover; transition: transform 8s var(--ease-luxury); }
+    .hero-frame:hover img { transform: scale(1.04); }
+    .hero-frame-label { position: absolute; bottom: 1rem; left: 1.5rem; font-family: var(--ff-body); font-size: .7rem; letter-spacing: .3em; color: rgba(253,250,244,.8); text-transform: uppercase; background: rgba(26,22,18,.5); padding: .3rem .8rem; backdrop-filter: blur(4px); }
+    .hero-separator { position: absolute; top: 15%; bottom: 15%; left: 50%; width: 1px; background: linear-gradient(to bottom, transparent, var(--gold) 30%, var(--gold) 70%, transparent); opacity: 0; animation: fadeIn 1s var(--ease-luxury) 3s forwards; }
+
+    /* SECTIONS */
+    section { padding: 7rem 0; }
+    .container { max-width: 1300px; margin: 0 auto; padding: 0 3rem; }
+    .section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 4rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+    .section-eyebrow { font-family: var(--ff-body); font-size: .7rem; letter-spacing: .5em; text-transform: uppercase; color: var(--gold); margin-bottom: .75rem; }
+    .section-title { font-family: var(--ff-display); font-size: clamp(2.2rem,3.5vw,3.8rem); font-weight: 400; line-height: 1.1; color: var(--ink); }
+    .section-title em { font-style: italic; color: var(--ink-soft); }
+    .section-link { font-family: var(--ff-body); font-size: .75rem; letter-spacing: .35em; text-transform: uppercase; color: var(--gold); border-bottom: 1px solid var(--gold); padding-bottom: 2px; white-space: nowrap; transition: opacity .3s; margin-bottom: .4rem; }
+    .section-link:hover { opacity: .7; }
+
+    /* STRIP */
+    .about-strip { background: var(--ink); padding: 5rem 0; }
+    .about-strip .container { display: grid; grid-template-columns: 1fr 2px 1fr 2px 1fr; gap: 0; align-items: center; }
+    .about-strip-divider { background: linear-gradient(to bottom, transparent, var(--gold) 20%, var(--gold) 80%, transparent); height: 80px; align-self: center; }
+    .about-stat { padding: 0 3rem; text-align: center; }
+    .about-stat-number { font-family: var(--ff-display); font-size: clamp(2.5rem,4vw,4rem); color: var(--gold-light); font-weight: 400; line-height: 1; margin-bottom: .5rem; }
+    .about-stat-label { font-family: var(--ff-body); font-size: .7rem; letter-spacing: .4em; text-transform: uppercase; color: rgba(232,217,176,.6); }
+
+    /* COLLECTION */
+    .collection { background: var(--cream); }
+    .collection-grid { display: grid; grid-template-columns: repeat(12,1fr); grid-template-rows: auto auto; gap: 1.5rem; }
+    .artwork-card { position: relative; overflow: hidden; background: var(--cream-dark); }
+    .artwork-card:nth-child(1) { grid-column: 1/6; grid-row: 1; }
+    .artwork-card:nth-child(2) { grid-column: 6/9; grid-row: 1; }
+    .artwork-card:nth-child(3) { grid-column: 9/13; grid-row: 1; }
+    .artwork-card:nth-child(4) { grid-column: 1/5; grid-row: 2; }
+    .artwork-card:nth-child(5) { grid-column: 5/9; grid-row: 2; }
+    .artwork-card:nth-child(6) { grid-column: 9/13; grid-row: 2; }
+    .artwork-card-img { aspect-ratio: 4/3; overflow: hidden; }
+    .artwork-card:nth-child(1) .artwork-card-img { aspect-ratio: 16/10; }
+    .artwork-card:nth-child(2) .artwork-card-img { aspect-ratio: 3/4; }
+    .artwork-card:nth-child(4) .artwork-card-img { aspect-ratio: 3/4; }
+    .artwork-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .9s var(--ease-luxury); }
+    .artwork-card:hover .artwork-card-img img { transform: scale(1.06); }
+    .artwork-card::before { content: ''; position: absolute; inset: 12px; border: 1px solid transparent; z-index: 2; transition: border-color .5s var(--ease-luxury); pointer-events: none; }
+    .artwork-card:hover::before { border-color: rgba(168,132,58,.4); }
+    .artwork-card-info { padding: 1.2rem 1.4rem 1.4rem; background: var(--cream-dark); }
+    .artwork-card-cat { font-family: var(--ff-body); font-size: .65rem; letter-spacing: .4em; text-transform: uppercase; color: var(--gold); margin-bottom: .3rem; }
+    .artwork-card-title { font-family: var(--ff-display); font-size: 1.05rem; font-weight: 400; color: var(--ink); margin-bottom: .2rem; }
+    .artwork-card-meta { font-family: var(--ff-body); font-size: .82rem; color: var(--ink-muted); font-style: italic; }
+    .artwork-card-cta { display: inline-flex; align-items: center; gap: .6rem; margin-top: 1rem; font-family: var(--ff-body); font-size: .7rem; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); transition: gap .3s; }
+    .artwork-card-cta::after { content: '→'; transition: transform .3s; }
+    .artwork-card:hover .artwork-card-cta { gap: 1rem; }
+    .artwork-card:hover .artwork-card-cta::after { transform: translateX(4px); }
+    .artwork-card-overlay { position: absolute; inset: 0; background: rgba(26,22,18,0); transition: background .5s; z-index: 1; pointer-events: none; }
+    .artwork-card:hover .artwork-card-overlay { background: rgba(26,22,18,.05); }
+
+    /* Badge "Acervo Original" */
+    .badge-original {
+      position: absolute; top: 1rem; left: 1rem; z-index: 3;
+      background: var(--gold); color: var(--ink);
+      font-family: var(--ff-body); font-size: .6rem; letter-spacing: .3em;
+      text-transform: uppercase; padding: .3rem .75rem;
+    }
+
+    /* SCULPTURES */
+    .sculptures { background: var(--cream-dark); }
+    .sculptures-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .sculptures-text p { font-size: 1.05rem; color: var(--ink-soft); line-height: 1.9; max-width: 48ch; margin-bottom: 2rem; }
+    .sculptures-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .sculpture-card { position: relative; overflow: hidden; background: var(--cream); }
+    .sculpture-card-img { aspect-ratio: 3/4; overflow: hidden; }
+    .sculpture-card:nth-child(1) { grid-column: 1/3; }
+    .sculpture-card:nth-child(1) .sculpture-card-img { aspect-ratio: 16/9; }
+    .sculpture-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .9s var(--ease-luxury); }
+    .sculpture-card:hover .sculpture-card-img img { transform: scale(1.05); }
+    .sculpture-card-info { padding: 1rem 1.2rem; }
+    .sculpture-card-title { font-family: var(--ff-display); font-size: .95rem; font-weight: 400; margin-bottom: .2rem; }
+    .sculpture-card-meta { font-family: var(--ff-body); font-size: .8rem; color: var(--ink-muted); font-style: italic; }
+
+    /* ABOUT */
+    .about { background: var(--white); }
+    .about-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 7rem; align-items: center; }
+    .about-images { position: relative; }
+    .about-img-main { aspect-ratio: 4/5; overflow: hidden; }
+    .about-img-main img { width: 100%; height: 100%; object-fit: cover; }
+    .about-img-accent { position: absolute; bottom: -3rem; right: -3rem; width: 55%; aspect-ratio: 1; overflow: hidden; border: 6px solid var(--white); }
+    .about-img-accent img { width: 100%; height: 100%; object-fit: cover; }
+    .about-ornament { position: absolute; top: -1.5rem; left: -1.5rem; width: 80px; height: 80px; border-top: 2px solid var(--gold); border-left: 2px solid var(--gold); opacity: .6; }
+    .about-content { padding-right: 2rem; }
+    .about-content blockquote { font-family: var(--ff-display); font-size: clamp(1.4rem,2vw,2rem); font-weight: 400; font-style: italic; line-height: 1.4; color: var(--ink); margin-bottom: 2rem; padding-left: 1.5rem; border-left: 2px solid var(--gold); }
+    .about-content p { font-size: 1.05rem; color: var(--ink-soft); line-height: 1.9; margin-bottom: 1.2rem; }
+    .about-signature { margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+    .about-signature-name { font-family: var(--ff-display); font-size: 1.4rem; font-style: italic; color: var(--ink); }
+    .about-signature-role { font-family: var(--ff-body); font-size: .7rem; letter-spacing: .4em; text-transform: uppercase; color: var(--gold); margin-top: .3rem; }
+
+    /* CONTACT */
+    .contact { background: var(--ink); padding: 8rem 0; }
+    .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 7rem; align-items: start; }
+    .contact-left h2 { font-family: var(--ff-display); font-size: clamp(2.5rem,4vw,4.5rem); font-weight: 400; color: var(--white); line-height: 1.05; margin-bottom: 1.5rem; }
+    .contact-left h2 em { font-style: italic; color: var(--gold-light); }
+    .contact-left p { font-family: var(--ff-body); font-size: 1.1rem; font-weight: 300; color: rgba(253,250,244,.6); line-height: 1.8; max-width: 42ch; margin-bottom: 3rem; }
+    .contact-details { display: flex; flex-direction: column; gap: 1.5rem; }
+    .contact-detail { display: flex; gap: 1.5rem; align-items: flex-start; }
+    .contact-detail-icon { width: 36px; height: 36px; border: 1px solid rgba(168,132,58,.4); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--gold); font-size: .85rem; }
+    .contact-detail-label { font-family: var(--ff-body); font-size: .65rem; letter-spacing: .4em; text-transform: uppercase; color: var(--gold); margin-bottom: .2rem; }
+    .contact-detail-value { font-family: var(--ff-body); font-size: 1rem; color: rgba(253,250,244,.85); }
+    .contact-right { padding-top: 1rem; }
+    .contact-form-title { font-family: var(--ff-display); font-size: 1.6rem; font-weight: 400; font-style: italic; color: var(--gold-pale); margin-bottom: 2.5rem; }
+    .form-group { margin-bottom: 1.8rem; }
+    .form-group label { display: block; font-family: var(--ff-body); font-size: .65rem; letter-spacing: .4em; text-transform: uppercase; color: rgba(168,132,58,.7); margin-bottom: .6rem; }
+    .form-group input, .form-group textarea, .form-group select { width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(168,132,58,.3); padding: .7rem 0; font-family: var(--ff-body); font-size: 1rem; color: var(--white); outline: none; transition: border-color .3s; resize: none; }
+    .form-group select option { background: var(--ink); }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(253,250,244,.3); }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-bottom-color: var(--gold); }
+    .form-group textarea { height: 80px; }
+    .btn-whatsapp { display: inline-flex; align-items: center; gap: .8rem; background: var(--gold); color: var(--ink); font-family: var(--ff-body); font-size: .78rem; letter-spacing: .3em; text-transform: uppercase; padding: 1.1rem 2.5rem; margin-top: .5rem; transition: background .3s, transform .3s; width: 100%; justify-content: center; }
+    .btn-whatsapp:hover { background: var(--gold-light); transform: translateY(-2px); }
+    .btn-whatsapp svg { width: 18px; height: 18px; fill: var(--ink); }
+
+    /* FOOTER */
+    footer { background: #0E0B08; padding: 4rem 0 2.5rem; border-top: 1px solid rgba(168,132,58,.15); }
+    .footer-inner { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4rem; margin-bottom: 3rem; }
+    .footer-brand-name { font-family: var(--ff-display); font-size: 1.4rem; font-weight: 400; color: var(--gold-pale); margin-bottom: .3rem; }
+    .footer-brand-sub { font-family: var(--ff-body); font-size: .65rem; letter-spacing: .4em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; }
+    .footer-brand-desc { font-family: var(--ff-body); font-size: .9rem; color: rgba(253,250,244,.45); line-height: 1.8; max-width: 38ch; }
+    .footer-col h4 { font-family: var(--ff-body); font-size: .65rem; letter-spacing: .45em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: .6rem; }
+    .footer-col ul li a { font-family: var(--ff-body); font-size: .88rem; color: rgba(253,250,244,.5); transition: color .3s; }
+    .footer-col ul li a:hover { color: var(--gold-pale); }
+    .footer-bottom { padding-top: 2rem; border-top: 1px solid rgba(168,132,58,.1); display: flex; justify-content: space-between; align-items: center; }
+    .footer-copy { font-family: var(--ff-body); font-size: .75rem; color: rgba(253,250,244,.3); }
+    .footer-dev { font-family: var(--ff-body); font-size: .68rem; color: rgba(168,132,58,.4); letter-spacing: .1em; }
+
+    /* SCROLL REVEAL */
+    [data-reveal] { opacity: 0; transform: translateY(28px); transition: opacity .9s var(--ease-luxury), transform .9s var(--ease-luxury); }
+    [data-reveal].visible { opacity: 1; transform: translateY(0); }
+    [data-reveal="left"] { transform: translateX(-28px); }
+    [data-reveal="right"] { transform: translateX(28px); }
+    [data-reveal="left"].visible, [data-reveal="right"].visible { transform: translateX(0); }
+    [data-delay="1"] { transition-delay: .1s; }
+    [data-delay="2"] { transition-delay: .2s; }
+    [data-delay="3"] { transition-delay: .3s; }
+
+    /* WHATSAPP FLOAT */
+    .whatsapp-float { position: fixed; bottom: 2.5rem; right: 2.5rem; z-index: 400; width: 52px; height: 52px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37,211,102,.35); transition: transform .3s, box-shadow .3s; }
+    .whatsapp-float:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,.5); }
+    .whatsapp-float svg { width: 26px; height: 26px; fill: white; }
+    .whatsapp-pulse { position: absolute; inset: 0; border-radius: 50%; background: #25D366; animation: pulse 2.5s ease-out infinite; }
+    @keyframes pulse { 0% { transform: scale(1); opacity: .6; } 100% { transform: scale(1.7); opacity: 0; } }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-left { padding: 10rem 2.5rem 4rem; }
+      .hero-right { height: 55vw; }
+      .hero-separator { display: none; }
+      nav { padding: 1.2rem 2rem; }
+      nav.scrolled { padding: .9rem 2rem; }
+      .collection-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .artwork-card { grid-column: auto !important; grid-row: auto !important; }
+      .artwork-card:nth-child(1) .artwork-card-img,
+      .artwork-card:nth-child(2) .artwork-card-img,
+      .artwork-card:nth-child(4) .artwork-card-img { aspect-ratio: 4/3; }
+      .sculptures-layout { grid-template-columns: 1fr; gap: 3rem; }
+      .about-layout { grid-template-columns: 1fr; gap: 4rem; }
+      .about-img-accent { display: none; }
+      .about-content { padding-right: 0; }
+      .contact-inner { grid-template-columns: 1fr; gap: 4rem; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+      .about-strip .container { grid-template-columns: 1fr; }
+      .about-strip-divider { display: none; }
+      .about-stat { padding: 1.5rem 0; }
+    }
+    @media (max-width: 768px) {
+      section { padding: 5rem 0; }
+      .container { padding: 0 1.5rem; }
+      nav { padding: 1.2rem 1.5rem; flex-wrap: wrap; }
+      .nav-links, .nav-cta { display: none; }
+      nav.menu-open .nav-links { display: flex; flex-direction: column; width: 100%; order: 4; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); gap: 1rem; }
+      nav.menu-open .nav-cta { display: inline-block; width: 100%; order: 5; text-align: center; margin-top: .5rem; padding: .8rem; }
+      .nav-hamburger { display: flex; }
+      .hero-left { padding: 8rem 1.5rem 3.5rem; }
+      .collection-grid { grid-template-columns: 1fr; }
+      .sculptures-grid { grid-template-columns: 1fr; }
+      .sculpture-card:nth-child(1) { grid-column: auto; }
+      .footer-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .footer-bottom { flex-direction: column; gap: .5rem; text-align: center; }
+      .section-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .hero-actions { flex-direction: column; align-items: flex-start; }
+
+    }
+  </style>
+</head>
+<body>
+
+  <div id="preloader">
+    <div class="preloader-monogram">Cabral &amp; Souza</div>
+    <div class="preloader-line"></div>
+    <div class="preloader-sub">Antiguidades · Desde 1987</div>
+  </div>
+
+  <a href="https://wa.me/5521970027830?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20as%20peças%20disponíveis." class="whatsapp-float" target="_blank" rel="noopener" aria-label="Contato via WhatsApp">
+    <div class="whatsapp-pulse"></div>
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+  </a>
+
+  <nav id="navbar">
+    <a href="#inicio" class="nav-logo">
+      <span class="nav-logo-main">Cabral &amp; Souza</span>
+      <span class="nav-logo-sub">Antiguidades</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#colecao">Coleção</a></li>
+      <li><a href="#esculturas">Esculturas</a></li>
+      <li><a href="#galeria">A Galeria</a></li>
+      <li><a href="#contato">Contato</a></li>
+    </ul>
+    <a href="https://wa.me/5521970027830" target="_blank" class="nav-cta">Consultar Peça</a>
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- HERO — obra-diva.png no topo (mais impactante), obra-escultura.png embaixo -->
+  <section class="hero" id="inicio">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Galeria &amp; Antiquário · Rio de Janeiro</div>
+      <h1 class="hero-title">Arte que<br><em>atravessa</em><br>o tempo.</h1>
+      <p class="hero-desc">Quadros a óleo de mestres brasileiros e europeus, esculturas em bronze e peças raras selecionadas com rigor estético e histórico.</p>
+      <div class="hero-actions">
+        <a href="#colecao" class="btn-primary">Ver Coleção</a>
+        <a href="#contato" class="btn-ghost">Consultar Peça</a>
+      </div>
+      <div class="hero-year">Est. 1987</div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-right-inner">
+        <div class="hero-frames">
+          <div class="hero-frame">
+            <!-- Dama no divã — obra real, escola europeia belle époque -->
+            <img src="obra-diva.png" alt="Dama Reclinada — óleo sobre tela, Escola Europeia c.1900" loading="eager">
+            <div class="hero-frame-label">Óleo sobre Tela · Belle Époque</div>
+          </div>
+          <div class="hero-frame">
+            <!-- Modernista — obra real da galeria -->
+            <img src="obra-modernista.png" alt="Composição Modernista — acervo Cabral e Souza" loading="eager">
+            <div class="hero-frame-label">Modernismo Brasileiro · Óleo sobre Tela</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-separator"></div>
+  </section>
+
+  <div class="about-strip">
+    <div class="container">
+      <div class="about-stat" data-reveal data-delay="1">
+        <div class="about-stat-number">+500</div>
+        <div class="about-stat-label">Peças em Acervo</div>
+      </div>
+      <div class="about-strip-divider"></div>
+      <div class="about-stat" data-reveal data-delay="2">
+        <div class="about-stat-number">37</div>
+        <div class="about-stat-label">Anos de Tradição</div>
+      </div>
+      <div class="about-strip-divider"></div>
+      <div class="about-stat" data-reveal data-delay="3">
+        <div class="about-stat-number">100%</div>
+        <div class="about-stat-label">Autenticidade Garantida</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COLEÇÃO — 3 obras reais + 3 Unsplash mesma vibe -->
+  <section class="collection" id="colecao">
+    <div class="container">
+      <div class="section-header" data-reveal>
+        <div>
+          <div class="section-eyebrow">— Acervo Principal</div>
+          <h2 class="section-title">Quadros &amp; <em>Pinturas</em></h2>
+        </div>
+        <a href="#contato" class="section-link">Consultar disponibilidade</a>
+      </div>
+      <div class="collection-grid">
+
+        <!-- CARD 1 (destaque grande) — Cena Escolar, obra real -->
+        <div class="artwork-card" data-reveal data-delay="1">
+          <div class="badge-original">Acervo Original</div>
+          <div class="artwork-card-overlay"></div>
+          <div class="artwork-card-img">
+            <img src="img_escola.png" alt="Pátio Escolar com Freira — óleo sobre tela" loading="lazy">
+          </div>
+          <div class="artwork-card-info">
+            <div class="artwork-card-cat">Pintura a Óleo · Cena de Gênero</div>
+            <div class="artwork-card-title">Pátio Escolar com Freira</div>
+            <div class="artwork-card-meta">Escola Brasileira, c. 1925–1935 · Óleo sobre tela · Moldura dourada original</div>
+            <a href="https://wa.me/5521970027830?text=Tenho%20interesse%20na%20obra%20Pátio%20Escolar%20com%20Freira" class="artwork-card-cta" target="_blank">Consultar via WhatsApp</a>
+          </div>
+        </div>
+
+        <!-- CARD 2 — Léon Herbo, obra real identificada -->
+        <div class="artwork-card" data-reveal data-delay="2">
+          <div class="badge-original">Acervo Original</div>
+          <div class="artwork-card-overlay"></div>
+          <div class="artwork-card-img">
+            <img src="obra-herbo.png" alt="Jovem com Leque — Léon Herbo" loading="lazy">
+          </div>
+          <div class="artwork-card-info">
+            <div class="artwork-card-cat">Pintura a Óleo · Figura Feminina</div>
+            <div class="artwork-card-title">Jovem com Leque e Flores</div>
+            <div class="artwork-card-meta">Léon Herbo (1850–1907) · Escola Belga · Óleo sobre tela</div>
+            <a href="https://wa.me/5521970027830?text=Tenho%20interesse%20na%20obra%20Jovem%20com%20Leque%20de%20Léon%20Herbo" class="artwork-card-cta" target="_blank">Consultar via WhatsApp</a>
+          </div>
+        </div>
+
+        <!-- CARD 3 — Composição Modernista, obra real -->
+        <div class="artwork-card" data-reveal data-delay="3">
+          <div class="badge-original">Acervo Original</div>
+          <div class="artwork-card-overlay"></div>
+          <div class="artwork-card-img">
+            <img src="obra-modernista.png" alt="Composição Modernista com Figuras e Bois" loading="lazy">
+          </div>
+          <div class="artwork-card-info">
+            <div class="artwork-card-cat">Pintura a Óleo · Modernismo Brasileiro</div>
+            <div class="artwork-card-title">Figuras e Bois em Paisagem</div>
+            <div class="artwork-card-meta">Escola Brasileira Modernista, c. 1950–1965 · Óleo sobre tela</div>
+            <a href="https://wa.me/5521970027830?text=Tenho%20interesse%20na%20Composição%20Modernista" class="artwork-card-cta" target="_blank">Consultar via WhatsApp</a>
+          </div>
+        </div>
+
+        <!-- CARD 4 — Unsplash: paisagem luminista brasileira vibe João Batista da Costa -->
+        <div class="artwork-card" data-reveal data-delay="1">
+          <div class="artwork-card-overlay"></div>
+          <div class="artwork-card-img">
+            <img src="https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=700&q=85&auto=format&fit=crop" alt="Paisagem com Rio e Árvores" loading="lazy">
+          </div>
+          <div class="artwork-card-info">
+            <div class="artwork-card-cat">Pintura a Óleo · Paisagem</div>
+            <div class="artwork-card-title">Paisagem Fluvial ao Entardecer</div>
+            <div class="artwork-card-meta">Escola Brasileira, c. 1910–1920 · Óleo sobre tela · 80 × 60 cm</div>
+            <a href="https://wa.me/5521970027830?text=Tenho%20interesse%20na%20Paisagem%20Fluvial" class="artwork-card-cta" target="_blank">Consultar via WhatsApp</a>
+          </div>
+        </div>
+
+        <!-- CARD 5 — Unsplash: retrato feminino vibe Albert Lynch / Franz von Stuck -->
+        <div class="artwork-card" data-reveal data-delay="2">
+          <div class="artwork-card-overlay"></div>
+          <div class="artwork-card-img">
+            <img src="https://images.unsplash.com/photo-1578926288207-a90a5366759d?w=700&q=85&auto=format&fit=crop" alt="Retrato Feminino Clássico" loading="lazy">
+          </div>
+          <div class="artwork-card-info">
+            <div class="artwork-card-cat">Pintura a Óleo · Retrato</div>
+            <div class="artwork-card-title">Retrato de Jovem Dama</div>
+            <div class="artwork-card-meta">Escola Europeia, c. 1895–1905 · Óleo sobre tela · 75 × 58 cm</div>
+            <a href="https://wa.me/5521970027830?text=Tenho%20interesse%20no%20Retrato%20de%20Jovem%20Dama" class="artwork-card-cta" target="_blank">Consultar via WhatsApp</a>
+          </div>
+        </div>
+
+        <!-- CARD 6 — Unsplash: natureza morta vibe escola flamenga -->
+        <div class="artwork-card" data-reveal data-delay="3">
+          <div class="artwork-card-overlay"></div>
+          <div class="artwork-card-img">
+            <img src="https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?w=700&q=85&auto=format&fit=crop" alt="Natureza morta com frutas e flores" loading="lazy">
+          </div>
+          <div class="artwork-card-info">
+            <div class="artwork-card-cat">Pintura a Óleo · Natureza Morta</div>
+            <div class="artwork-card-title">Natureza Morta com Flores e Frutas</div>
+            <div class="artwork-card-meta">Escola Flamenga, c. 1880 · Óleo sobre madeira · 55 × 45 cm</div>
+            <a href="https://wa.me/5521970027830?text=Tenho%20interesse%20na%20Natureza%20Morta" class="artwork-card-cta" target="_blank">Consultar via WhatsApp</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ESCULTURAS — escultura real no card destaque -->
+  <section class="sculptures" id="esculturas">
+    <div class="container">
+      <div class="sculptures-layout">
+        <div class="sculptures-text" data-reveal="left">
+          <div class="section-eyebrow">— Esculturas &amp; Bronzes</div>
+          <h2 class="section-title">Formas que<br><em>habitam</em><br>o espaço.</h2>
+          <p>Nossa coleção abrange bronzes fundidos por mestres da estatuária brasileira e europeia, figuras em mármore, terracota e cerâmica de alta figuração. Cada peça acompanhada de documentação de autenticidade.</p>
+          <a href="https://wa.me/5521970027830?text=Gostaria%20de%20conhecer%20as%20esculturas%20disponíveis" target="_blank" class="btn-primary">Consultar Acervo</a>
+        </div>
+        <div class="sculptures-grid" data-reveal="right">
+
+          <!-- Escultura real — destaque wide -->
+          <div class="sculpture-card">
+            <div class="badge-original" style="z-index:3;">Acervo Original</div>
+            <div class="sculpture-card-img">
+              <img src="obra-escultura.png" alt="Figura em Bronze Patinado — acervo real" loading="lazy">
+            </div>
+            <div class="sculpture-card-info">
+              <div class="artwork-card-cat">Bronze</div>
+              <div class="sculpture-card-title">Figura Humana Agachada</div>
+              <div class="sculpture-card-meta">Bronze patinado, verde-escuro · Escola Brasileira, c. 1940–1960 · aprox. 60 cm</div>
+            </div>
+          </div>
+
+          <!-- Unsplash: busto clássico vibe Vitor Brecheret -->
+          <div class="sculpture-card">
+            <div class="sculpture-card-img">
+              <img src="https://images.unsplash.com/photo-1587573088775-3ec982cb0e4c?w=700&q=85&auto=format&fit=crop" alt="Busto em mármore" loading="lazy">
+            </div>
+            <div class="sculpture-card-info">
+              <div class="artwork-card-cat">Mármore</div>
+              <div class="sculpture-card-title">Busto Clássico Feminino</div>
+              <div class="sculpture-card-meta">Mármore branco, c. 1880 · 38 cm</div>
+            </div>
+          </div>
+
+          <!-- Unsplash: terracota vibe arte sacra brasileira -->
+          <div class="sculpture-card">
+            <div class="sculpture-card-img">
+              <img src="https://images.unsplash.com/photo-1518998053901-5348d3961a04?w=700&q=85&auto=format&fit=crop" alt="Terracota policromada" loading="lazy">
+            </div>
+            <div class="sculpture-card-info">
+              <div class="artwork-card-cat">Terracota</div>
+              <div class="sculpture-card-title">Figura Devocional</div>
+              <div class="sculpture-card-meta">Terracota policromada, c. 1870 · 52 cm</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOBRE — imagem da dama no divã como imagem principal (obra mais elegante) -->
+  <section class="about" id="galeria">
+    <div class="container">
+      <div class="about-layout">
+        <div class="about-images" data-reveal="left">
+          <div class="about-ornament"></div>
+          <div class="about-img-main">
+            <img src="obra-diva.png" alt="Dama Reclinada — óleo sobre tela, Escola Europeia" loading="lazy">
+          </div>
+          <div class="about-img-accent">
+            <img src="img_escola.png" alt="Detalhe — Pátio Escolar com Freira" loading="lazy">
+          </div>
+        </div>
+        <div class="about-content" data-reveal="right">
+          <div class="section-eyebrow">— A Galeria</div>
+          <blockquote>"Cada peça que entra em nosso acervo carrega uma história que merece ser contada."</blockquote>
+          <p>A Cabral &amp; Souza Antiguidades nasceu do amor à arte e do compromisso com a preservação do patrimônio cultural brasileiro e europeu — uma galeria construída por quem entende que uma obra rara é também um investimento em história.</p>
+          <p>Especializada em pinturas a óleo dos séculos XIX e XX e esculturas em bronze, nossa galeria em Copacabana reúne um acervo criteriosamente selecionado. Trabalhamos com colecionadores, decoradores e apreciadores que buscam peças de procedência documentada.</p>
+          <p>Toda aquisição é acompanhada de certificado de autenticidade e, quando disponível, documentação histórica completa da obra.</p>
+          <div class="about-signature">
+            <div class="about-signature-name">Marcelo Cabral &amp; Alexandre Teixeira de Souza</div>
+            <div class="about-signature-role">Diretores da Galeria</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contato">
+    <div class="container">
+      <div class="contact-inner">
+        <div class="contact-left" data-reveal="left">
+          <h2>Sua próxima<br><em>peça rara</em><br>está aqui.</h2>
+          <p>Converse conosco sobre disponibilidade, avaliação de acervo ou visitas agendadas à galeria. Respondemos com atenção a cada consulta.</p>
+          <div class="contact-details">
+            <div class="contact-detail">
+              <div class="contact-detail-icon">📍</div>
+              <div>
+                <div class="contact-detail-label">Endereço</div>
+                <div class="contact-detail-value">Rua Siqueira Campos, 143 — Sl. 63<br>Copacabana · Rio de Janeiro, RJ</div>
+              </div>
+            </div>
+            <div class="contact-detail">
+              <div class="contact-detail-icon">🕐</div>
+              <div>
+                <div class="contact-detail-label">Horário</div>
+                <div class="contact-detail-value">Segunda a Sexta: 10h às 18h<br>Sábado: 10h às 14h</div>
+              </div>
+            </div>
+            <div class="contact-detail">
+              <div class="contact-detail-icon">📱</div>
+              <div>
+                <div class="contact-detail-label">WhatsApp</div>
+                <div class="contact-detail-value">(21) 97002-7830</div>
+              </div>
+            </div>
+            <div class="contact-detail">
+              <div class="contact-detail-icon">✉</div>
+              <div>
+                <div class="contact-detail-label">E-mail</div>
+                <div class="contact-detail-value">contato@cabralesouza.com.br</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="contact-right" data-reveal="right">
+          <div class="contact-form-title">Consulte uma peça</div>
+          <form id="contactForm">
+            <div class="form-group">
+              <label>Seu Nome</label>
+              <input type="text" name="nome" placeholder="Nome completo" required>
+            </div>
+            <div class="form-group">
+              <label>WhatsApp</label>
+              <input type="tel" name="whatsapp" placeholder="(21) 97002-7830" required>
+            </div>
+            <div class="form-group">
+              <label>Tipo de Peça</label>
+              <select name="tipo" required>
+                <option value="">Selecionar...</option>
+                <option value="quadro">Quadro / Pintura</option>
+                <option value="escultura">Escultura / Bronze</option>
+                <option value="tapecaria">Tapete / Tapeçaria</option>
+                <option value="prataria">Prataria / Objetos</option>
+                <option value="avaliacao">Avaliação de Peça</option>
+                <option value="visita">Agendar Visita</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Mensagem (opcional)</label>
+              <textarea name="mensagem" placeholder="Descreva o que procura ou a peça que possui..."></textarea>
+            </div>
+            <button type="submit" class="btn-whatsapp">
+              <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+              Enviar pelo WhatsApp
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <div class="footer-brand-name">Cabral &amp; Souza</div>
+          <div class="footer-brand-sub">Antiguidades · Est. 1987</div>
+          <p class="footer-brand-desc">Galeria especializada em quadros a óleo, esculturas em bronze e arte clássica. Autenticidade e tradição no coração do Rio de Janeiro.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Coleção</h4>
+          <ul>
+            <li><a href="#colecao">Quadros &amp; Pinturas</a></li>
+            <li><a href="#esculturas">Esculturas</a></li>
+            <li><a href="#contato">Arte Sacra</a></li>
+            <li><a href="#contato">Avaliações</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Galeria</h4>
+          <ul>
+            <li><a href="#galeria">Nossa História</a></li>
+            <li><a href="#contato">Visita Agendada</a></li>
+            <li><a href="#contato">Contato</a></li>
+            <li><a href="https://wa.me/5521970027830" target="_blank">WhatsApp</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2025 Cabral &amp; Souza Antiguidades. Todos os direitos reservados.</span>
+        <span class="footer-dev">Site criado por Global Landing</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // PRELOADER
+    function hidePreloader() { var p = document.getElementById('preloader'); if (p) p.classList.add('hidden'); }
+    setTimeout(hidePreloader, 2800);
+
+    // NAVBAR
+    var navbar = document.getElementById('navbar');
+    var hamburger = document.getElementById('hamburger');
+    window.addEventListener('scroll', function() { navbar.classList.toggle('scrolled', window.scrollY > 60); });
+    if (hamburger) {
+      hamburger.addEventListener('click', function() {
+        navbar.classList.toggle('menu-open');
+        hamburger.classList.toggle('open');
+        document.body.style.overflow = navbar.classList.contains('menu-open') ? 'hidden' : '';
+      });
+    }
+    document.querySelectorAll('.nav-links a, .nav-cta').forEach(function(link) {
+      link.addEventListener('click', function() {
+        navbar.classList.remove('menu-open');
+        if (hamburger) hamburger.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    });
+
+    // SCROLL REVEAL
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('[data-reveal]').forEach(function(el) { obs.observe(el); });
+
+    // FORM
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var n = this.nome.value.trim(), t = this.whatsapp.value.trim(), tp = this.tipo.value, m = this.mensagem.value.trim();
+      var l = { quadro:'Quadro / Pintura', escultura:'Escultura / Bronze', tapecaria:'Tapete / Tapeçaria', prataria:'Prataria / Objetos', avaliacao:'Avaliação de Peça', visita:'Visita Agendada' };
+      window.open('https://wa.me/5521970027830?text=' + encodeURIComponent('Olá! Meu nome é ' + n + '.\nTenho interesse em: ' + (l[tp]||tp) + '\n' + (m?'Mensagem: '+m+'\n':'') + 'Meu WhatsApp: ' + t), '_blank');
+    });
+
+    // SMOOTH SCROLL
+    document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+      a.addEventListener('click', function(e) {
+        var t = document.querySelector(a.getAttribute('href'));
+        if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      });
+    });
+  </script>
+</body>
+</html>
