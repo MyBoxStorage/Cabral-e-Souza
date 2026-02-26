@@ -108,7 +108,7 @@ nav.scrolled {
     section.hero { padding: 0; }
     .container { max-width: 1300px; margin: 0 auto; padding: 0 3rem; }
     .section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 4rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
-    .section-eyebrow { font-family: var(--ff-body); font-size: .7rem; letter-spacing: .5em; text-transform: uppercase; color: var(--gold); margin-bottom: .75rem; }
+    .section-eyebrow { font-family: var(--ff-body); font-size: .82rem; letter-spacing: .5em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
     .section-title { font-family: var(--ff-display); font-size: clamp(2.2rem,3.5vw,3.8rem); font-weight: 400; line-height: 1.1; color: var(--ink); }
     .section-title em { font-style: italic; color: var(--ink-soft); }
     .section-link { font-family: var(--ff-body); font-size: .75rem; letter-spacing: .35em; text-transform: uppercase; color: var(--gold); border-bottom: 1px solid var(--gold); padding-bottom: 2px; white-space: nowrap; transition: opacity .3s; margin-bottom: .4rem; }
@@ -124,7 +124,7 @@ nav.scrolled {
 
     /* COLLECTION */
     .collection { background: var(--cream); }
-    .collection-grid { display: grid; grid-template-columns: repeat(12,1fr); grid-template-rows: auto auto; gap: 1.5rem; }
+    .collection-grid { display: grid; grid-template-columns: repeat(12,1fr); grid-template-rows: auto auto; gap: 1.5rem; align-items: start; }
     .artwork-card { position: relative; overflow: hidden; background: var(--cream-dark); }
     .artwork-card:nth-child(1) { grid-column: 1/6; grid-row: 1; }
     .artwork-card:nth-child(2) { grid-column: 6/9; grid-row: 1; }
@@ -162,7 +162,7 @@ nav.scrolled {
     /* SCULPTURES */
     .sculptures { background: var(--cream-dark); }
     .sculptures-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
-    .sculptures-text p { font-size: 1.05rem; color: var(--ink-soft); line-height: 1.9; max-width: 48ch; margin-bottom: 2rem; }
+    .sculptures-text p { font-size: 1.15rem; color: var(--ink-soft); line-height: 2; max-width: 48ch; margin-bottom: 2.5rem; }
     .sculptures-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
     .sculpture-card { position: relative; overflow: hidden; background: var(--cream); }
     .sculpture-card-img { aspect-ratio: 3/4; overflow: hidden; }
@@ -170,9 +170,9 @@ nav.scrolled {
     .sculpture-card:nth-child(1) .sculpture-card-img { aspect-ratio: 16/9; }
     .sculpture-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .9s var(--ease-luxury); }
     .sculpture-card:hover .sculpture-card-img img { transform: scale(1.05); }
-    .sculpture-card-info { padding: 1rem 1.2rem; }
-    .sculpture-card-title { font-family: var(--ff-display); font-size: .95rem; font-weight: 400; margin-bottom: .2rem; }
-    .sculpture-card-meta { font-family: var(--ff-body); font-size: .8rem; color: var(--ink-muted); font-style: italic; }
+    .sculpture-card-info { padding: 1.2rem 1.4rem 1.6rem; }
+    .sculpture-card-title { font-family: var(--ff-display); font-size: 1.2rem; font-weight: 400; margin-bottom: .2rem; }
+    .sculpture-card-meta { font-family: var(--ff-body); font-size: .95rem; color: var(--ink-muted); font-style: italic; }
 
     /* ABOUT */
     .about { background: var(--white); }
