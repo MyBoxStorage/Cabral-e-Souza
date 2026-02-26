@@ -648,7 +648,7 @@
   </footer>
 
   <script>
-    // PRELOADER — respeita carregamento real, com fallback de 4s
+    // PRELOADER — robusto para qualquer ambiente de deploy
     var preloaderDone = false;
     function hidePreloader() {
       if (preloaderDone) return;
@@ -656,8 +656,12 @@
       var p = document.getElementById('preloader');
       if (p) p.classList.add('hidden');
     }
-    window.addEventListener('load', hidePreloader);
-    setTimeout(hidePreloader, 4000);
+    if (document.readyState === 'complete') {
+      setTimeout(hidePreloader, 2800);
+    } else {
+      window.addEventListener('load', function() { setTimeout(hidePreloader, 2800); });
+    }
+    setTimeout(hidePreloader, 6000);
 
     // NAVBAR
     var navbar = document.getElementById('navbar');
