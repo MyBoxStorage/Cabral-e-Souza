@@ -1,0 +1,31 @@
+# Sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# Dependências (caso algum dia usar npm)
+node_modules/
+.npm/
+
+# Variáveis de ambiente
+.env
+.env.local
+.env.production
+
+# Logs
+*.log
+npm-debug.log*
+
+# Screenshots e arquivos temporários
+Captura de tela*.png
+*.tmp
+
+# Imagens não utilizadas no site (manter aqui para não deletar sem querer)
+# obra-escola2.png
+# obra-escultura.png
+# img_escola.png
