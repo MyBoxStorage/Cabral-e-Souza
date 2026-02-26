@@ -301,7 +301,7 @@
       <li><a href="#contato">Contato</a></li>
     </ul>
     <a href="https://wa.me/5521970027830" target="_blank" rel="noopener noreferrer" class="nav-cta">Consultar Peça</a>
-    <button class="nav-hamburger" id="hamburger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 
   <!-- HERO — obra-diva.png no topo (mais impactante), obra-escultura.png embaixo -->
@@ -571,7 +571,7 @@
               <div class="contact-detail-icon">✉</div>
               <div>
                 <div class="contact-detail-label">E-mail</div>
-                <div class="contact-detail-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="15767a7b6174617a5576747767747970667a606f743b767a783b7767">[email&#160;protected]</a></div>
+                <div class="contact-detail-value">contato@cabralesouza.com.br</div>
               </div>
             </div>
           </div>
@@ -648,42 +648,25 @@
   </footer>
 
   <script>
-    // PRELOADER — robusto para qualquer ambiente de deploy
-    var preloaderDone = false;
-    function hidePreloader() {
-      if (preloaderDone) return;
-      preloaderDone = true;
-      var p = document.getElementById('preloader');
-      if (p) p.classList.add('hidden');
-    }
-    if (document.readyState === 'complete') {
-      setTimeout(hidePreloader, 2800);
-    } else {
-      window.addEventListener('load', function() { setTimeout(hidePreloader, 2800); });
-    }
-    setTimeout(hidePreloader, 6000);
+    // PRELOADER
+    function hidePreloader() { var p = document.getElementById('preloader'); if (p) p.classList.add('hidden'); }
+    setTimeout(hidePreloader, 2800);
 
     // NAVBAR
     var navbar = document.getElementById('navbar');
     var hamburger = document.getElementById('hamburger');
-    if (navbar) {
-      window.addEventListener('scroll', function() { navbar.classList.toggle('scrolled', window.scrollY > 60); });
-    }
-    if (hamburger && navbar) {
+    window.addEventListener('scroll', function() { navbar.classList.toggle('scrolled', window.scrollY > 60); });
+    if (hamburger) {
       hamburger.addEventListener('click', function() {
-        var isOpen = navbar.classList.toggle('menu-open');
+        navbar.classList.toggle('menu-open');
         hamburger.classList.toggle('open');
-        hamburger.setAttribute('aria-expanded', isOpen);
-        document.body.style.overflow = isOpen ? 'hidden' : '';
+        document.body.style.overflow = navbar.classList.contains('menu-open') ? 'hidden' : '';
       });
     }
     document.querySelectorAll('.nav-links a, .nav-cta').forEach(function(link) {
       link.addEventListener('click', function() {
-        if (navbar) navbar.classList.remove('menu-open');
-        if (hamburger) {
-          hamburger.classList.remove('open');
-          hamburger.setAttribute('aria-expanded', 'false');
-        }
+        navbar.classList.remove('menu-open');
+        if (hamburger) hamburger.classList.remove('open');
         document.body.style.overflow = '';
       });
     });
@@ -694,24 +677,21 @@
     }, { threshold: 0.12 });
     document.querySelectorAll('[data-reveal]').forEach(function(el) { obs.observe(el); });
 
-    // FORM — com guard de null check
-    var contactForm = document.getElementById('contactForm');
-    if (contactForm) {
-      contactForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        var n = this.nome.value.trim(), t = this.whatsapp.value.trim(), tp = this.tipo.value, m = this.mensagem.value.trim();
-        var l = { quadro:'Quadro / Pintura', escultura:'Escultura / Bronze', tapecaria:'Tapete / Tapeçaria', prataria:'Prataria / Objetos', avaliacao:'Avaliação de Peça', visita:'Visita Agendada' };
-        var win = window.open('https://wa.me/5521970027830?text=' + encodeURIComponent('Olá! Meu nome é ' + n + '.\nTenho interesse em: ' + (l[tp]||tp) + '\n' + (m?'Mensagem: '+m+'\n':'') + 'Meu WhatsApp: ' + t), '_blank');
-        if (win) win.opener = null;
-      });
-    }
-
-    // ANO DINÂMICO NO FOOTER
-    var footerCopy = document.querySelector('.footer-copy');
-    if (footerCopy) {
-      footerCopy.innerHTML = footerCopy.innerHTML.replace('2025', new Date().getFullYear());
-    }
+    // FORM
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var n = this.nome.value.trim(), t = this.whatsapp.value.trim(), tp = this.tipo.value, m = this.mensagem.value.trim();
+      var l = { quadro:'Quadro / Pintura', escultura:'Escultura / Bronze', tapecaria:'Tapete / Tapeçaria', prataria:'Prataria / Objetos', avaliacao:'Avaliação de Peça', visita:'Visita Agendada' };
+      window.open('https://wa.me/5521970027830?text=' + encodeURIComponent('Olá! Meu nome é ' + n + '.\nTenho interesse em: ' + (l[tp]||tp) + '\n' + (m?'Mensagem: '+m+'\n':'') + 'Meu WhatsApp: ' + t), '_blank');
+    });
 
     // SMOOTH SCROLL
     document.querySelectorAll('a[href^="#"]').forEach(function(a) {
-      a.addEventL
+      a.addEventListener('click', function(e) {
+        var t = document.querySelector(a.getAttribute('href'));
+        if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      });
+    });
+  </script>
+</body>
+</html>
