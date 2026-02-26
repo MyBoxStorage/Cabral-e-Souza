@@ -652,6 +652,9 @@
     function hidePreloader() { var p = document.getElementById('preloader'); if (p) p.classList.add('hidden'); }
     setTimeout(hidePreloader, 2800);
 
+    // ANO DINÂMICO NO FOOTER
+    document.querySelector('.footer-copy').innerHTML = document.querySelector('.footer-copy').innerHTML.replace('2025', new Date().getFullYear());
+
     // NAVBAR
     var navbar = document.getElementById('navbar');
     var hamburger = document.getElementById('hamburger');
