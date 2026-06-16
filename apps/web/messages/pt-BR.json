@@ -1,17 +1,26 @@
 {
   "nav": {
-    "collection": "Coleção",
-    "artists": "Artistas",
-    "gallery": "Galeria",
-    "bulletin": "Boletim",
-    "contact": "Contato",
-    "consult": "Consultar Peça"
+    "acervo": "Acervo",
+    "artistas": "Artistas",
+    "boletim": "Boletim",
+    "sobre": "Sobre",
+    "vender": "Vender Obra",
+    "contato": "Contato",
+    "open_menu": "Abrir menu",
+    "close_menu": "Fechar menu",
+    "search": "Buscar"
+  },
+  "locale": {
+    "pt-BR": "PT",
+    "en-US": "EN",
+    "fr-FR": "FR",
+    "change": "Alterar idioma"
   },
   "hero": {
     "eyebrow": "Galeria & Antiquário · Rio de Janeiro",
     "title": "Arte que atravessa o tempo.",
     "description": "Quadros a óleo de mestres brasileiros e europeus, esculturas em bronze e peças raras selecionadas com rigor estético e histórico.",
-    "cta_primary": "Ver Coleção",
+    "cta_primary": "Ver Acervo",
     "cta_ghost": "Consultar Peça",
     "established": "Est. 1987"
   },
@@ -24,15 +33,33 @@
     "authenticity_label": "Autenticidade Garantida"
   },
   "footer": {
-    "tagline": "Galeria especializada em quadros a óleo, esculturas em bronze e arte clássica. Autenticidade e tradição no coração do Rio de Janeiro.",
-    "copyright": "Cabral & Souza Antiguidades. Todos os direitos reservados.",
-    "address": "Rua Siqueira Campos, 143 — Sl. 63, Copacabana · Rio de Janeiro, RJ",
+    "tagline": "Galeria especializada em arte moderna e contemporânea brasileira. Autenticidade e tradição no coração do Rio de Janeiro.",
+    "copyright": "© {year} Cabral & Souza Antiguidades Ltda. Todos os direitos reservados.",
+    "address": "Rua Siqueira Campos, 143 — Sl. 63, Copacabana · Rio de Janeiro, RJ 22041-001",
     "hours": "Seg–Sex 10h–18h · Sáb 10h–14h",
     "privacy": "Política de Privacidade",
-    "terms": "Termos de Uso"
+    "terms": "Termos de Uso",
+    "cnart": "Membro CNART/IPHAN",
+    "nav_title": "Galeria",
+    "legal_title": "Jurídico",
+    "contact_title": "Contato"
   },
   "contact": {
     "whatsapp": "(21) 97002-7830",
     "email": "contato@cabralesouza.com.br"
+  },
+  "cookie": {
+    "title": "Usamos cookies",
+    "description": "Utilizamos cookies para melhorar sua experiência e analisar o tráfego. Você pode escolher quais categorias aceitar.",
+    "essential_label": "Essenciais",
+    "essential_description": "Necessários para o funcionamento do site. Não podem ser desativados.",
+    "analytics_label": "Analytics",
+    "analytics_description": "Nos ajudam a entender como você usa o site (Google Analytics).",
+    "marketing_label": "Marketing",
+    "marketing_description": "Utilizados para personalizar anúncios (Meta Pixel).",
+    "accept_all": "Aceitar Todos",
+    "accept_selected": "Aceitar Selecionados",
+    "reject_all": "Apenas Essenciais",
+    "privacy_link": "Política de Privacidade"
   }
 }

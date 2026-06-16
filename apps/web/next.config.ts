@@ -5,7 +5,7 @@ const withNextIntl = createNextIntlPlugin('./i18n/request.ts')
 
 const nextConfig: NextConfig = {
   experimental: {
-    typedRoutes: true,
+    // typedRoutes: true, — habilitar na Etapa 12 quando todas as rotas existirem
   },
   images: {
     remotePatterns: [

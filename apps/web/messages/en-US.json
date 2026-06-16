@@ -1,16 +1,25 @@
 {
   "nav": {
-    "collection": "Collection",
-    "artists": "Artists",
-    "gallery": "Gallery",
-    "bulletin": "Bulletin",
-    "contact": "Contact",
-    "consult": "Enquire"
+    "acervo": "Collection",
+    "artistas": "Artists",
+    "boletim": "Journal",
+    "sobre": "About",
+    "vender": "Sell a Work",
+    "contato": "Contact",
+    "open_menu": "Open menu",
+    "close_menu": "Close menu",
+    "search": "Search"
+  },
+  "locale": {
+    "pt-BR": "PT",
+    "en-US": "EN",
+    "fr-FR": "FR",
+    "change": "Change language"
   },
   "hero": {
-    "eyebrow": "Gallery & Antiques · Rio de Janeiro",
+    "eyebrow": "Art Gallery & Antiquarian · Rio de Janeiro",
     "title": "Art that transcends time.",
-    "description": "Oil paintings by Brazilian and European masters, bronze sculptures and rare pieces selected with rigorous aesthetic and historical criteria.",
+    "description": "Oil paintings by Brazilian and European masters, bronze sculptures and rare pieces selected with aesthetic and historical rigour.",
     "cta_primary": "View Collection",
     "cta_ghost": "Enquire",
     "established": "Est. 1987"
@@ -24,15 +33,33 @@
     "authenticity_label": "Guaranteed Authenticity"
   },
   "footer": {
-    "tagline": "Gallery specialising in oil paintings, bronze sculptures and classical art. Authenticity and tradition in the heart of Rio de Janeiro.",
-    "copyright": "Cabral & Souza Antiquities. All rights reserved.",
-    "address": "Rua Siqueira Campos, 143 — Suite 63, Copacabana · Rio de Janeiro, RJ",
+    "tagline": "Specialised gallery in modern and contemporary Brazilian art. Authenticity and tradition in the heart of Rio de Janeiro.",
+    "copyright": "© {year} Cabral & Souza Antiguidades Ltda. All rights reserved.",
+    "address": "Rua Siqueira Campos, 143 — Sl. 63, Copacabana · Rio de Janeiro, RJ 22041-001",
     "hours": "Mon–Fri 10am–6pm · Sat 10am–2pm",
     "privacy": "Privacy Policy",
-    "terms": "Terms of Use"
+    "terms": "Terms of Use",
+    "cnart": "CNART/IPHAN Member",
+    "nav_title": "Gallery",
+    "legal_title": "Legal",
+    "contact_title": "Contact"
   },
   "contact": {
     "whatsapp": "+55 21 97002-7830",
-    "email": "contato@cabralesouza.com.br"
+    "email": "contact@cabralesouza.com.br"
+  },
+  "cookie": {
+    "title": "We use cookies",
+    "description": "We use cookies to enhance your experience and analyse traffic. You may choose which categories to accept.",
+    "essential_label": "Essential",
+    "essential_description": "Required for the site to function. Cannot be disabled.",
+    "analytics_label": "Analytics",
+    "analytics_description": "Help us understand how you use the site (Google Analytics).",
+    "marketing_label": "Marketing",
+    "marketing_description": "Used to personalise advertisements (Meta Pixel).",
+    "accept_all": "Accept All",
+    "accept_selected": "Accept Selected",
+    "reject_all": "Essential Only",
+    "privacy_link": "Privacy Policy"
   }
 }
