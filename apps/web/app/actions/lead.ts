@@ -43,3 +43,18 @@ export async function submitLead(payload: LeadPayload): Promise<void> {
     throw new Error('Erro ao registrar interesse. Tente novamente.')
   }
 }
+
+const LEAD_STATUSES = ['novo', 'qualificado', 'em_negociacao', 'ganho', 'perdido', 'descartado'] as const
+type LeadStatus = (typeof LEAD_STATUSES)[number]
+
+export async function updateLeadStatus(id: string, status: LeadStatus): Promise<void> {
+  if (!LEAD_STATUSES.includes(status)) throw new Error('Status inválido')
+
+  const db = createAdminClient()
+  const { error } = await db.from('leads').update({ status }).eq('id', id)
+
+  if (error) throw new Error(error.message)
+
+  const { revalidatePath } = await import('next/cache')
+  revalidatePath('/admin/leads')
+}
