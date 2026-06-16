@@ -6,6 +6,15 @@
 # Dependencies
 node_modules/
 
+# Build outputs
+.next/
+dist/
+build/
+.turbo/
+
+# pnpm
+pnpm-debug.log*
+
 # Screenshots / temp images
 Captura de tela*.png
 *.screenshot.png
@@ -20,3 +29,10 @@ Thumbs.db
 # Logs
 *.log
 npm-debug.log*
+
+# Vercel
+.vercel/
+
+# Supabase local
+supabase/.branches
+supabase/.temp

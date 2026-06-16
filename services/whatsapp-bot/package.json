@@ -1,0 +1,23 @@
+{
+  "name": "whatsapp-bot",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc --project tsconfig.json",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@cabral-souza/claude": "workspace:*",
+    "@cabral-souza/db": "workspace:*",
+    "@cabral-souza/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.30",
+    "rimraf": "^6.0.1",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  }
+}

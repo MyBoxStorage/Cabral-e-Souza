@@ -1,0 +1,40 @@
+/* ============================================================
+   CABRAL & SOUZA — Tokens de Cor
+   Baseados nos tokens especificados em docs/01_PROMPT_CURSOR.md
+   ============================================================ */
+:root {
+  /* Neutros refinados */
+  --color-ink: #0a0a0a;
+  --color-ink-muted: #4a4a4a;
+  --color-ink-subtle: #8a8a8a;
+  --color-paper: #fafaf7;
+  --color-paper-muted: #f2f1ec;
+  --color-paper-deep: #e8e6df;
+
+  /* Acento único — dourado envelhecido */
+  --color-accent: #8b7355;
+  --color-accent-deep: #5c4a36;
+  --color-accent-pale: #d4c4a8;
+
+  /* Borda padrão */
+  --color-border: rgba(139, 115, 85, 0.2);
+  --color-border-strong: rgba(139, 115, 85, 0.45);
+
+  /* Estados semânticos */
+  --color-success: #4a6b3d;
+  --color-warning: #b8895a;
+  --color-danger: #8b3a2e;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-ink: #fafaf7;
+    --color-ink-muted: #b8b6ad;
+    --color-ink-subtle: #6a6860;
+    --color-paper: #1a1a18;
+    --color-paper-muted: #242420;
+    --color-paper-deep: #2e2e2a;
+    --color-border: rgba(212, 196, 168, 0.15);
+    --color-border-strong: rgba(212, 196, 168, 0.35);
+  }
+}

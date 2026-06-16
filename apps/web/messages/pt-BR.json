@@ -1,0 +1,38 @@
+{
+  "nav": {
+    "collection": "Coleção",
+    "artists": "Artistas",
+    "gallery": "Galeria",
+    "bulletin": "Boletim",
+    "contact": "Contato",
+    "consult": "Consultar Peça"
+  },
+  "hero": {
+    "eyebrow": "Galeria & Antiquário · Rio de Janeiro",
+    "title": "Arte que atravessa o tempo.",
+    "description": "Quadros a óleo de mestres brasileiros e europeus, esculturas em bronze e peças raras selecionadas com rigor estético e histórico.",
+    "cta_primary": "Ver Coleção",
+    "cta_ghost": "Consultar Peça",
+    "established": "Est. 1987"
+  },
+  "stats": {
+    "pieces": "+500",
+    "pieces_label": "Peças em Acervo",
+    "years": "37",
+    "years_label": "Anos de Tradição",
+    "authenticity": "100%",
+    "authenticity_label": "Autenticidade Garantida"
+  },
+  "footer": {
+    "tagline": "Galeria especializada em quadros a óleo, esculturas em bronze e arte clássica. Autenticidade e tradição no coração do Rio de Janeiro.",
+    "copyright": "Cabral & Souza Antiguidades. Todos os direitos reservados.",
+    "address": "Rua Siqueira Campos, 143 — Sl. 63, Copacabana · Rio de Janeiro, RJ",
+    "hours": "Seg–Sex 10h–18h · Sáb 10h–14h",
+    "privacy": "Política de Privacidade",
+    "terms": "Termos de Uso"
+  },
+  "contact": {
+    "whatsapp": "(21) 97002-7830",
+    "email": "contato@cabralesouza.com.br"
+  }
+}

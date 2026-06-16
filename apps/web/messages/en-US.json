@@ -1,0 +1,38 @@
+{
+  "nav": {
+    "collection": "Collection",
+    "artists": "Artists",
+    "gallery": "Gallery",
+    "bulletin": "Bulletin",
+    "contact": "Contact",
+    "consult": "Enquire"
+  },
+  "hero": {
+    "eyebrow": "Gallery & Antiques · Rio de Janeiro",
+    "title": "Art that transcends time.",
+    "description": "Oil paintings by Brazilian and European masters, bronze sculptures and rare pieces selected with rigorous aesthetic and historical criteria.",
+    "cta_primary": "View Collection",
+    "cta_ghost": "Enquire",
+    "established": "Est. 1987"
+  },
+  "stats": {
+    "pieces": "+500",
+    "pieces_label": "Works in Collection",
+    "years": "37",
+    "years_label": "Years of Tradition",
+    "authenticity": "100%",
+    "authenticity_label": "Guaranteed Authenticity"
+  },
+  "footer": {
+    "tagline": "Gallery specialising in oil paintings, bronze sculptures and classical art. Authenticity and tradition in the heart of Rio de Janeiro.",
+    "copyright": "Cabral & Souza Antiquities. All rights reserved.",
+    "address": "Rua Siqueira Campos, 143 — Suite 63, Copacabana · Rio de Janeiro, RJ",
+    "hours": "Mon–Fri 10am–6pm · Sat 10am–2pm",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use"
+  },
+  "contact": {
+    "whatsapp": "+55 21 97002-7830",
+    "email": "contato@cabralesouza.com.br"
+  }
+}
