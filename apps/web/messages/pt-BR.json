@@ -48,6 +48,19 @@
     "whatsapp": "(21) 97002-7830",
     "email": "contato@cabralesouza.com.br"
   },
+  "lead_form": {
+    "name": "Nome",
+    "email": "Email",
+    "phone": "Telefone (opcional)",
+    "message": "Mensagem (opcional)",
+    "consent": "Aceito receber comunicações da Cabral & Souza sobre obras e eventos.",
+    "submit": "Enviar interesse",
+    "sending": "Enviando...",
+    "whatsapp": "Falar no WhatsApp",
+    "success_title": "Interesse registrado",
+    "success_description": "Entraremos em contato em até 24 horas úteis.",
+    "error": "Erro ao enviar. Tente novamente ou entre em contato pelo WhatsApp."
+  },
   "cookie": {
     "title": "Usamos cookies",
     "description": "Utilizamos cookies para melhorar sua experiência e analisar o tráfego. Você pode escolher quais categorias aceitar.",

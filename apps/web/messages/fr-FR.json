@@ -48,6 +48,19 @@
     "whatsapp": "+55 21 97002-7830",
     "email": "contact@cabralesouza.com.br"
   },
+  "lead_form": {
+    "name": "Nom",
+    "email": "Email",
+    "phone": "Téléphone (optionnel)",
+    "message": "Message (optionnel)",
+    "consent": "J'accepte de recevoir des communications de Cabral & Souza sur les œuvres et événements.",
+    "submit": "Envoyer ma demande",
+    "sending": "Envoi en cours...",
+    "whatsapp": "Contacter via WhatsApp",
+    "success_title": "Demande enregistrée",
+    "success_description": "Nous vous contacterons dans les 24 heures ouvrables.",
+    "error": "Échec de l'envoi. Réessayez ou contactez-nous via WhatsApp."
+  },
   "cookie": {
     "title": "Nous utilisons des cookies",
     "description": "Nous utilisons des cookies pour améliorer votre expérience et analyser le trafic. Vous pouvez choisir les catégories à accepter.",
