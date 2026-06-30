@@ -5,6 +5,8 @@ import './client'
 
 const PROJECT_REF = 'qbhiiwuigottaqmedrha'
 const DEFAULT_REGION = 'sa-east-1'
+/** Pooler real do projeto (Dashboard → Connect); sa-east-1 usa aws-1-us-east-1 */
+const DEFAULT_POOLER_HOST = 'aws-1-us-east-1.pooler.supabase.com'
 
 function extractProjectRef(): string {
   const url = process.env['NEXT_PUBLIC_SUPABASE_URL'] ?? ''
@@ -22,8 +24,9 @@ export function buildDatabaseUrl(): string | undefined {
   const ref = extractProjectRef()
   const region = process.env['SUPABASE_DB_REGION'] ?? DEFAULT_REGION
 
+  const poolerHost = process.env['SUPABASE_DB_POOLER_HOST'] ?? DEFAULT_POOLER_HOST
   if (password) {
-    return `postgresql://postgres.${ref}:${encodeURIComponent(password)}@aws-0-${region}.pooler.supabase.com:6543/postgres`
+    return `postgresql://postgres.${ref}:${encodeURIComponent(password)}@${poolerHost}:6543/postgres`
   }
 
   const legacy = process.env['DATABASE_URL']
@@ -44,10 +47,13 @@ export async function runMigrations(): Promise<void> {
   }
 
   const encoded = encodeURIComponent(password)
+  const poolerHost = process.env['SUPABASE_DB_POOLER_HOST'] ?? DEFAULT_POOLER_HOST
+  const legacyHost = `aws-0-${region}.pooler.supabase.com`
   const candidates = [
-    `postgresql://postgres.${ref}:${encoded}@aws-0-${region}.pooler.supabase.com:6543/postgres`,
-    `postgresql://postgres.${ref}:${encoded}@aws-0-${region}.pooler.supabase.com:5432/postgres`,
-    `postgresql://postgres:${encoded}@db.${ref}.supabase.co:5432/postgres`,
+    `postgresql://postgres.${ref}:${encoded}@${poolerHost}:6543/postgres`,
+    `postgresql://postgres.${ref}:${encoded}@${poolerHost}:5432/postgres`,
+    `postgresql://postgres.${ref}:${encoded}@${legacyHost}:6543/postgres`,
+    `postgresql://postgres.${ref}:${encoded}@${legacyHost}:5432/postgres`,
     process.env['DATABASE_URL']?.includes('[YOUR-PASSWORD]') ? undefined : process.env['DATABASE_URL'],
   ].filter(Boolean) as string[]
 
@@ -61,7 +67,7 @@ export async function runMigrations(): Promise<void> {
       await client.connect()
       const migrationsDir = resolve(__dirname, '../../migrations')
       const files = readdirSync(migrationsDir)
-        .filter((f) => f.endsWith('.sql') && f > '0001')
+        .filter((f) => f.endsWith('.sql') && /^000[2-9]|^00[1-9][0-9]/.test(f))
         .sort()
 
       for (const file of files) {
