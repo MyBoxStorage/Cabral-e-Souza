@@ -1,4 +1,5 @@
 import { createSeedClient } from './client'
+import { seedArtistPortraits } from './artist-portraits'
 import { seedPieceImages } from './images'
 import { runMigrations } from './migrate'
 import { seedPieces } from './run-pieces'
@@ -9,7 +10,7 @@ import { seedBoletim } from './run-boletim'
 async function main() {
   console.log('🌱 Cabral & Souza — seed de conteúdo placeholder\n')
 
-  console.log('0/5 Migrations...')
+  console.log('0/6 Migrations...')
   try {
     await runMigrations()
   } catch (err) {
@@ -20,23 +21,27 @@ async function main() {
 
   const db = createSeedClient()
 
-  console.log('1/5 Peças placeholder...')
+  console.log('1/6 Peças placeholder...')
   const { created: piecesCreated } = await seedPieces(db)
   console.log(`   ✓ ${piecesCreated} peças novas (10 total no catálogo)\n`)
 
-  console.log('2/5 Verbetes de artistas...')
+  console.log('2/6 Retratos de artistas (Wikimedia → Storage)...')
+  const portraitsCount = await seedArtistPortraits(db)
+  console.log(`   ✓ ${portraitsCount} retratos em piece-images/artist-portraits/\n`)
+
+  console.log('3/6 Verbetes de artistas...')
   const artistsUpdated = await seedArtists(db)
   console.log(`   ✓ ${artistsUpdated} artistas atualizados e publicados\n`)
 
-  console.log('3/5 Páginas institucionais...')
+  console.log('4/6 Páginas institucionais...')
   const pagesCount = await seedSitePages(db)
   console.log(`   ✓ ${pagesCount} páginas\n`)
 
-  console.log('4/5 Posts do boletim...')
+  console.log('5/6 Posts do boletim...')
   const postsCount = await seedBoletim(db)
   console.log(`   ✓ ${postsCount} posts\n`)
 
-  console.log('5/5 Imagens placeholder...')
+  console.log('6/6 Imagens placeholder...')
   const imagesCount = await seedPieceImages(db)
   console.log(`   ✓ ${imagesCount} imagens enviadas ao bucket piece-images\n`)
 

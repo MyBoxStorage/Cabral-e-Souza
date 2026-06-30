@@ -1,15 +1,11 @@
-export const ARTIST_HERO_IMAGES: Record<string, string> = {
-  'di-cavalcanti':
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Di_Cavalcanti_1922.jpg/800px-Di_Cavalcanti_1922.jpg',
-  'pedro-americo':
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Pedro_Americo_1884.jpg/800px-Pedro_Americo_1884.jpg',
-  djanira:
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Djanira_Motta_e_Silva.jpg/800px-Djanira_Motta_e_Silva.jpg',
-  'alfredo-volpi':
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Alfredo_Volpi_%281957%29.jpg/800px-Alfredo_Volpi_%281957%29.jpg',
-  'sergio-camargo':
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Sergio_Camargo_1970.jpg/800px-Sergio_Camargo_1970.jpg',
-}
+/**
+ * Imagens de domínio público baixadas do Wikimedia em 2026-06-30.
+ * Substituir por fotos editoriais profissionais quando disponíveis.
+ *
+ * hero_image_url é definido em runtime pelo seed (artist-portraits.ts) apontando
+ * para Supabase Storage — não usar URLs Wikimedia no front.
+ */
+export { ARTIST_PORTRAIT_SOURCES } from './portrait-sources'
 
 export { DI_CAVALCANTI_BIO } from './di-cavalcanti'
 export { PEDRO_AMERICO_BIO } from './pedro-americo'
