@@ -116,4 +116,16 @@
       padding-inline: var(--space-16);
     }
   }
+
+  /* Login admin: paleta escura fixa — ignora prefers-color-scheme do sistema */
+  .admin-login-shell {
+    --color-ink: #0a0a0a;
+    --color-paper: #fafaf7;
+    --color-accent: #8b7355;
+    --color-accent-deep: #5c4a36;
+    --color-danger: #c45a4a;
+    color-scheme: dark;
+    background-color: #0a0a0a;
+    color: #fafaf7;
+  }
 }

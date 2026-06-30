@@ -6,7 +6,7 @@ export const metadata = { title: 'Login' }
 
 export default function AdminLoginPage() {
   return (
-    <div className="min-h-screen bg-[--color-ink] flex items-center justify-center p-6">
+    <div className="admin-login-shell min-h-screen flex items-center justify-center p-6">
       <div className="w-full max-w-[380px]">
         <div className="text-center mb-12">
           <p className="font-display text-[1.375rem] text-[--color-paper] tracking-[-0.01em]">

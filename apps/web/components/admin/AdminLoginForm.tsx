@@ -26,7 +26,7 @@ export function AdminLoginForm() {
       <div>
         <label
           htmlFor="admin-email"
-          className="block font-body text-[11px] uppercase tracking-[0.1em] text-[rgba(250,250,247,0.4)] mb-3"
+          className="block font-body text-[11px] uppercase tracking-[0.1em] text-[rgba(250,250,247,0.65)] mb-3"
         >
           Email
         </label>
@@ -39,14 +39,14 @@ export function AdminLoginForm() {
           autoFocus
           required
           disabled={isPending}
-          className="w-full bg-transparent border border-[rgba(250,250,247,0.12)] focus:border-[--color-accent] text-[--color-paper] font-body text-[14px] px-4 py-3.5 outline-none transition-colors placeholder:text-[rgba(250,250,247,0.2)] disabled:opacity-50"
+          className="w-full bg-[rgba(250,250,247,0.06)] border border-[rgba(250,250,247,0.25)] focus:border-[--color-accent] text-[--color-paper] font-body text-[14px] px-4 py-3.5 outline-none transition-colors placeholder:text-[rgba(250,250,247,0.35)] disabled:opacity-50"
         />
       </div>
 
       <div>
         <label
           htmlFor="admin-password"
-          className="block font-body text-[11px] uppercase tracking-[0.1em] text-[rgba(250,250,247,0.4)] mb-3"
+          className="block font-body text-[11px] uppercase tracking-[0.1em] text-[rgba(250,250,247,0.65)] mb-3"
         >
           Senha
         </label>
@@ -57,9 +57,8 @@ export function AdminLoginForm() {
           placeholder="••••••••••••"
           autoComplete="current-password"
           required
-          minLength={12}
           disabled={isPending}
-          className="w-full bg-transparent border border-[rgba(250,250,247,0.12)] focus:border-[--color-accent] text-[--color-paper] font-body text-[14px] px-4 py-3.5 outline-none transition-colors placeholder:text-[rgba(250,250,247,0.2)] disabled:opacity-50"
+          className="w-full bg-[rgba(250,250,247,0.06)] border border-[rgba(250,250,247,0.25)] focus:border-[--color-accent] text-[--color-paper] font-body text-[14px] px-4 py-3.5 outline-none transition-colors placeholder:text-[rgba(250,250,247,0.35)] disabled:opacity-50"
         />
       </div>
 

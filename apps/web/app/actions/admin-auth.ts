@@ -15,11 +15,7 @@ import { createSupabaseServerClient } from '../../lib/supabase/server'
 
 const LoginSchema = z.object({
   email: z.string().email('Email inválido'),
-  password: z
-    .string()
-    .min(12, 'Senha deve ter no mínimo 12 caracteres')
-    .regex(/[a-zA-Z]/, 'Senha deve conter letras')
-    .regex(/[0-9]/, 'Senha deve conter números'),
+  password: z.string().min(1, 'Senha obrigatória'),
   redirect: z.string().optional(),
 })
 
