@@ -11,6 +11,7 @@
  */
 
 import { spawn } from 'node:child_process'
+import { existsSync } from 'node:fs'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -48,7 +49,7 @@ function slugFromUrl(url) {
 
 async function runLighthouse(url) {
   const slug = slugFromUrl(url)
-  const outputBase = join(outDir, slug)
+  const outputRel = `lighthouse/reports/${slug}`
 
   return new Promise((resolve, reject) => {
     const child = spawn(
@@ -61,13 +62,12 @@ async function runLighthouse(url) {
         '--form-factor=mobile',
         '--screenEmulation.mobile=true',
         '--throttling.cpuSlowdownMultiplier=4',
-        '--output=html',
         '--output=json',
-        `--output-path=${outputBase}`,
+        `--output-path=${outputRel}`,
         '--chrome-flags=--headless --no-sandbox --disable-gpu',
         '--quiet',
       ],
-      { stdio: ['ignore', 'pipe', 'pipe'], shell: true },
+      { stdio: ['ignore', 'pipe', 'pipe'], shell: true, cwd: join(__dirname, '..') },
     )
 
     let stderr = ''
@@ -78,11 +78,18 @@ async function runLighthouse(url) {
         reject(new Error(`Lighthouse failed for ${url}\n${stderr}`))
         return
       }
-      resolve({
-        url,
-        reportPath: `${outputBase}.report.html`,
-        jsonPath: `${outputBase}.report.json`,
-      })
+      const candidates = [
+        join(__dirname, '..', outputRel),
+        join(__dirname, '..', `${outputRel}.report.json`),
+        join(outDir, slug),
+        join(outDir, `${slug}.report.json`),
+      ]
+      const jsonPath = candidates.find((p) => existsSync(p))
+      if (!jsonPath) {
+        reject(new Error(`Lighthouse JSON not found for ${url}\n${stderr}`))
+        return
+      }
+      resolve({ url, jsonPath })
     })
   })
 }
@@ -129,7 +136,7 @@ async function main() {
   for (const url of urls) {
     process.stdout.write(`→ ${url} ... `)
     try {
-      const { jsonPath, reportPath } = await runLighthouse(url)
+      const { jsonPath } = await runLighthouse(url)
       const scores = await summarize(jsonPath)
       const failures = passThresholds(scores, thresholds)
       const status = failures.length === 0 ? 'PASS' : 'FAIL'
@@ -138,7 +145,6 @@ async function main() {
         `   perf=${scores.performance} a11y=${scores.accessibility} bp=${scores['best-practices']} seo=${scores.seo} cls=${scores.cls}`,
       )
       if (failures.length) console.log(`   ✗ ${failures.join(', ')}`)
-      console.log(`   report: ${reportPath}`)
       results.push({ url, scores, failures, status })
     } catch (err) {
       console.log('ERROR')

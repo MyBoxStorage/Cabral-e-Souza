@@ -1,5 +1,4 @@
 # Lighthouse reports (gerados por pnpm lighthouse:mobile)
 
-*.html
-*.json
+*
 !.gitignore

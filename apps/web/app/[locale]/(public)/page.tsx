@@ -5,6 +5,7 @@ import { getLocale } from 'next-intl/server'
 import { ArtistCard } from '../../../components/artwork/ArtistCard'
 import { PieceCard } from '../../../components/artwork/PieceCard'
 import { BoletimCard } from '../../../components/content/BoletimCard'
+import { Reveal } from '../../../components/ui/Reveal'
 import { buildPageMetadata } from '../../../lib/seo/metadata'
 import { getPublishedArtists } from '../../../lib/queries/artists'
 import { getPublishedBoletimPosts } from '../../../lib/queries/boletim'
@@ -97,6 +98,7 @@ export default async function HomePage() {
       </section>
 
       {/* Strip de credenciais */}
+      <Reveal>
       <section aria-label="Diferenciais" className="bg-[--color-paper-muted] border-y border-[--color-paper-deep] py-10">
         <div className="container-default">
           <dl className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-[--color-paper-deep]">
@@ -117,9 +119,11 @@ export default async function HomePage() {
           </dl>
         </div>
       </section>
+      </Reveal>
 
       {/* Destaques do acervo */}
       {featuredPieces.length > 0 && (
+        <Reveal>
         <section aria-labelledby="featured-heading" className="py-16 md:py-24">
           <div className="container-default">
             <div className="flex items-end justify-between mb-10 gap-4">
@@ -143,10 +147,12 @@ export default async function HomePage() {
             </div>
           </div>
         </section>
+        </Reveal>
       )}
 
       {/* Artistas */}
       {artists.length > 0 && (
+        <Reveal delay={80}>
         <section aria-labelledby="artists-heading" className="bg-[--color-paper-muted] border-y border-[--color-paper-deep] py-16 md:py-24">
           <div className="container-default">
             <div className="mb-10">
@@ -170,10 +176,12 @@ export default async function HomePage() {
             </div>
           </div>
         </section>
+        </Reveal>
       )}
 
       {/* Boletim */}
       {boletimPosts.length > 0 && (
+        <Reveal delay={80}>
         <section aria-labelledby="boletim-heading" className="py-16 md:py-24">
           <div className="container-default">
             <div className="mb-10">
@@ -197,9 +205,11 @@ export default async function HomePage() {
             </div>
           </div>
         </section>
+        </Reveal>
       )}
 
       {/* Institucional curto */}
+      <Reveal>
       <section className="bg-[--color-ink] text-[--color-paper] py-16 md:py-20">
         <div className="container-default max-w-[56ch] text-center mx-auto">
           <p className="font-body text-[15px] leading-[1.85] text-[rgba(250,250,247,0.75)] mb-8">
@@ -214,8 +224,10 @@ export default async function HomePage() {
           </Link>
         </div>
       </section>
+      </Reveal>
 
       {/* CTA vender obra */}
+      <Reveal delay={60}>
       <section className="border-t border-[--color-paper-deep] py-16 md:py-20">
         <div className="container-default text-center">
           <h2 className="font-display text-[1.75rem] md:text-[2.25rem] font-light text-[--color-ink] mb-4">
@@ -232,6 +244,7 @@ export default async function HomePage() {
           </Link>
         </div>
       </section>
+      </Reveal>
     </>
   )
 }

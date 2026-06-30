@@ -38,9 +38,7 @@ export function CookieBanner() {
   useEffect(() => {
     const saved = loadConsent()
     if (!saved?.decided) {
-      // Pequeno delay para não bloquear LCP
-      const timer = setTimeout(() => setVisible(true), 1500)
-      return () => clearTimeout(timer)
+      setVisible(true)
     }
   }, [])
 
@@ -169,7 +167,7 @@ export function CookieBanner() {
             </button>
             <button
               onClick={rejectAll}
-              className="flex-1 font-body text-[11px] uppercase tracking-[0.1em] text-[rgba(250,250,247,0.45)] hover:text-[rgba(250,250,247,0.7)] py-2.5 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[--color-accent]"
+              className="flex-1 font-body text-[11px] uppercase tracking-[0.1em] text-[rgba(250,250,247,0.6)] hover:text-[rgba(250,250,247,0.85)] py-2.5 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[--color-accent]"
             >
               {t('reject_all')}
             </button>
