@@ -1,41 +1,57 @@
 /* ============================================================
-   CABRAL & SOUZA — Tokens de Cor
-   Baseados nos tokens especificados em docs/01_PROMPT_CURSOR.md
+   CABRAL & SOUZA v3 — Tokens de Cor
+   Paleta editorial: ink + cream + bronze
    ============================================================ */
 :root {
-  /* Neutros refinados */
-  --color-ink: #0a0a0a;
-  --color-ink-muted: #4a4a4a;
-  --color-ink-subtle: #8a8a8a;
-  --color-paper: #fafaf7;
-  --color-paper-muted: #f2f1ec;
-  --color-paper-deep: #e8e6df;
+  /* Ink — dark dominante */
+  --color-ink-900: #1a1612;
+  --color-ink-800: #2a221b;
+  --color-ink-700: #3d3429;
 
-  /* Acento único — dourado envelhecido */
-  --color-accent: #8b7355;
-  --color-accent-deep: #5c4a36;
-  --color-accent-pale: #d4c4a8;
+  /* Cream — background claro */
+  --color-cream-50: #faf6ed;
+  --color-cream-100: #f5efe2;
+  --color-cream-200: #ebe3d2;
+  --color-cream-300: #ede5d4;
 
-  /* Borda padrão */
-  --color-border: rgba(139, 115, 85, 0.2);
-  --color-border-strong: rgba(139, 115, 85, 0.45);
+  /* Bronze — acento principal */
+  --color-bronze-300: #c4a878;
+  --color-bronze-500: #9a6f3f;
+  --color-bronze-700: #6f4f2c;
 
-  /* Estados semânticos */
-  --color-success: #4a6b3d;
-  --color-warning: #b8895a;
-  --color-danger: #8b3a2e;
+  /* Semânticos */
+  --color-success: #2d5a3d;
+  --color-error: #8a2424;
+  --color-whatsapp: #25d366;
+
+  /* Bordas derivadas */
+  --color-border: rgba(154, 111, 63, 0.2);
+  --color-border-strong: rgba(154, 111, 63, 0.45);
+  --color-border-dark: rgba(237, 229, 212, 0.15);
+
+  /* Aliases legados — compatibilidade até migração completa (Fase 8) */
+  --color-ink: var(--color-ink-900);
+  --color-ink-muted: var(--color-ink-800);
+  --color-ink-subtle: var(--color-ink-700);
+  --color-paper: var(--color-cream-100);
+  --color-paper-muted: var(--color-cream-200);
+  --color-paper-deep: var(--color-cream-200);
+  --color-accent: var(--color-bronze-500);
+  --color-accent-deep: var(--color-bronze-700);
+  --color-accent-pale: var(--color-bronze-300);
+  --color-danger: var(--color-error);
+  --color-warning: var(--color-bronze-300);
 }
 
 @media (prefers-color-scheme: dark) {
-  /* Desabilitado no site público — paleta fixa light (ADR lapidação Fase 2) */
   html.admin-theme-dark:root {
-    --color-ink: #fafaf7;
-    --color-ink-muted: #b8b6ad;
-    --color-ink-subtle: #6a6860;
-    --color-paper: #1a1a18;
-    --color-paper-muted: #242420;
-    --color-paper-deep: #2e2e2a;
-    --color-border: rgba(212, 196, 168, 0.15);
-    --color-border-strong: rgba(212, 196, 168, 0.35);
+    --color-ink: var(--color-cream-300);
+    --color-ink-muted: var(--color-cream-200);
+    --color-ink-subtle: var(--color-bronze-300);
+    --color-paper: var(--color-ink-900);
+    --color-paper-muted: var(--color-ink-800);
+    --color-paper-deep: var(--color-ink-700);
+    --color-border: var(--color-border-dark);
+    --color-border-strong: rgba(237, 229, 212, 0.35);
   }
 }

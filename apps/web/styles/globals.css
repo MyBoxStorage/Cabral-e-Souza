@@ -23,18 +23,18 @@
   }
 
   body {
-    background-color: var(--color-paper);
-    color: var(--color-ink);
+    background-color: var(--color-cream-100);
+    color: var(--color-ink-900);
     font-family: var(--font-body);
-    line-height: var(--leading-normal);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
   }
 
-  /* Foco acessível (WCAG AA) */
   :focus-visible {
-    outline: 2px solid var(--color-accent);
+    outline: 2px solid var(--color-bronze-500);
     outline-offset: 3px;
   }
 
@@ -68,14 +68,12 @@
     font-family: var(--font-display);
     font-weight: 400;
     line-height: var(--leading-tight);
-    letter-spacing: var(--tracking-tight);
-    color: var(--color-ink);
+    color: var(--color-ink-900);
   }
 
-  /* Seleção de texto com acento da marca */
   ::selection {
-    background-color: var(--color-accent-pale);
-    color: var(--color-ink);
+    background-color: var(--color-bronze-300);
+    color: var(--color-ink-900);
   }
 }
 
@@ -88,38 +86,46 @@
     font-family: var(--font-body);
   }
 
-  /* Labels e eyebrows: caps espaçadas */
-  .label-caps {
+  .label-caps,
+  .text-eyebrow-style {
     font-family: var(--font-body);
-    font-size: var(--text-xs);
-    letter-spacing: var(--tracking-caps);
+    font-size: var(--text-eyebrow);
+    font-weight: 500;
+    letter-spacing: var(--tracking-eyebrow);
     text-transform: uppercase;
-    color: var(--color-accent);
+    color: var(--color-bronze-500);
   }
 
-  /* Linha divisória dourada */
+  .text-editorial-italic {
+    font-family: var(--font-display);
+    font-style: italic;
+  }
+
   .divider-accent {
     border: none;
     border-top: 1px solid var(--color-border);
   }
 
-  /* Container padrão */
   .container-default {
     width: 100%;
-    max-width: var(--container-default);
+    max-width: var(--container-wide);
     margin-inline: auto;
-    padding-inline: var(--space-6);
+    padding-inline: var(--container-padding-x-mobile);
   }
 
   @media (min-width: 768px) {
     .container-default {
-      padding-inline: var(--space-12);
+      padding-inline: var(--container-padding-x-desktop);
     }
   }
 
-  @media (min-width: 1280px) {
-    .container-default {
-      padding-inline: var(--space-16);
+  .section-padding {
+    padding-block: var(--section-padding-y-mobile);
+  }
+
+  @media (min-width: 1024px) {
+    .section-padding {
+      padding-block: var(--section-padding-y-desktop);
     }
   }
 
@@ -147,23 +153,35 @@
   @media (prefers-reduced-motion: no-preference) {
     .reveal:not(.is-visible) {
       opacity: 0;
-      transition: opacity 320ms ease-out;
+      transition: opacity var(--duration-slow) ease-out;
     }
 
     .reveal.is-visible {
       opacity: 1;
     }
+
+    .reveal-prep {
+      opacity: 0;
+      transform: translateY(20px);
+      transition:
+        opacity var(--duration-cinematic) var(--ease-editorial),
+        transform var(--duration-cinematic) var(--ease-editorial);
+    }
+
+    .reveal-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
-  /* Login admin: paleta escura fixa — ignora prefers-color-scheme do sistema */
   .admin-login-shell {
-    --color-ink: #0a0a0a;
-    --color-paper: #fafaf7;
-    --color-accent: #8b7355;
-    --color-accent-deep: #5c4a36;
-    --color-danger: #c45a4a;
+    --color-ink: var(--color-ink-900);
+    --color-paper: var(--color-cream-100);
+    --color-accent: var(--color-bronze-500);
+    --color-accent-deep: var(--color-bronze-700);
+    --color-danger: var(--color-error);
     color-scheme: dark;
-    background-color: #0a0a0a;
-    color: #fafaf7;
+    background-color: var(--color-ink-900);
+    color: var(--color-cream-300);
   }
 }

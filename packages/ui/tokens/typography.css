@@ -1,37 +1,51 @@
 /* ============================================================
-   CABRAL & SOUZA — Tokens Tipográficos
-   Fontes premium via next/font (carregadas no app/layout.tsx).
-   As variáveis CSS --font-display e --font-body são injetadas
-   no <html> pelo Next.js. Aqui definimos fallbacks e escala.
+   CABRAL & SOUZA v3 — Tokens Tipográficos
+   Display: Cormorant Garamond · Body/UI: Inter
    ============================================================ */
 :root {
-  /* Famílias (variáveis preenchidas pelo next/font no layout) */
-  --font-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
-  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Cormorant Garamond', 'Times New Roman', serif;
+  --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, 'Courier New', monospace;
 
-  /* Escala — proporção áurea aproximada a partir de 1rem (16px) */
-  --text-xs: 0.75rem;    /* 12px — caption, badge */
-  --text-sm: 0.875rem;   /* 14px — small, meta */
-  --text-base: 1rem;     /* 16px — body */
-  --text-lg: 1.125rem;   /* 18px — body large */
-  --text-xl: 1.375rem;   /* 22px — lead */
-  --text-2xl: 1.75rem;   /* 28px — h4 */
-  --text-3xl: 2.25rem;   /* 36px — h3 */
-  --text-4xl: 3rem;      /* 48px — h2 */
-  --text-5xl: 4rem;      /* 64px — h1 */
-  --text-6xl: 5.5rem;    /* 88px — display hero */
+  /* Escala editorial — mobile → desktop com clamp */
+  --text-eyebrow: clamp(0.6875rem, 0.65rem + 0.2vw, 0.75rem);
+  --text-caption: clamp(0.75rem, 0.7rem + 0.2vw, 0.8125rem);
+  --text-body-sm: clamp(0.875rem, 0.85rem + 0.1vw, 0.9375rem);
+  --text-body: clamp(0.9375rem, 0.9rem + 0.2vw, 1rem);
+  --text-body-lg: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+  --text-lead: clamp(1.125rem, 1rem + 0.6vw, 1.375rem);
 
-  /* Altura de linha */
+  --text-title-xs: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+  --text-title-sm: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+  --text-title-md: clamp(2rem, 1.6rem + 2vw, 2.75rem);
+  --text-title-lg: clamp(2.75rem, 2rem + 3.75vw, 4.5rem);
+  --text-title-xl: clamp(3.5rem, 2.5rem + 5vw, 6rem);
+  --text-display: clamp(4rem, 2.5rem + 7vw, 8rem);
+
+  /* Aliases legados */
+  --text-xs: var(--text-caption);
+  --text-sm: var(--text-body-sm);
+  --text-base: var(--text-body);
+  --text-lg: var(--text-body-lg);
+  --text-xl: var(--text-lead);
+  --text-2xl: var(--text-title-xs);
+  --text-3xl: var(--text-title-sm);
+  --text-4xl: var(--text-title-md);
+  --text-5xl: var(--text-title-lg);
+  --text-6xl: var(--text-display);
+
+  /* Line heights */
   --leading-tight: 1.1;
   --leading-snug: 1.3;
   --leading-normal: 1.6;
-  --leading-loose: 1.85;  /* verbetes e corpo longo */
+  --leading-body: 1.7;
+  --leading-loose: 1.85;
 
-  /* Espaçamento entre letras */
+  /* Letter spacing */
   --tracking-tight: -0.02em;
   --tracking-normal: 0em;
-  --tracking-wide: 0.04em;
+  --tracking-wide: 0.02em;
   --tracking-wider: 0.08em;
-  --tracking-caps: 0.14em; /* caps/labels */
+  --tracking-caps: 0.14em;
+  --tracking-eyebrow: 0.18em;
 }

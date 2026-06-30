@@ -9,7 +9,8 @@ import '../../styles/globals.css'
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
-  weight: ['300'],
+  weight: ['300', '400', '500', '600', '700'],
+  style: ['normal', 'italic'],
   variable: '--font-display',
   display: 'swap',
   adjustFontFallback: true,
@@ -18,7 +19,7 @@ const cormorant = Cormorant_Garamond({
 
 const inter = Inter({
   subsets: ['latin'],
-  weight: ['400'],
+  weight: ['400', '500', '600'],
   variable: '--font-body',
   display: 'swap',
   adjustFontFallback: true,
@@ -57,7 +58,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   return (
     <html
       lang={locale}
-      className={`${cormorant.variable} ${cormorant.className} ${inter.variable} ${inter.className}`}
+      className={`${cormorant.variable} ${inter.variable}`}
       suppressHydrationWarning
     >
       <body>
