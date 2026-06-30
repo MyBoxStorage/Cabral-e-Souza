@@ -19,6 +19,7 @@
     "test:sourcing-e2e": "tsx src/seed/test-sourcing-e2e.ts"
   },
   "dependencies": {
+    "@cabral-souza/shared": "workspace:*",
     "@supabase/supabase-js": "^2.49.8",
     "@supabase/ssr": "^0.6.1",
     "pg": "^8.21.0"

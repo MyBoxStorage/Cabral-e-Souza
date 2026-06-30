@@ -1,3 +1,5 @@
+import { BUSINESS, whatsappUrl } from '@cabral-souza/shared'
+
 export type SitePageSeed = {
   slug: string
   title_pt: string
@@ -154,22 +156,20 @@ A **Cabral & Souza** atende colecionadores, pesquisadores, herdeiros e visitante
 
 ## Endereço
 
-**Cabral & Souza Galeria de Arte**  
-Rua Visconde de Pirajá, 580 — Ipanema  
-Rio de Janeiro — RJ  
-CEP 22410-002
+**${BUSINESS.name} ${BUSINESS.tagline}**  
+${BUSINESS.address.street}  
+${BUSINESS.address.neighborhood} · ${BUSINESS.address.city} — ${BUSINESS.address.state}  
+CEP ${BUSINESS.address.zip}
 
-A galeria está localizada em Ipanema, bairro com tradição cultural no Rio de Janeiro e proximidade com instituições como o Museu de Arte Moderna e o Jardim de Alá. O endereço situa-se em uma das vias comerciais mais emblemáticas da Zona Sul, com fácil acesso por transporte público e estacionamento nas imediações.
-
-Visitas são recebidas **mediante agendamento**, para que possamos dedicar atenção adequada a cada colecionador, preparar obras de interesse e garantir ambiente tranquilo para contemplação. Não funcionamos como loja de passagem: cada visita é preparada com antecedência.
+A galeria está localizada em Copacabana, na Zona Sul do Rio de Janeiro. Visitas são recebidas **mediante agendamento**, para que possamos dedicar atenção adequada a cada colecionador.
 
 ## Canais de comunicação
 
-**WhatsApp:** [+55 21 97002-7830](https://wa.me/5521970027830)  
-Canal preferencial para consultas rápidas, envio de fotografias de obras para avaliação preliminar e agendamento de visitas. Respondemos em português; para correspondência em inglês ou francês, indicar no início da mensagem.
+**WhatsApp:** [${BUSINESS.phone.whatsappDisplay}](${whatsappUrl()})  
+Canal preferencial para consultas rápidas, envio de fotografias de obras para avaliação preliminar e agendamento de visitas.
 
-**E-mail:** galeria@cabralesouza.com.br  
-Para propostas formais, envio de documentação, laudos, contratos e correspondência que exija registro escrito. Anexos de imagens em alta resolução são bem-vindos para análise inicial de obras.
+**E-mail:** ${BUSINESS.email}  
+Para propostas formais, envio de documentação, laudos, contratos e correspondência que exija registro escrito.
 
 ## Horário de atendimento
 
@@ -179,19 +179,15 @@ Para propostas formais, envio de documentação, laudos, contratos e correspond�
 | Sábado | 10h às 14h |
 | Domingo e feriados | Fechado |
 
-Atendimento por WhatsApp e e-mail pode ocorrer fora do horário comercial, com resposta no próximo dia útil. Para visitas em sábado, solicitamos confirmação com pelo menos 24 horas de antecedência. Em períodos de montagem de exposições ou participação em leilões, horários podem ser ajustados — consulte-nos antes de se deslocar.
+Atendimento por WhatsApp e e-mail pode ocorrer fora do horário comercial, com resposta no próximo dia útil.
 
 ## Como podemos ajudar
 
-- **Consulta sobre obras do acervo** — disponibilidade, condição, proveniência, dimensões e valores. Obras com preço sob consulta requerem contato direto.
-- **Avaliação preliminar** — envie fotografias (frente, verso, detalhes de assinatura e eventuais etiquetas) e informações básicas; orientamos sobre viabilidade de análise completa e prazos.
-- **Agendamento de visita** — conheça obras presencialmente em ambiente adequado para contemplação, com possibilidade de viewing room privado para colecionadores de outras cidades.
-- **Consultoria** — orientação para colecionadores em formação ou ampliação de acervo, incluindo acompanhamento em leilões.
-- **Consignação e venda** — propostas de obras para avaliação de compra ou consignação, com resposta em prazo definido.
-
-## Visitas de colecionadores de outras cidades
-
-Recebemos regularmente colecionadores de São Paulo, Minas Gerais, Brasília e do exterior. Para quem vem ao Rio com agenda limitada, recomendamos contato com antecedência mínima de 48 horas, informando obras de interesse e disponibilidade de horário. Podemos preparar seleção personalizada do acervo e, quando aplicável, organizar visitas a obras em consignação em outros endereços.
+- **Consulta sobre obras do acervo** — disponibilidade, condição, proveniência, dimensões e valores.
+- **Avaliação preliminar** — envie fotografias e informações básicas; orientamos sobre viabilidade de análise completa.
+- **Agendamento de visita** — conheça obras presencialmente em ambiente adequado para contemplação.
+- **Consultoria** — orientação para colecionadores em formação ou ampliação de acervo.
+- **Consignação e venda** — propostas de obras para avaliação de compra ou consignação.
 
 Aguardamos seu contato.`,
   },
@@ -206,11 +202,11 @@ Aguardamos seu contato.`,
 
 **Última atualização:** junho de 2026
 
-A **Cabral & Souza Galeria de Arte**, inscrita no CNPJ sob responsabilidade de seus sócios administradores, com sede na Rua Visconde de Pirajá, 580, Ipanema, Rio de Janeiro — RJ, CEP 22410-002, doravante denominada "Galeria", apresenta esta Política de Privacidade em conformidade com a Lei nº 13.709/2018 — Lei Geral de Proteção de Dados Pessoais (LGPD).
+A **Cabral & Souza Galeria de Arte**, com sede na ${BUSINESS.address.street}, ${BUSINESS.address.neighborhood}, ${BUSINESS.address.city} — ${BUSINESS.address.state}, CEP ${BUSINESS.address.zip}, doravante denominada "Galeria", apresenta esta Política de Privacidade em conformidade com a Lei nº 13.709/2018 — Lei Geral de Proteção de Dados Pessoais (LGPD).
 
 ## 1. Controlador dos dados
 
-O controlador dos dados pessoais tratados neste site e nos canais de comunicação da Galeria é a Cabral & Souza Galeria de Arte. Para exercer seus direitos como titular de dados ou esclarecer dúvidas sobre esta política, entre em contato pelo e-mail **privacidade@cabralesouza.com.br**.
+O controlador dos dados pessoais tratados neste site e nos canais de comunicação da Galeria é a Cabral & Souza Galeria de Arte. Para exercer seus direitos como titular de dados ou esclarecer dúvidas sobre esta política, entre em contato pelo e-mail **${BUSINESS.privacyEmail}**.
 
 ## 2. Dados que coletamos
 
@@ -270,7 +266,7 @@ Nos termos da LGPD, o titular de dados pessoais pode solicitar:
 - Informação sobre compartilhamento com terceiros.
 - Revogação do consentimento, quando aplicável.
 
-Solicitações devem ser enviadas para **privacidade@cabralesouza.com.br**. Responderemos no prazo legal de até 15 dias.
+Solicitações devem ser enviadas para **${BUSINESS.privacyEmail}**. Responderemos no prazo legal de até 15 dias.
 
 ## 8. Cookies
 
@@ -291,7 +287,7 @@ Esta política pode ser atualizada periodicamente. A data da última atualizaç�
 
 **Última atualização:** junho de 2026
 
-Estes Termos de Uso regulam o acesso e a utilização do site **cabralesouza.com.br** e dos serviços oferecidos pela **Cabral & Souza Galeria de Arte**, com sede na Rua Visconde de Pirajá, 580, Ipanema, Rio de Janeiro — RJ. Ao acessar o site ou utilizar nossos serviços, o usuário declara ter lido, compreendido e concordado com estes termos.
+Estes Termos de Uso regulam o acesso e a utilização do site **cabralesouza.com.br** e dos serviços oferecidos pela **Cabral & Souza Galeria de Arte**, com sede na ${BUSINESS.address.street}, ${BUSINESS.address.neighborhood}, ${BUSINESS.address.city} — ${BUSINESS.address.state}. Ao acessar o site ou utilizar nossos serviços, o usuário declara ter lido, compreendido e concordado com estes termos.
 
 ## 1. Objeto
 
@@ -352,6 +348,6 @@ Estes termos são regidos pelas leis da República Federativa do Brasil. Fica el
 
 ## 11. Contato
 
-Dúvidas sobre estes Termos de Uso podem ser dirigidas a **galeria@cabralesouza.com.br**.`,
+Dúvidas sobre estes Termos de Uso podem ser dirigidas a **${BUSINESS.email}**.`,
   },
 ]
