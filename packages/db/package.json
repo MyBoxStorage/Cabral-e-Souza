@@ -15,7 +15,8 @@
     "lint": "eslint .",
     "clean": "rimraf dist",
     "seed:placeholders": "tsx src/seed/index.ts",
-    "migrate": "tsx src/seed/run-migrate.ts"
+    "migrate": "tsx src/seed/run-migrate.ts",
+    "test:sourcing-e2e": "tsx src/seed/test-sourcing-e2e.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.8",
