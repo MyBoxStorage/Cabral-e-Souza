@@ -27,7 +27,7 @@ export async function submitLead(payload: LeadPayload): Promise<void> {
   const { name, email, phone, message, consent_marketing, piece_id, source } = validated.data
 
   const db = createAdminClient()
-  const { error } = await db.from('leads').insert({
+  const { data: inserted, error } = await db.from('leads').insert({
     name,
     email: email || null,
     phone: phone || null,
@@ -36,12 +36,17 @@ export async function submitLead(payload: LeadPayload): Promise<void> {
     consent_marketing,
     consent_at: consent_marketing ? new Date().toISOString() : null,
     notes_internal: message ? `Mensagem inicial: ${message}` : null,
-  })
+  }).select('id').single()
 
-  if (error) {
-    console.error('[submitLead]', error.message)
+  if (error || !inserted) {
+    console.error('[submitLead]', error?.message)
     throw new Error('Erro ao registrar interesse. Tente novamente.')
   }
+
+  const { notifyInterestLeadCreated } = await import('../../lib/notifications/interest-lead')
+  notifyInterestLeadCreated(inserted.id).catch((err) => {
+    console.error('[submitLead] notification failed', err)
+  })
 }
 
 const LEAD_STATUSES = ['novo', 'qualificado', 'em_negociacao', 'ganho', 'perdido', 'descartado'] as const
