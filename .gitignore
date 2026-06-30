@@ -1,6 +1,9 @@
-# Environment
+# Environment — nunca commitar secrets
 .env
+.env.local
+.env.*.local
 .env.*
+*.env
 !.env.example
 
 # Dependencies
