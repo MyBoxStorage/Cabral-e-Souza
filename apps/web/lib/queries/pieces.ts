@@ -68,7 +68,7 @@ export async function getPublicPieces(filters: PieceFilters = {}): Promise<Piece
   let query = db
     .from('pieces')
     .select(LIST_SELECT)
-    .eq('status', 'publico')
+    .in('status', ['publico', 'reservado'])
     .order('created_at', { ascending: false })
     .range(offset, offset + limit - 1)
 
@@ -105,15 +105,10 @@ export async function getPieceBySlug(slug: string): Promise<PieceDetail | null> 
     .select(`
       *,
       artists(${ARTIST_SELECT}),
-      piece_images(${IMAGE_SELECT}),
-      auction_comparables(
-        id,auction_house,auction_date,work_title,work_year,
-        technique,height_cm,width_cm,hammer_price,currency,
-        currency_at_brl,estimate_low,estimate_high
-      )
+      piece_images(${IMAGE_SELECT})
     `)
     .eq('slug', slug)
-    .eq('status', 'publico')
+    .in('status', ['publico', 'reservado'])
     .single()
 
   if (error) {
@@ -123,7 +118,25 @@ export async function getPieceBySlug(slug: string): Promise<PieceDetail | null> 
     return null
   }
 
-  return data as unknown as PieceDetail
+  const piece = data as unknown as Omit<PieceDetail, 'auction_comparables'> & {
+    artists: PieceArtist | null
+    piece_images: PieceImage[]
+  }
+
+  let auction_comparables: PieceDetail['auction_comparables'] = []
+  if (piece.artist_id) {
+    const { data: comparables } = await db
+      .from('auction_comparables')
+      .select(
+        'id,auction_house,auction_date,work_title,work_year,technique,height_cm,width_cm,hammer_price,currency,currency_at_brl,estimate_low,estimate_high',
+      )
+      .eq('artist_id', piece.artist_id)
+      .order('auction_date', { ascending: false })
+      .limit(3)
+    auction_comparables = comparables ?? []
+  }
+
+  return { ...piece, auction_comparables }
 }
 
 export async function getPieceSlugs(): Promise<string[]> {
@@ -131,7 +144,7 @@ export async function getPieceSlugs(): Promise<string[]> {
   const { data } = await db
     .from('pieces')
     .select('slug')
-    .eq('status', 'publico')
+    .in('status', ['publico', 'reservado'])
 
   return (data ?? []).map((p) => p.slug)
 }

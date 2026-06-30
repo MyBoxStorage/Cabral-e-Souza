@@ -6,20 +6,26 @@
   "exports": {
     ".": "./src/index.ts",
     "./client": "./src/client.ts",
-    "./types": "./src/types.ts"
+    "./types": "./src/types.ts",
+    "./seed/content/site-pages": "./src/seed/content/site-pages.ts",
+    "./seed/content/boletim": "./src/seed/content/boletim.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "seed:placeholders": "tsx src/seed/index.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.8",
-    "@supabase/ssr": "^0.6.1"
+    "@supabase/ssr": "^0.6.1",
+    "pg": "^8.21.0"
   },
   "devDependencies": {
     "@types/node": "^22.15.30",
     "rimraf": "^6.0.1",
+    "sharp": "^0.34.2",
+    "tsx": "^4.19.4",
     "typescript": "^5.8.3"
   }
 }

@@ -1035,6 +1035,54 @@ export type Database = {
           },
         ]
       }
+      site_pages: {
+        Row: {
+          content_en: string | null
+          content_fr: string | null
+          content_pt: string
+          created_at: string
+          id: string
+          is_published: boolean
+          seo_description_pt: string | null
+          seo_title_pt: string | null
+          slug: string
+          title_en: string | null
+          title_fr: string | null
+          title_pt: string
+          updated_at: string
+        }
+        Insert: {
+          content_en?: string | null
+          content_fr?: string | null
+          content_pt: string
+          created_at?: string
+          id?: string
+          is_published?: boolean
+          seo_description_pt?: string | null
+          seo_title_pt?: string | null
+          slug: string
+          title_en?: string | null
+          title_fr?: string | null
+          title_pt: string
+          updated_at?: string
+        }
+        Update: {
+          content_en?: string | null
+          content_fr?: string | null
+          content_pt?: string
+          created_at?: string
+          id?: string
+          is_published?: boolean
+          seo_description_pt?: string | null
+          seo_title_pt?: string | null
+          slug?: string
+          title_en?: string | null
+          title_fr?: string | null
+          title_pt?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       sourcing_leads: {
         Row: {
           acquisition_history: string | null

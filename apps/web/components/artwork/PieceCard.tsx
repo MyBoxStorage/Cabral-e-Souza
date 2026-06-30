@@ -46,6 +46,12 @@ export function PieceCard({ piece, priority = false }: PieceCardProps) {
 
           {/* Overlay sutil no hover */}
           <div className="absolute inset-0 bg-[--color-ink]/0 group-hover:bg-[--color-ink]/8 transition-colors duration-300" />
+
+          {piece.status === 'reservado' && (
+            <span className="absolute top-3 left-3 font-body text-[10px] uppercase tracking-[0.12em] text-[--color-paper] bg-[--color-ink]/80 px-3 py-1.5">
+              Reservada
+            </span>
+          )}
         </div>
 
         {/* Informações */}

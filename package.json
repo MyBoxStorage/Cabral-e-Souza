@@ -9,7 +9,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\" --ignore-path .gitignore",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\" --ignore-path .gitignore",
     "typecheck": "turbo run typecheck",
-    "clean": "turbo run clean && rimraf node_modules"
+    "clean": "turbo run clean && rimraf node_modules",
+    "db:seed:placeholders": "pnpm --filter=@cabral-souza/db seed:placeholders"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
