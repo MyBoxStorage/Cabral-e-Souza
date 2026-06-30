@@ -11,16 +11,21 @@ interface RevealProps {
 
 export function Reveal({ children, className = '', delay = 0 }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null)
-  const [visible, setVisible] = useState(false)
+  // Visível no SSR e first paint — evita seções invisíveis se o observer atrasar
+  const [visible, setVisible] = useState(true)
 
   useEffect(() => {
     const el = ref.current
     if (!el) return
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setVisible(true)
       return
     }
+
+    const inView = el.getBoundingClientRect().top < window.innerHeight * 0.92
+    if (inView) return
+
+    setVisible(false)
 
     const observer = new IntersectionObserver(
       ([entry]) => {

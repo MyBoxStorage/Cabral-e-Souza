@@ -145,7 +145,7 @@
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    .reveal {
+    .reveal:not(.is-visible) {
       opacity: 0;
       transition: opacity 320ms ease-out;
     }
