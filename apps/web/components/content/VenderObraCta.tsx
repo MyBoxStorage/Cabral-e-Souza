@@ -1,59 +1,52 @@
+import { Button } from '@cabral-souza/ui'
+import { BUSINESS } from '@cabral-souza/shared'
 import Link from 'next/link'
 
-const TRUST_SIGNALS = [
-  { value: '40', label: 'Anos de atuação' },
-  { value: '5 dias', label: 'Resposta garantida' },
-  { value: '100%', label: 'Confidencialidade' },
+const TRUST_BADGES = [
+  `${new Date().getFullYear() - BUSINESS.foundedYear} anos`,
+  '5 dias resposta',
+  '100% confidencialidade',
 ] as const
 
 export function VenderObraCta() {
   return (
     <section
       aria-labelledby="vender-obra-cta-heading"
-      className="border-t border-[--color-paper-deep] py-16 md:py-24 bg-[#E8E0D4]"
+      className="section-padding bg-ink-900 text-cream-300"
     >
-      <div className="container-default max-w-[52rem] mx-auto text-center">
-        <p className="label-caps text-[--color-accent] mb-4">Consignação e avaliação</p>
+      <div className="container-default max-w-3xl mx-auto text-center">
+        <p className="font-body font-medium uppercase tracking-eyebrow text-eyebrow text-bronze-500 mb-6">
+          Consignação e Avaliação
+        </p>
         <h2
           id="vender-obra-cta-heading"
-          className="font-display text-[1.75rem] md:text-[2.5rem] font-light text-[--color-ink] tracking-[-0.02em] mb-4"
+          className="font-display font-normal text-title-md text-cream-300 mb-6"
         >
           Possui uma obra que merece avaliação cuidadosa?
         </h2>
-        <p className="font-body text-[14px] md:text-[15px] leading-[1.75] text-[--color-ink-muted] mb-10 max-w-[44ch] mx-auto">
+        <p className="font-body text-lead text-cream-300/80 mb-10 max-w-[50ch] mx-auto leading-relaxed">
           Avaliamos obras de arte e antiguidades com rigor documental, confidencialidade absoluta e
           resposta em até 5 dias úteis.
         </p>
 
-        <dl className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10 max-w-[36rem] mx-auto">
-          {TRUST_SIGNALS.map((signal) => (
-            <div
-              key={signal.label}
-              className="flex flex-col items-center py-4 px-3 border border-[--color-paper-deep]/60 bg-[--color-paper]/50"
+        <ul className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 mb-10 list-none">
+          {TRUST_BADGES.map((badge) => (
+            <li
+              key={badge}
+              className="font-body font-medium uppercase tracking-caps text-eyebrow text-cream-300/70"
             >
-              <dt className="font-display text-[1.5rem] md:text-[1.75rem] font-light text-[--color-ink] leading-none mb-2">
-                {signal.value}
-              </dt>
-              <dd className="font-body text-[10px] uppercase tracking-[0.12em] text-[--color-ink-subtle]">
-                {signal.label}
-              </dd>
-            </div>
+              {badge}
+            </li>
           ))}
-        </dl>
+        </ul>
 
         <div className="flex flex-wrap items-center justify-center gap-4">
-          <Link
-            href="/vender-obra"
-            className="font-body text-[11px] uppercase tracking-[0.1em] text-[--color-paper] bg-[--color-ink] hover:bg-[--color-accent] px-10 py-4 transition-colors duration-200"
-          >
-            Solicitar avaliação
-          </Link>
-          <Link
-            href="/contato"
-            className="font-body text-[11px] uppercase tracking-[0.1em] text-[--color-ink] border border-[--color-ink]/30 hover:border-[--color-ink] px-8 py-4 transition-colors duration-200"
-          >
-            Falar com a galeria
-          </Link>
+          <Button asChild variant="primary" size="lg">
+            <Link href="/vender-obra">Solicitar avaliação</Link>
+          </Button>
+          <Button asChild variant="ghost" size="lg">
+            <Link href="/contato">Falar com a galeria</Link>
+          </Button>
         </div>
       </div>
     </section>

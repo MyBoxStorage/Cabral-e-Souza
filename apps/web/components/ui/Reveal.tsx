@@ -5,16 +5,16 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 interface RevealProps {
   children: ReactNode
   className?: string
-  /** Atraso em ms para stagger entre elementos irmãos */
   delay?: number
 }
 
 export function Reveal({ children, className = '', delay = 0 }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null)
-  // Visível no SSR e first paint — evita seções invisíveis se o observer atrasar
   const [visible, setVisible] = useState(true)
+  const [hydrated, setHydrated] = useState(false)
 
   useEffect(() => {
+    setHydrated(true)
     const el = ref.current
     if (!el) return
 
@@ -34,17 +34,24 @@ export function Reveal({ children, className = '', delay = 0 }: RevealProps) {
           observer.disconnect()
         }
       },
-      { threshold: 0.1, rootMargin: '0px 0px -4% 0px' },
+      { threshold: 0.15, rootMargin: '0px 0px -4% 0px' },
     )
 
     observer.observe(el)
     return () => observer.disconnect()
   }, [])
 
+  const motionClass =
+    hydrated && !visible
+      ? 'reveal-prep'
+      : hydrated && visible
+        ? 'reveal-in'
+        : ''
+
   return (
     <div
       ref={ref}
-      className={[visible ? 'reveal is-visible' : 'reveal', className].filter(Boolean).join(' ')}
+      className={[motionClass, className].filter(Boolean).join(' ')}
       style={delay > 0 ? { transitionDelay: `${delay}ms` } : undefined}
     >
       {children}

@@ -22,56 +22,47 @@ export function BoletimCard({ post }: BoletimCardProps) {
     : null
 
   return (
-    <article className="border border-[--color-paper-deep] overflow-hidden h-full flex flex-col hover:border-[--color-accent]/40 transition-colors duration-200 group">
+    <article className="group flex flex-col h-full border border-cream-200 bg-cream-50 overflow-hidden hover:border-bronze-500/40 hover:shadow-md transition-[border-color,box-shadow] duration-base">
       {post.hero_image_url ? (
         <Link
           href={`/boletim/${post.slug}`}
-          className="block relative aspect-[16/9] bg-[--color-paper-muted] overflow-hidden"
+          className="block relative aspect-[16/9] bg-cream-200 overflow-hidden"
         >
           <Image
             src={post.hero_image_url}
             alt=""
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+            className="object-cover transition-transform duration-slow group-hover:scale-[1.02]"
           />
-          <div
-            className="absolute inset-0 bg-gradient-to-t from-[--color-ink]/70 via-[--color-ink]/15 to-transparent"
-            aria-hidden
-          />
-          <div className="absolute bottom-0 left-0 right-0 p-5">
-            <p className="font-body text-[10px] uppercase tracking-[0.14em] text-[--color-accent] mb-1">
-              {categoryLabel}
-              {dateLabel && (
-                <span className="text-[rgba(250,250,247,0.65)] ml-3">{dateLabel}</span>
-              )}
-            </p>
-          </div>
         </Link>
       ) : (
-        <BoletimHeroFallback title={post.title_pt} category={post.category} />
+        <Link href={`/boletim/${post.slug}`} className="block">
+          <BoletimHeroFallback title={post.title_pt} category={post.category} />
+        </Link>
       )}
 
       <div className="p-6 flex flex-col flex-1">
-        {!post.hero_image_url && (
-          <p className="font-body text-[10px] uppercase tracking-[0.14em] text-[--color-accent] mb-3">
-            {categoryLabel}
-            {dateLabel && <span className="text-[--color-ink-subtle] ml-3">{dateLabel}</span>}
-          </p>
-        )}
-        <h3 className="font-display text-[1.25rem] font-light text-[--color-ink] leading-snug mb-3 flex-1">
-          <Link href={`/boletim/${post.slug}`} className="hover:text-[--color-accent] transition-colors">
+        <p className="font-body font-medium uppercase tracking-eyebrow text-eyebrow text-bronze-500 mb-3">
+          {categoryLabel}
+          {dateLabel && <span className="text-ink-700/60 ml-3 normal-case tracking-normal font-normal">{dateLabel}</span>}
+        </p>
+
+        <h3 className="font-display font-medium text-title-sm text-ink-800 leading-snug mb-3 flex-1">
+          <Link href={`/boletim/${post.slug}`} className="hover:text-bronze-500 transition-colors duration-base">
             {post.title_pt}
           </Link>
         </h3>
+
         {post.excerpt_pt && (
-          <p className="font-body text-[13px] leading-[1.7] text-[--color-ink-muted] mb-4 line-clamp-3">
+          <p className="font-body text-body text-ink-700 mb-4 line-clamp-3 leading-relaxed">
             {post.excerpt_pt}
           </p>
         )}
+
         <Link
           href={`/boletim/${post.slug}`}
-          className="font-body text-[11px] uppercase tracking-[0.1em] text-[--color-accent] hover:text-[--color-accent-deep] transition-colors mt-auto"
+          className="font-body text-body-sm font-medium text-bronze-500 hover:underline hover:underline-offset-4 mt-auto w-fit"
         >
           Ler análise →
         </Link>

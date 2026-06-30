@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { artistYears } from '../../lib/format'
 import type { ArtistListItem } from '../../lib/queries/artists'
+import { artistYears } from '../../lib/format'
 
 interface ArtistCardProps {
   artist: ArtistListItem
@@ -10,38 +10,44 @@ interface ArtistCardProps {
 
 export function ArtistCard({ artist, priority = false }: ArtistCardProps) {
   const years = artistYears(artist.birth_year, artist.death_year)
+  const nationality = artist.nationality
 
   return (
-    <article>
+    <article className="group">
       <Link
         href={`/artistas/${artist.slug}`}
-        className="group block focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[--color-accent]"
+        className="block focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bronze-300"
       >
-        <div className="relative overflow-hidden bg-[--color-paper-muted] aspect-[3/4] mb-4">
+        <div
+          className={[
+            'relative aspect-[3/4] mb-4 border-2 border-bronze-500 bg-cream-200 overflow-hidden',
+            'transition-[border-color,transform,box-shadow] duration-base ease-smooth',
+            'group-hover:-translate-y-1 group-hover:border-bronze-700 group-hover:shadow-lg',
+          ].join(' ')}
+        >
           {artist.hero_image_url ? (
             <Image
               src={artist.hero_image_url}
               alt={`${artist.name} — retrato`}
               fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
-              className="object-cover grayscale-0 group-hover:scale-[1.015] transition-transform duration-500"
+              sizes="(max-width: 640px) 50vw, 20vw"
+              className="object-cover"
               priority={priority}
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="font-display text-[2rem] font-light text-[--color-ink-subtle]">
-                {artist.name.charAt(0)}
-              </span>
+              <span className="font-display text-title-md text-ink-700/40">{artist.name.charAt(0)}</span>
             </div>
           )}
-          <div className="absolute inset-0 bg-[--color-ink]/0 group-hover:bg-[--color-ink]/10 transition-colors duration-300" />
         </div>
 
-        <h3 className="font-display text-[1.125rem] font-light text-[--color-ink] group-hover:text-[--color-accent] transition-colors">
+        <h3 className="font-display font-medium text-title-xs text-ink-800 group-hover:text-bronze-500 transition-colors duration-base">
           {artist.name}
         </h3>
-        {years && (
-          <p className="font-body text-[12px] text-[--color-ink-subtle] mt-1">{years}</p>
+        {(years || nationality) && (
+          <p className="font-body text-caption text-ink-700 mt-1">
+            {[years, nationality].filter(Boolean).join(' · ')}
+          </p>
         )}
       </Link>
     </article>

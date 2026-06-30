@@ -16,22 +16,17 @@ export function BoletimHeroFallback({ title, category }: BoletimHeroFallbackProp
 
   return (
     <div
-      className="relative aspect-[16/9] overflow-hidden border-b border-[--color-paper-deep] bg-[--color-paper-muted]"
+      className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-cream-100 via-cream-200 to-bronze-300/30"
       aria-hidden
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-[--color-paper] via-[--color-paper-muted] to-[--color-paper-deep]" />
-      <div
-        className="absolute inset-0 opacity-[0.35]"
-        style={{
-          backgroundImage:
-            'repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(26,26,24,0.04) 39px, rgba(26,26,24,0.04) 40px)',
-        }}
-      />
+      <div className="absolute top-4 right-4 font-display text-title-xs text-bronze-500/30 select-none">
+        C&amp;S
+      </div>
       <div className="absolute inset-0 flex flex-col items-center justify-center px-8 py-10 text-center">
-        <p className="font-body text-[10px] uppercase tracking-[0.16em] text-[--color-accent] mb-5">
+        <p className="font-body font-medium uppercase tracking-eyebrow text-eyebrow text-bronze-500 mb-5">
           {label}
         </p>
-        <p className="font-display text-[clamp(1.05rem,2.8vw,1.4rem)] font-light text-[--color-ink]/85 leading-snug line-clamp-4 max-w-[36ch]">
+        <p className="font-display font-medium text-title-sm text-ink-800/90 leading-snug line-clamp-4 max-w-[36ch]">
           {title}
         </p>
       </div>
