@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 import { PieceCard } from '../../../../components/artwork/PieceCard'
+import { buildPageMetadata } from '../../../../lib/seo/metadata'
 import { getPublicPieces } from '../../../../lib/queries/pieces'
 
 export const revalidate = 3600
@@ -15,11 +16,12 @@ interface AcervoPageProps {
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  return {
+  return buildPageMetadata({
     title: 'Acervo',
     description:
       'Obras de Di Cavalcanti, Alfredo Volpi, Djanira, Sergio Camargo e outros mestres da arte brasileira moderna e contemporânea. Autenticidade garantida.',
-  }
+    path: '/acervo',
+  })
 }
 
 const CATEGORIES = [

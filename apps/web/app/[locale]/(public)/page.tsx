@@ -3,17 +3,19 @@ import Link from 'next/link'
 import { ArtistCard } from '../../../components/artwork/ArtistCard'
 import { PieceCard } from '../../../components/artwork/PieceCard'
 import { BoletimCard } from '../../../components/content/BoletimCard'
+import { buildPageMetadata } from '../../../lib/seo/metadata'
 import { getPublishedArtists } from '../../../lib/queries/artists'
 import { getPublishedBoletimPosts } from '../../../lib/queries/boletim'
 import { getFeaturedPieces } from '../../../lib/queries/pieces'
 
 export const revalidate = 3600
 
-export const metadata: Metadata = {
-  title: 'Cabral & Souza — Galeria de Arte e Antiguidades',
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Galeria de Arte e Antiguidades',
   description:
     'Galeria especializada em arte moderna e contemporânea brasileira. Obras de Di Cavalcanti, Alfredo Volpi, Djanira e outros mestres. Rio de Janeiro, desde 1987.',
-}
+  path: '/',
+})
 
 export default async function HomePage() {
   const [featuredPieces, artists, boletimPosts] = await Promise.all([
