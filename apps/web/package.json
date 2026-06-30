@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "test:notifications": "tsx scripts/test-notifications.ts",
+    "test:notifications": "npx tsx scripts/test-notifications.ts",
     "clean": "rimraf .next"
   },
   "dependencies": {
