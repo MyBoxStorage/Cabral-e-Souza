@@ -17,20 +17,20 @@
     "change": "Changer de langue"
   },
   "hero": {
-    "eyebrow": "Galerie d'Art & Antiquités · Rio de Janeiro",
-    "title": "L'art qui traverse le temps.",
-    "description": "Peintures à l'huile de maîtres brésiliens et européens, sculptures en bronze et pièces rares sélectionnées avec rigueur esthétique et historique.",
-    "cta_primary": "Voir la Collection",
-    "cta_ghost": "Nous Consulter",
+    "eyebrow": "Galerie d'Art · Rio de Janeiro · Depuis 1987",
+    "title": "L'art brésilien avec rigueur curatoriale",
+    "description": "Modernisme, art contemporain et antiquités sélectionnées. Authenticité documentée, provenance vérifiée.",
+    "cta_primary": "Explorer la collection",
+    "cta_ghost": "Contacter la galerie",
     "established": "Fondée en 1987"
   },
   "stats": {
-    "pieces": "+500",
-    "pieces_label": "Œuvres en Collection",
-    "years": "37",
-    "years_label": "Ans de Tradition",
+    "years": "40",
+    "years_label": "Ans d'activité",
+    "location": "RJ",
+    "location_label": "Siège à Rio de Janeiro",
     "authenticity": "100%",
-    "authenticity_label": "Authenticité Garantie"
+    "authenticity_label": "Authenticité documentée"
   },
   "footer": {
     "tagline": "Galerie spécialisée dans l'art moderne et contemporain brésilien. Authenticité et tradition au cœur de Rio de Janeiro.",

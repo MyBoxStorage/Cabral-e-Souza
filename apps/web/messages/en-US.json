@@ -17,20 +17,20 @@
     "change": "Change language"
   },
   "hero": {
-    "eyebrow": "Art Gallery & Antiquarian · Rio de Janeiro",
-    "title": "Art that transcends time.",
-    "description": "Oil paintings by Brazilian and European masters, bronze sculptures and rare pieces selected with aesthetic and historical rigour.",
-    "cta_primary": "View Collection",
-    "cta_ghost": "Enquire",
+    "eyebrow": "Art Gallery · Rio de Janeiro · Since 1987",
+    "title": "Brazilian art with curatorial rigour",
+    "description": "Modernism, contemporary art and selected antiquities. Documented authenticity and verified provenance.",
+    "cta_primary": "Explore collection",
+    "cta_ghost": "Contact the gallery",
     "established": "Est. 1987"
   },
   "stats": {
-    "pieces": "+500",
-    "pieces_label": "Works in Collection",
-    "years": "37",
-    "years_label": "Years of Tradition",
+    "years": "40",
+    "years_label": "Years of expertise",
+    "location": "RJ",
+    "location_label": "Based in Rio de Janeiro",
     "authenticity": "100%",
-    "authenticity_label": "Guaranteed Authenticity"
+    "authenticity_label": "Documented authenticity"
   },
   "footer": {
     "tagline": "Specialised gallery in modern and contemporary Brazilian art. Authenticity and tradition in the heart of Rio de Janeiro.",

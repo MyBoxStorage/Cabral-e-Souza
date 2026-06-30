@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import { getLocale } from 'next-intl/server'
 import { ArtistCard } from '../../../components/artwork/ArtistCard'
 import { PieceCard } from '../../../components/artwork/PieceCard'
 import { BoletimCard } from '../../../components/content/BoletimCard'
@@ -19,6 +20,7 @@ export const metadata: Metadata = buildPageMetadata({
 })
 
 export default async function HomePage() {
+  const locale = await getLocale()
   const [featuredPieces, artists, boletimPosts] = await Promise.all([
     getFeaturedPieces(3),
     getPublishedArtists(),
@@ -134,9 +136,9 @@ export default async function HomePage() {
                 Ver acervo completo →
               </Link>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-14">
               {featuredPieces.map((piece, i) => (
-                <PieceCard key={piece.id} piece={piece} priority={i < 2} />
+                <PieceCard key={piece.id} piece={piece} priority={i < 2} locale={locale} />
               ))}
             </div>
           </div>
@@ -217,10 +219,10 @@ export default async function HomePage() {
       <section className="border-t border-[--color-paper-deep] py-16 md:py-20">
         <div className="container-default text-center">
           <h2 className="font-display text-[1.75rem] md:text-[2.25rem] font-light text-[--color-ink] mb-4">
-            Tem uma obra para vender?
+            Possui uma obra que merece avaliação cuidadosa?
           </h2>
           <p className="font-body text-[14px] text-[--color-ink-muted] max-w-[44ch] mx-auto mb-8">
-            Avaliamos obras de arte e antiguidades com processo documentado e resposta em até 5 dias úteis.
+            Avaliamos obras de arte e antiguidades com rigor documental, confidencialidade e resposta em até 5 dias úteis.
           </p>
           <Link
             href="/vender-obra"

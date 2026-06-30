@@ -17,20 +17,20 @@
     "change": "Alterar idioma"
   },
   "hero": {
-    "eyebrow": "Galeria & Antiquário · Rio de Janeiro",
-    "title": "Arte que atravessa o tempo.",
-    "description": "Quadros a óleo de mestres brasileiros e europeus, esculturas em bronze e peças raras selecionadas com rigor estético e histórico.",
-    "cta_primary": "Ver Acervo",
-    "cta_ghost": "Consultar Peça",
+    "eyebrow": "Galeria de Arte · Rio de Janeiro · Desde 1987",
+    "title": "Arte brasileira com rigor curatorial",
+    "description": "Modernismo, arte contemporânea e antiguidades selecionadas. Autenticidade documentada, proveniência verificada.",
+    "cta_primary": "Explorar acervo",
+    "cta_ghost": "Falar com a galeria",
     "established": "Est. 1987"
   },
   "stats": {
-    "pieces": "+500",
-    "pieces_label": "Peças em Acervo",
-    "years": "37",
-    "years_label": "Anos de Tradição",
+    "years": "40",
+    "years_label": "Anos de atuação",
+    "location": "RJ",
+    "location_label": "Sede no Rio de Janeiro",
     "authenticity": "100%",
-    "authenticity_label": "Autenticidade Garantida"
+    "authenticity_label": "Autenticidade documentada"
   },
   "footer": {
     "tagline": "Galeria especializada em arte moderna e contemporânea brasileira. Autenticidade e tradição no coração do Rio de Janeiro.",

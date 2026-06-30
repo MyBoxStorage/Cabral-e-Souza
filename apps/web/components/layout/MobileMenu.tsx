@@ -37,6 +37,34 @@ export function MobileMenu({ links }: MobileMenuProps) {
     return () => { document.body.style.overflow = '' }
   }, [open])
 
+  useEffect(() => {
+    const menu = menuRef.current
+    if (!open || !menu) return
+
+    const focusable = menu.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    )
+    if (focusable.length === 0) return
+
+    const first = focusable[0]
+    const last = focusable[focusable.length - 1]
+    first?.focus()
+
+    function onKey(e: KeyboardEvent) {
+      if (e.key !== 'Tab') return
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault()
+        last?.focus()
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault()
+        first?.focus()
+      }
+    }
+
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [open])
+
   return (
     <>
       <button
@@ -81,7 +109,8 @@ export function MobileMenu({ links }: MobileMenuProps) {
         role="dialog"
         aria-modal="true"
         aria-label={t('open_menu')}
-        hidden={!open}
+        aria-hidden={!open}
+        inert={!open ? true : undefined}
         className={[
           'fixed top-0 right-0 h-full w-[280px] bg-[--color-paper] z-50 md:hidden',
           'flex flex-col pt-20 pb-12 px-8 gap-2',
