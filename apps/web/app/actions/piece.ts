@@ -144,12 +144,12 @@ export async function uploadPieceImage(pieceId: string, formData: FormData) {
 
   const { data: uploadData, error: uploadError } = await supabase
     .storage
-    .from('pieces')
+    .from('piece-images')
     .upload(fileName, file, { contentType: file.type, upsert: false })
 
   if (uploadError) throw new Error(uploadError.message)
 
-  const { data: publicUrlData } = supabase.storage.from('pieces').getPublicUrl(uploadData.path)
+  const { data: publicUrlData } = supabase.storage.from('piece-images').getPublicUrl(uploadData.path)
 
   const { error: dbError } = await supabase.from('piece_images').insert([{
     piece_id: pieceId,
@@ -157,7 +157,7 @@ export async function uploadPieceImage(pieceId: string, formData: FormData) {
     storage_path: uploadData.path,
     is_primary: isPrimary,
     sort_order: sortOrder,
-    image_type: 'photo',
+    image_type: 'principal',
   }])
 
   if (dbError) throw new Error(dbError.message)
@@ -189,7 +189,7 @@ export async function deleteImage(imageId: string, pieceId: string) {
     .single()
 
   if (image?.storage_path) {
-    await supabase.storage.from('pieces').remove([image.storage_path])
+    await supabase.storage.from('piece-images').remove([image.storage_path])
   }
 
   await supabase.from('piece_images').delete().eq('id', imageId)
