@@ -6,25 +6,30 @@
 export const SITE_URL_DEFAULT = 'https://cabralesouza.com.br'
 
 const ADDRESS = {
-  street: 'Rua Siqueira Campos, 143 — Sl. 63',
+  street: 'Rua Siqueira Campos, 143 — Sala 63',
   neighborhood: 'Copacabana',
   city: 'Rio de Janeiro',
   state: 'RJ',
-  zip: '22041-001',
-  country: 'Brasil',
+  /** Região Siqueira Campos — TODO(socios): confirmar CEP oficial */
+  zip: '22031-901',
+  zipConfirmed: false,
 } as const
+
+const addressZipLine = ADDRESS.zipConfirmed ? `CEP ${ADDRESS.zip}` : 'CEP a confirmar'
 
 export const BUSINESS = {
   name: 'Cabral & Souza',
   legalName: 'Cabral & Souza Antiguidades Ltda',
   tagline: 'Galeria de Arte',
 
-  /** TODO(socios): Confirmar endereço oficial da galeria */
   address: ADDRESS,
 
-  addressFormatted: `${ADDRESS.street}, ${ADDRESS.neighborhood} · ${ADDRESS.city}, ${ADDRESS.state} ${ADDRESS.zip}`,
+  addressFormatted: `${ADDRESS.street} — ${ADDRESS.neighborhood} — ${ADDRESS.city}, ${ADDRESS.state} — ${addressZipLine}`,
 
-  addressMultiline: `${ADDRESS.street}\n${ADDRESS.neighborhood} · ${ADDRESS.city} — ${ADDRESS.state}\nCEP ${ADDRESS.zip}`,
+  addressMultiline: `${ADDRESS.street}\n${ADDRESS.neighborhood} — ${ADDRESS.city}, ${ADDRESS.state}\n${addressZipLine}`,
+
+  /** Linha de CEP para exibição editorial (ex.: seeds, páginas institucionais) */
+  addressZipLine,
 
   /** TODO(socios): Confirmar email institucional monitorado */
   email: 'contato@cabralesouza.com.br',

@@ -148,7 +148,7 @@ Dúvidas sobre qualquer etapa do processo podem ser esclarecidas diretamente com
     title_pt: 'Contato',
     seo_title_pt: 'Contato — Cabral & Souza Galeria de Arte, Rio de Janeiro',
     seo_description_pt:
-      'Entre em contato com a Cabral & Souza. Galeria em Ipanema, Rio de Janeiro. WhatsApp, e-mail e horário de atendimento para visitas agendadas.',
+      'Entre em contato com a Cabral & Souza. Galeria em Copacabana, Rio de Janeiro. WhatsApp, e-mail e horário de atendimento para visitas agendadas.',
     is_published: true,
     content_pt: `# Contato
 
@@ -159,7 +159,7 @@ A **Cabral & Souza** atende colecionadores, pesquisadores, herdeiros e visitante
 **${BUSINESS.name} ${BUSINESS.tagline}**  
 ${BUSINESS.address.street}  
 ${BUSINESS.address.neighborhood} · ${BUSINESS.address.city} — ${BUSINESS.address.state}  
-CEP ${BUSINESS.address.zip}
+${BUSINESS.addressZipLine}
 
 A galeria está localizada em Copacabana, na Zona Sul do Rio de Janeiro. Visitas são recebidas **mediante agendamento**, para que possamos dedicar atenção adequada a cada colecionador.
 
@@ -202,7 +202,7 @@ Aguardamos seu contato.`,
 
 **Última atualização:** junho de 2026
 
-A **Cabral & Souza Galeria de Arte**, com sede na ${BUSINESS.address.street}, ${BUSINESS.address.neighborhood}, ${BUSINESS.address.city} — ${BUSINESS.address.state}, CEP ${BUSINESS.address.zip}, doravante denominada "Galeria", apresenta esta Política de Privacidade em conformidade com a Lei nº 13.709/2018 — Lei Geral de Proteção de Dados Pessoais (LGPD).
+A **Cabral & Souza Galeria de Arte**, com sede na ${BUSINESS.address.street}, ${BUSINESS.address.neighborhood}, ${BUSINESS.address.city} — ${BUSINESS.address.state}, ${BUSINESS.addressZipLine}, doravante denominada "Galeria", apresenta esta Política de Privacidade em conformidade com a Lei nº 13.709/2018 — Lei Geral de Proteção de Dados Pessoais (LGPD).
 
 ## 1. Controlador dos dados
 

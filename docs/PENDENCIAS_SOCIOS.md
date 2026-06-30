@@ -15,12 +15,12 @@ Cada item abaixo precisa de **decisão humana** (Marcelo / Alexandre). Quando co
 
 | Campo | Valor provisório (briefing original) | Confirmar |
 |-------|--------------------------------------|-----------|
-| Logradouro | Rua Siqueira Campos, 143 — Sl. 63 | ☐ |
+| Logradouro | Rua Siqueira Campos, 143 — Sala 63 | ☐ |
 | Bairro | Copacabana | ☐ |
 | Cidade/UF | Rio de Janeiro, RJ | ☐ |
-| CEP | 22041-001 | ☐ |
+| CEP | 22031-901 (região) — **a confirmar** | ☐ |
 
-**Conflito histórico no projeto:** seed de contato citava Rua Visconde de Pirajá, 580 (Ipanema). Placeholder unificado usa **Copacabana** até decisão formal.
+**Nota:** Endereço canônico unificado em `packages/shared/src/constants/business.ts`. Conflito histórico Ipanema/Pirajá foi removido.
 
 **Pergunta aos sócios:** Qual é o endereço oficial para visitas, contratos e Google Business?
 

@@ -1,7 +1,7 @@
 # DOCUMENTO ESTRATÉGICO — CABRAL & SOUZA
 ## Plano de transformação digital para galeria de arte brasileira de alto valor
 
-**Cliente:** Cabral & Souza Antiguidades — Rua Siqueira Campos 143 / sl 63, Copacabana, RJ
+**Cliente:** Cabral & Souza Antiguidades — Rua Siqueira Campos 143, Sala 63, Copacabana, RJ
 **Fundada:** 1987 | **Sócios:** Marcelo Cabral & Alexandre Teixeira de Souza
 **Executor:** Desenvolvedor full-stack (filho de sócio) com comissão sobre vendas geradas digitalmente
 **Stack autorizada:** Next.js · TypeScript · Supabase · Claude API · Vercel · WPPConnect

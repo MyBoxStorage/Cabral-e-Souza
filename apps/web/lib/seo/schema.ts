@@ -27,7 +27,7 @@ export function localBusinessSchema() {
     foundingDate: BUSINESS.foundedYear.toString(),
     address: {
       '@type': 'PostalAddress',
-      streetAddress: BUSINESS.address.street,
+      streetAddress: `${BUSINESS.address.street}, ${BUSINESS.address.neighborhood}`,
       addressLocality: BUSINESS.address.city,
       addressRegion: BUSINESS.address.state,
       postalCode: BUSINESS.address.zip,

@@ -15,7 +15,7 @@ Conflitos de endereço (Copacabana vs Ipanema), email (`contato@` vs `galeria@`)
 
 1. **Single source of truth:** `packages/shared/src/constants/business.ts` exporta `BUSINESS` e helpers (`whatsappUrl`, etc.).
 2. **Valores provisórios** (até confirmação dos sócios):
-   - Endereço: Rua Siqueira Campos, 143 — Sl. 63, Copacabana, RJ
+   - Endereço: Rua Siqueira Campos, 143 — Sala 63, Copacabana, RJ (CEP a confirmar)
    - Email: contato@cabralesouza.com.br
    - CNPJ: **não exibir** no site
    - WhatsApp: número do briefing original, marcado `TODO(socios)` no código

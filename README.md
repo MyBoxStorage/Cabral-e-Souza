@@ -65,5 +65,5 @@ O projeto é 100% estático. Pode ser publicado em:
 ## 📞 Contato da galeria
 
 - WhatsApp: (21) 97002-7830
-- Endereço: Rua Siqueira Campos, 143 — Sl. 63, Copacabana · Rio de Janeiro, RJ
+- Endereço: Rua Siqueira Campos, 143 — Sala 63 — Copacabana — Rio de Janeiro, RJ — CEP a confirmar
 - Horário: Seg–Sex 10h–18h · Sáb 10h–14h
