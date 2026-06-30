@@ -41,7 +41,7 @@ export default async function HomePage() {
         className="relative min-h-[calc(100dvh-72px)] bg-[--color-ink] text-[--color-paper] overflow-hidden"
       >
         <div className="container-default grid grid-cols-1 lg:grid-cols-2 min-h-[calc(100dvh-72px)] items-center">
-          <div className="relative z-10 flex flex-col justify-center py-16 lg:py-24 text-center lg:text-left">
+          <div className="relative z-10 flex flex-col justify-center py-16 lg:py-24 text-center lg:text-left min-h-[26rem] sm:min-h-[28rem] lg:min-h-[32rem]">
             <p className="label-caps text-[--color-accent] mb-8">Galeria de Arte · Rio de Janeiro · Desde 1987</p>
 
             <h1
