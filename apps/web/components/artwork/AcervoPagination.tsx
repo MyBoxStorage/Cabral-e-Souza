@@ -16,18 +16,18 @@ export function AcervoPagination({ params, totalCount, page }: AcervoPaginationP
       {page > 1 && (
         <Link
           href={`/acervo${buildAcervoQuery(params, { pagina: String(page - 1) })}`}
-          className="font-body text-[11px] uppercase tracking-[0.1em] text-[--color-ink] border border-[--color-ink] hover:bg-[--color-ink] hover:text-[--color-paper] px-6 py-3 transition-colors"
+          className="font-body font-medium uppercase tracking-caps text-eyebrow text-ink-800 border border-ink-800 hover:bg-ink-800 hover:text-cream-100 px-6 py-3 rounded-md transition-colors duration-base"
         >
           ← Anterior
         </Link>
       )}
-      <span className="font-body text-[12px] text-[--color-ink-subtle]">
+      <span className="font-body text-caption text-ink-700">
         Página {page} de {totalPages}
       </span>
       {page < totalPages && (
         <Link
           href={`/acervo${buildAcervoQuery(params, { pagina: String(page + 1) })}`}
-          className="font-body text-[11px] uppercase tracking-[0.1em] text-[--color-ink] border border-[--color-ink] hover:bg-[--color-ink] hover:text-[--color-paper] px-6 py-3 transition-colors"
+          className="font-body font-medium uppercase tracking-caps text-eyebrow text-ink-800 border border-ink-800 hover:bg-ink-800 hover:text-cream-100 px-6 py-3 rounded-md transition-colors duration-base"
         >
           Próxima →
         </Link>

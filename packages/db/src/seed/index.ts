@@ -8,6 +8,7 @@ import { seedPieces } from './run-pieces'
 import { seedArtists } from './run-artists'
 import { seedSitePages } from './run-site-pages'
 import { seedBoletim } from './run-boletim'
+import { seedCollections } from './run-collections'
 
 async function main() {
   console.log('🌱 Cabral & Souza — seed de conteúdo placeholder\n')
@@ -39,15 +40,19 @@ async function main() {
   const pagesCount = await seedSitePages(db)
   console.log(`   ✓ ${pagesCount} páginas\n`)
 
-  console.log('5/6 Posts do boletim...')
+  console.log('5/7 Posts do boletim...')
   const postsCount = await seedBoletim(db)
   console.log(`   ✓ ${postsCount} posts\n`)
 
-  console.log('6/7 Imagens placeholder (tipográficas — fallback)...')
+  console.log('6/7 Coleções curatoriais...')
+  const collectionsCount = await seedCollections(db)
+  console.log(`   ✓ ${collectionsCount} coleções\n`)
+
+  console.log('7/8 Imagens placeholder (tipográficas — fallback)...')
   const imagesCount = await seedPieceImages(db)
   console.log(`   ✓ ${imagesCount} imagens tipográficas (ignoradas se works/ já existir)\n`)
 
-  console.log('7/7 Imagens de referência (obras DP + boletim)...')
+  console.log('8/8 Imagens de referência (obras DP + boletim)...')
   const worksCount = await seedReferenceWorkImages(db, { force: true })
   const heroesCount = await seedBoletimHeroImages(db, { force: true })
   console.log(`   ✓ ${worksCount} obras + ${heroesCount} heroes boletim\n`)

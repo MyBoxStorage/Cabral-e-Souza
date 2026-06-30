@@ -1,5 +1,8 @@
+'use client'
+
 import Link from 'next/link'
 import {
+  ACERVO_SORT_OPTIONS,
   buildAcervoQuery,
   PIECE_CATEGORIES,
   type AcervoSearchParams,
@@ -13,17 +16,23 @@ interface AcervoFiltersProps {
 
 export function AcervoFilters({ params, artists }: AcervoFiltersProps) {
   const activeCategory = params.categoria ?? ''
+  const activeSort = params.ordenar ?? 'recente'
 
   return (
-    <section className="border-b border-[--color-paper-deep] py-4">
-      <div className="container-default flex flex-col gap-4">
+    <section className="border-b border-cream-200 py-6 bg-cream-100">
+      <div className="container-default flex flex-col gap-5">
         <form
           method="get"
           action="/acervo"
-          className="flex flex-col sm:flex-row gap-3"
+          className="flex flex-col lg:flex-row gap-3"
           role="search"
         >
+          {params.colecao && <input type="hidden" name="colecao" value={params.colecao} />}
           {params.categoria && <input type="hidden" name="categoria" value={params.categoria} />}
+          {params.ordenar && params.ordenar !== 'recente' && (
+            <input type="hidden" name="ordenar" value={params.ordenar} />
+          )}
+
           <label htmlFor="acervo-busca" className="sr-only">
             Buscar obras
           </label>
@@ -33,8 +42,9 @@ export function AcervoFilters({ params, artists }: AcervoFiltersProps) {
             type="search"
             defaultValue={params.busca ?? ''}
             placeholder="Buscar por título..."
-            className="flex-1 font-body text-[14px] border border-[--color-paper-deep] bg-[--color-paper] px-4 py-3 text-[--color-ink] focus:outline-none focus:border-[--color-accent]"
+            className="flex-1 font-body text-body border-0 border-b border-bronze-500/30 bg-transparent px-1 py-3 text-ink-800 placeholder:text-ink-700/50 placeholder:italic focus:outline-none focus:border-bronze-700 transition-colors"
           />
+
           <label htmlFor="acervo-artista" className="sr-only">
             Filtrar por artista
           </label>
@@ -42,7 +52,7 @@ export function AcervoFilters({ params, artists }: AcervoFiltersProps) {
             id="acervo-artista"
             name="artista"
             defaultValue={params.artista ?? ''}
-            className="font-body text-[14px] border border-[--color-paper-deep] bg-[--color-paper] px-4 py-3 text-[--color-ink] focus:outline-none focus:border-[--color-accent] sm:min-w-[200px]"
+            className="font-body text-body-sm border-0 border-b border-bronze-500/30 bg-transparent px-1 py-3 text-ink-800 focus:outline-none focus:border-bronze-700 lg:min-w-[200px]"
           >
             <option value="">Todos os artistas</option>
             {artists.map((a) => (
@@ -51,9 +61,10 @@ export function AcervoFilters({ params, artists }: AcervoFiltersProps) {
               </option>
             ))}
           </select>
+
           <button
             type="submit"
-            className="font-body text-[11px] uppercase tracking-[0.1em] text-[--color-paper] bg-[--color-ink] hover:bg-[--color-accent] px-6 py-3 transition-colors duration-200"
+            className="font-body font-medium uppercase tracking-caps text-eyebrow text-cream-100 bg-bronze-500 hover:bg-bronze-700 px-6 py-3 rounded-md transition-colors duration-base"
           >
             Filtrar
           </button>
@@ -69,16 +80,36 @@ export function AcervoFilters({ params, artists }: AcervoFiltersProps) {
               key={cat.value || 'all'}
               href={`/acervo${buildAcervoQuery(params, { categoria: cat.value || undefined, clearPagina: true })}`}
               className={[
-                'flex-shrink-0 font-body text-[11px] uppercase tracking-[0.1em] px-4 py-2 border transition-colors duration-200',
+                'shrink-0 font-body font-medium uppercase tracking-caps text-eyebrow px-4 py-2 rounded-sm border transition-colors duration-base',
                 activeCategory === cat.value
-                  ? 'border-[--color-ink] bg-[--color-ink] text-[--color-paper]'
-                  : 'border-[--color-paper-deep] text-[--color-ink-muted] hover:border-[--color-ink] hover:text-[--color-ink]',
+                  ? 'border-bronze-500 bg-bronze-500 text-cream-100'
+                  : 'border-bronze-500/30 text-ink-800 hover:border-bronze-500 hover:text-bronze-500',
               ].join(' ')}
               aria-current={activeCategory === cat.value ? 'page' : undefined}
             >
               {cat.label}
             </Link>
           ))}
+        </div>
+
+        <div className="flex items-center gap-3">
+          <label htmlFor="acervo-ordenar" className="font-body text-caption text-ink-700 shrink-0">
+            Ordenar:
+          </label>
+          <select
+            id="acervo-ordenar"
+            defaultValue={activeSort}
+            onChange={(e) => {
+              window.location.href = `/acervo${buildAcervoQuery(params, { ordenar: e.target.value, clearPagina: true })}`
+            }}
+            className="font-body text-body-sm border-0 border-b border-bronze-500/30 bg-transparent px-1 py-2 text-ink-800 focus:outline-none focus:border-bronze-700"
+          >
+            {ACERVO_SORT_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
     </section>

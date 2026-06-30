@@ -43,6 +43,7 @@ export interface PieceFilters {
   yearFrom?: number
   yearTo?: number
   search?: string
+  sort?: 'recente' | 'artista' | 'valor'
   limit?: number
   offset?: number
 }
@@ -52,7 +53,7 @@ const IMAGE_SELECT =
 
 const ARTIST_SELECT = 'id,name,slug,nationality,birth_year,death_year'
 
-const LIST_SELECT = `
+export const LIST_SELECT = `
   id,slug,title_pt,title_en,title_fr,
   category,technique_pt,year_created,year_created_circa,
   price_brl,price_visibility,status,
@@ -82,14 +83,22 @@ export async function getFeaturedPieces(limit = 3): Promise<PieceListItem[]> {
 
 export async function getPublicPieces(filters: PieceFilters = {}): Promise<PieceListItem[]> {
   const db = createAdminClient()
-  const { limit = 48, offset = 0, artistSlug, category, yearFrom, yearTo, search } = filters
+  const { limit = 48, offset = 0, artistSlug, category, yearFrom, yearTo, search, sort = 'recente' } = filters
 
   let query = db
     .from('pieces')
     .select(LIST_SELECT)
     .in('status', ['publico', 'reservado'])
-    .order('created_at', { ascending: false })
-    .range(offset, offset + limit - 1)
+
+  if (sort === 'valor') {
+    query = query.order('price_brl', { ascending: false, nullsFirst: false })
+  } else if (sort === 'artista') {
+    query = query.order('name', { foreignTable: 'artists', ascending: true })
+  } else {
+    query = query.order('created_at', { ascending: false })
+  }
+
+  query = query.range(offset, offset + limit - 1)
 
   if (artistSlug) {
     // Filtra pelo slug do artista via join
@@ -209,4 +218,30 @@ export function getDisplayPrice(piece: Pick<PieceRow, 'price_brl' | 'price_visib
     return piece.price_brl
   }
   return null
+}
+
+export async function getRelatedPieces(
+  pieceId: string,
+  artistId: string | null,
+  limit = 4,
+): Promise<PieceListItem[]> {
+  const db = createAdminClient()
+  let query = db
+    .from('pieces')
+    .select(LIST_SELECT)
+    .in('status', ['publico', 'reservado'])
+    .neq('id', pieceId)
+    .order('created_at', { ascending: false })
+    .limit(limit)
+
+  if (artistId) {
+    query = query.eq('artist_id', artistId)
+  }
+
+  const { data, error } = await query
+  if (error) {
+    console.error('[getRelatedPieces]', error.message)
+    return []
+  }
+  return (data ?? []) as unknown as PieceListItem[]
 }

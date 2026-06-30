@@ -319,6 +319,93 @@ export type Database = {
           },
         ]
       }
+      collection_pieces: {
+        Row: {
+          collection_id: string
+          piece_id: string
+          sort_order: number
+        }
+        Insert: {
+          collection_id: string
+          piece_id: string
+          sort_order?: number
+        }
+        Update: {
+          collection_id?: string
+          piece_id?: string
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "collection_pieces_collection_id_fkey"
+            columns: ["collection_id"]
+            isOneToOne: false
+            referencedRelation: "collections"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "collection_pieces_piece_id_fkey"
+            columns: ["piece_id"]
+            isOneToOne: false
+            referencedRelation: "pieces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      collections: {
+        Row: {
+          created_at: string
+          description_en: string | null
+          description_fr: string | null
+          description_pt: string
+          dynamic_kind: string | null
+          hero_image_url: string | null
+          id: string
+          is_dynamic: boolean
+          is_published: boolean
+          slug: string
+          sort_order: number
+          title_en: string | null
+          title_fr: string | null
+          title_pt: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description_en?: string | null
+          description_fr?: string | null
+          description_pt: string
+          dynamic_kind?: string | null
+          hero_image_url?: string | null
+          id?: string
+          is_dynamic?: boolean
+          is_published?: boolean
+          slug: string
+          sort_order?: number
+          title_en?: string | null
+          title_fr?: string | null
+          title_pt: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description_en?: string | null
+          description_fr?: string | null
+          description_pt?: string
+          dynamic_kind?: string | null
+          hero_image_url?: string | null
+          id?: string
+          is_dynamic?: boolean
+          is_published?: boolean
+          slug?: string
+          sort_order?: number
+          title_en?: string | null
+          title_fr?: string | null
+          title_pt?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       lead_events: {
         Row: {
           event_type: string
