@@ -184,4 +184,53 @@
     background-color: var(--color-ink-900);
     color: var(--color-cream-300);
   }
+
+  @keyframes loader-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes loader-grow-x {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes loader-artwork-in {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 0.25;
+      transform: scale(1);
+    }
+  }
+
+  .loader-bg-in {
+    animation: loader-fade-in 200ms ease-smooth forwards;
+  }
+
+  .loader-logo-in {
+    animation: loader-fade-in 400ms ease-smooth 300ms forwards;
+  }
+
+  .loader-divider-in {
+    animation: loader-grow-x 300ms ease-editorial 700ms forwards;
+  }
+
+  .loader-tagline-in {
+    animation: loader-fade-in 300ms ease-smooth 1000ms forwards;
+  }
+
+  .loader-artwork-in {
+    animation: loader-artwork-in 500ms ease-editorial 1500ms forwards;
+  }
 }
