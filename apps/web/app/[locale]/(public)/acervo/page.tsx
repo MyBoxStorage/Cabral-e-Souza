@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { getTranslations } from 'next-intl/server'
+import { getLocale, getTranslations } from 'next-intl/server'
 import { AcervoFilters } from '../../../../components/artwork/AcervoFilters'
 import { AcervoPagination } from '../../../../components/artwork/AcervoPagination'
 import { PieceCard } from '../../../../components/artwork/PieceCard'
@@ -33,6 +33,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function AcervoPage({ searchParams }: AcervoPageProps) {
   const params = await searchParams
+  const locale = await getLocale()
   const t = await getTranslations('nav')
   const page = Math.max(1, parseInt(params.pagina ?? '1', 10) || 1)
   const offset = (page - 1) * ACERVO_PAGE_SIZE
@@ -154,7 +155,7 @@ export default async function AcervoPage({ searchParams }: AcervoPageProps) {
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-12">
                 {pieces.map((piece, i) => (
-                  <PieceCard key={piece.id} piece={piece} priority={i < 4} />
+                  <PieceCard key={piece.id} piece={piece} priority={i < 4} locale={locale} />
                 ))}
               </div>
               <AcervoPagination params={params} totalCount={totalCount} page={page} />

@@ -27,6 +27,19 @@ export function formatYear(year?: number | null, circa?: boolean | null): string
   return circa ? `c. ${year}` : String(year)
 }
 
+interface LocalizedTitle {
+  title_pt: string
+  title_en?: string | null
+  title_fr?: string | null
+}
+
+/** Título localizado com fallback para PT */
+export function getLocalizedTitle(item: LocalizedTitle, locale: string): string {
+  if (locale === 'en-US') return item.title_en ?? item.title_pt
+  if (locale === 'fr-FR') return item.title_fr ?? item.title_pt
+  return item.title_pt
+}
+
 /** Trunca texto preservando palavras completas */
 export function truncate(text: string, maxLength: number): string {
   if (text.length <= maxLength) return text

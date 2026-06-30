@@ -8,7 +8,7 @@ import { MarkdownContent } from '../../../../../components/content/MarkdownConte
 import { JsonLd } from '../../../../../components/seo/JsonLd'
 import { artistYears } from '../../../../../lib/format'
 import { getArtistBySlug, getArtistSlugs } from '../../../../../lib/queries/artists'
-import { getPublicPieces } from '../../../../../lib/queries/pieces'
+import { countPublicPieces, getPublicPieces } from '../../../../../lib/queries/pieces'
 import { buildPageMetadata } from '../../../../../lib/seo/metadata'
 import { breadcrumbSchema, personSchema } from '../../../../../lib/seo/schema'
 
@@ -47,7 +47,10 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
   if (!artist) notFound()
 
   // Peças do artista em público
-  const pieces = await getPublicPieces({ artistSlug: slug, limit: 8 })
+  const [pieces, totalPieces] = await Promise.all([
+    getPublicPieces({ artistSlug: slug, limit: 8 }),
+    countPublicPieces({ artistSlug: slug }),
+  ])
 
   const bio =
     locale === 'en-US' ? (artist.bio_en ?? artist.bio_pt)
@@ -80,7 +83,14 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
 
       {/* Hero do artista */}
       <section className="relative bg-[--color-ink] text-[--color-paper] overflow-hidden">
-        <div className="container-default grid grid-cols-1 md:grid-cols-[1fr_auto] gap-8 py-16 md:py-24 items-end">
+        <div
+          className={[
+            'container-default py-16 md:py-24',
+            artist.hero_image_url
+              ? 'grid grid-cols-1 md:grid-cols-[1fr_auto] gap-8 items-end'
+              : 'max-w-[72ch]',
+          ].join(' ')}
+        >
           <div>
             <nav aria-label="Breadcrumb" className="mb-8">
               <ol className="flex items-center gap-2 list-none font-body text-[12px] text-[rgba(250,250,247,0.4)]">
@@ -156,10 +166,10 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-10">
                   {pieces.map((piece, i) => (
-                    <PieceCard key={piece.id} piece={piece} priority={i < 2} />
+                    <PieceCard key={piece.id} piece={piece} priority={i < 2} locale={locale} />
                   ))}
                 </div>
-                {pieces.length === 8 && (
+                {totalPieces > pieces.length && (
                   <div className="mt-10 text-center">
                     <Link
                       href={`/acervo?artista=${artist.slug}`}
@@ -206,7 +216,7 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
                 href="/contato"
                 className="inline-block w-full font-body text-[11px] uppercase tracking-[0.1em] text-[--color-paper] bg-[--color-ink] hover:bg-[--color-accent] py-3 transition-colors duration-200 text-center"
               >
-                Consultar
+                Solicitar dossiê
               </Link>
             </div>
           </aside>

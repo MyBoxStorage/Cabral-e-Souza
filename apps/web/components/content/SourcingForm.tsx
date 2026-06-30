@@ -21,9 +21,57 @@ const VALUE_RANGES = [
   { value: 'nao_sei', label: 'Não sei avaliar' },
 ] as const
 
+const MIN_PHOTOS = 3
+const MAX_PHOTOS = 8
+
+interface PhotoPreview {
+  id: string
+  url: string
+  name: string
+}
+
 export function SourcingForm() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [errorMsg, setErrorMsg] = useState('')
+  const [previews, setPreviews] = useState<PhotoPreview[]>([])
+  const [photoError, setPhotoError] = useState('')
+
+  function revokePreviews(items: PhotoPreview[]) {
+    items.forEach((p) => URL.revokeObjectURL(p.url))
+  }
+
+  function handlePhotosChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files ?? [])
+    revokePreviews(previews)
+    setPhotoError('')
+
+    if (files.length === 0) {
+      setPreviews([])
+      return
+    }
+
+    if (files.length < MIN_PHOTOS) {
+      setPhotoError(`Envie pelo menos ${MIN_PHOTOS} fotos.`)
+      setPreviews([])
+      e.target.value = ''
+      return
+    }
+
+    if (files.length > MAX_PHOTOS) {
+      setPhotoError(`Máximo de ${MAX_PHOTOS} fotos.`)
+      setPreviews([])
+      e.target.value = ''
+      return
+    }
+
+    setPreviews(
+      files.map((file) => ({
+        id: `${file.name}-${file.lastModified}`,
+        url: URL.createObjectURL(file),
+        name: file.name,
+      })),
+    )
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -32,11 +80,21 @@ export function SourcingForm() {
 
     const form = e.currentTarget
     const fd = new FormData(form)
+    const files = fd.getAll('photos').filter((f): f is File => f instanceof File && f.size > 0)
+
+    if (files.length < MIN_PHOTOS || files.length > MAX_PHOTOS) {
+      setStatus('error')
+      setPhotoError(`Selecione entre ${MIN_PHOTOS} e ${MAX_PHOTOS} fotos.`)
+      setErrorMsg('Verifique as fotos antes de enviar.')
+      return
+    }
 
     const result = await submitSourcingLead(fd)
     if (result.ok) {
       setStatus('success')
       form.reset()
+      revokePreviews(previews)
+      setPreviews([])
     } else {
       setStatus('error')
       setErrorMsg(result.error)
@@ -127,18 +185,43 @@ export function SourcingForm() {
       </div>
 
       <div>
-        <label htmlFor="photos" className={labelClass}>Fotos da obra (3 a 8 imagens)</label>
+        <label htmlFor="photos" className={labelClass}>
+          Fotos da obra ({MIN_PHOTOS} a {MAX_PHOTOS} imagens) *
+        </label>
         <input
           id="photos"
           name="photos"
           type="file"
           accept="image/jpeg,image/png,image/webp"
           multiple
+          required
+          onChange={handlePhotosChange}
           className="w-full font-body text-[13px] text-[--color-ink-muted] file:mr-4 file:py-2 file:px-4 file:border-0 file:bg-[--color-ink] file:text-[--color-paper] file:font-body file:text-[11px] file:uppercase file:tracking-wider"
         />
         <p className="font-body text-[11px] text-[--color-ink-subtle] mt-2">
           Inclua foto geral, detalhes, assinatura e verso quando possível.
         </p>
+        {photoError && (
+          <p role="alert" className="mt-2 font-body text-[12px] text-red-600">{photoError}</p>
+        )}
+        {previews.length > 0 && (
+          <ul className="mt-4 grid grid-cols-3 sm:grid-cols-4 gap-3 list-none">
+            {previews.map((preview) => (
+              <li key={preview.id} className="relative aspect-square bg-[--color-paper-muted] overflow-hidden">
+                <img
+                  src={preview.url}
+                  alt={preview.name}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+              </li>
+            ))}
+          </ul>
+        )}
+        {previews.length > 0 && (
+          <p className="font-body text-[11px] text-[--color-ink-subtle] mt-2">
+            {previews.length} foto{previews.length > 1 ? 's' : ''} selecionada{previews.length > 1 ? 's' : ''}
+          </p>
+        )}
       </div>
 
       <label className="flex items-start gap-3 cursor-pointer">
@@ -151,7 +234,7 @@ export function SourcingForm() {
       </label>
 
       {status === 'error' && (
-        <p className="font-body text-[13px] text-red-600">{errorMsg}</p>
+        <p role="alert" className="font-body text-[13px] text-red-600">{errorMsg}</p>
       )}
 
       <button
