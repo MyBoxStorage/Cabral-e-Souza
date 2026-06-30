@@ -18,6 +18,10 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>
 
+function fieldErrorId(field: keyof FormValues) {
+  return `contact-${field}-error`
+}
+
 export function ContactForm() {
   const t = useTranslations('lead_form')
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
@@ -61,9 +65,15 @@ export function ContactForm() {
         <input
           id="contact-name"
           {...register('name')}
+          aria-invalid={errors.name ? true : undefined}
+          aria-describedby={errors.name ? fieldErrorId('name') : undefined}
           className="w-full border border-[--color-paper-deep] bg-[--color-paper] px-4 py-3 font-body text-[14px] text-[--color-ink] focus:outline-none focus:border-[--color-accent]"
         />
-        {errors.name && <p className="mt-1 font-body text-[12px] text-red-600">{errors.name.message}</p>}
+        {errors.name && (
+          <p id={fieldErrorId('name')} role="alert" className="mt-1 font-body text-[12px] text-red-600">
+            {errors.name.message}
+          </p>
+        )}
       </div>
 
       <div>
@@ -74,9 +84,15 @@ export function ContactForm() {
           id="contact-email"
           type="email"
           {...register('email')}
+          aria-invalid={errors.email ? true : undefined}
+          aria-describedby={errors.email ? fieldErrorId('email') : undefined}
           className="w-full border border-[--color-paper-deep] bg-[--color-paper] px-4 py-3 font-body text-[14px] text-[--color-ink] focus:outline-none focus:border-[--color-accent]"
         />
-        {errors.email && <p className="mt-1 font-body text-[12px] text-red-600">{errors.email.message}</p>}
+        {errors.email && (
+          <p id={fieldErrorId('email')} role="alert" className="mt-1 font-body text-[12px] text-red-600">
+            {errors.email.message}
+          </p>
+        )}
       </div>
 
       <div>
@@ -99,9 +115,15 @@ export function ContactForm() {
           id="contact-message"
           rows={5}
           {...register('message')}
+          aria-invalid={errors.message ? true : undefined}
+          aria-describedby={errors.message ? fieldErrorId('message') : undefined}
           className="w-full border border-[--color-paper-deep] bg-[--color-paper] px-4 py-3 font-body text-[14px] text-[--color-ink] resize-y focus:outline-none focus:border-[--color-accent]"
         />
-        {errors.message && <p className="mt-1 font-body text-[12px] text-red-600">{errors.message.message}</p>}
+        {errors.message && (
+          <p id={fieldErrorId('message')} role="alert" className="mt-1 font-body text-[12px] text-red-600">
+            {errors.message.message}
+          </p>
+        )}
       </div>
 
       <label className="flex items-start gap-3 cursor-pointer">
@@ -110,7 +132,7 @@ export function ContactForm() {
       </label>
 
       {status === 'error' && (
-        <p className="font-body text-[12px] text-red-600">{t('error')}</p>
+        <p role="alert" className="font-body text-[12px] text-red-600">{t('error')}</p>
       )}
 
       <button
