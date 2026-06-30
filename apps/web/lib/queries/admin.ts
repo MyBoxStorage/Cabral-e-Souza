@@ -152,6 +152,70 @@ export async function getAdminLeads(page = 1, pageSize = 50) {
   return { data: data ?? [], count: count ?? 0 }
 }
 
+export interface SourcingLeadPhoto {
+  path: string
+  signedUrl: string
+}
+
+export interface AdminSourcingLead {
+  id: string
+  seller_name: string
+  seller_email: string | null
+  seller_phone: string | null
+  seller_city: string | null
+  artist_claimed: string | null
+  technique_claimed: string | null
+  dimensions_claimed: string | null
+  acquisition_history: string | null
+  expected_value_brl: number | null
+  notes_internal: string | null
+  status: string
+  photos: SourcingLeadPhoto[]
+  created_at: string
+  updated_at: string
+}
+
+/** Lista de sourcing leads para admin */
+export async function getAdminSourcingLeads(page = 1, pageSize = 50) {
+  const supabase = createAdminClient()
+  const from = (page - 1) * pageSize
+  const to = from + pageSize - 1
+
+  const { data, error, count } = await supabase
+    .from('sourcing_leads')
+    .select(
+      `id, seller_name, seller_email, seller_phone, seller_city, artist_claimed,
+       technique_claimed, dimensions_claimed, acquisition_history, expected_value_brl,
+       notes_internal, status, photos, created_at, updated_at`,
+      { count: 'exact' },
+    )
+    .order('created_at', { ascending: false })
+    .range(from, to)
+
+  if (error) throw new Error(error.message)
+
+  const leads: AdminSourcingLead[] = []
+  for (const row of data ?? []) {
+    const rawPhotos = (row.photos as { path?: string; url?: string }[] | null) ?? []
+    const photos: SourcingLeadPhoto[] = []
+
+    for (const photo of rawPhotos) {
+      const path = photo.path
+      if (!path) continue
+      const { data: signed } = await supabase.storage
+        .from('sourcing-uploads')
+        .createSignedUrl(path, 3600)
+      if (signed?.signedUrl) {
+        photos.push({ path, signedUrl: signed.signedUrl })
+      }
+    }
+
+    leads.push({ ...row, photos })
+  }
+
+  return { data: leads, count: count ?? 0 }
+}
+
 /** Viewing rooms para admin */
 export async function getAdminViewingRooms() {
   const supabase = createAdminClient()
