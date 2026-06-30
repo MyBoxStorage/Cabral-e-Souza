@@ -1,9 +1,13 @@
 import type { Metadata } from 'next'
+import { PageHeader } from '@cabral-souza/ui'
 import { notFound } from 'next/navigation'
 import { ContactForm } from '../../../../components/content/ContactForm'
-import { MarkdownContent } from '../../../../components/content/MarkdownContent'
+import { ContactChannels } from '../../../../components/institutional/ContactChannels'
+import { ContactMap } from '../../../../components/institutional/ContactMap'
+import { JsonLd } from '../../../../components/seo/JsonLd'
 import { getSitePageBySlug } from '../../../../lib/queries/site-pages'
 import { buildPageMetadata } from '../../../../lib/seo/metadata'
+import { breadcrumbSchema } from '../../../../lib/seo/schema'
 
 export const revalidate = 3600
 
@@ -21,27 +25,27 @@ export default async function ContatoPage() {
   const page = await getSitePageBySlug('contato')
   if (!page) notFound()
 
+  const schema = breadcrumbSchema([{ name: 'Contato', path: '/contato' }])
+
   return (
     <>
-      <section className="bg-[--color-paper-muted] border-b border-[--color-paper-deep] py-12 md:py-16">
-        <div className="container-default">
-          <h1 className="font-display text-[2.5rem] md:text-[3.5rem] font-light tracking-[-0.02em]">
-            {page.title_pt}
-          </h1>
+      <JsonLd data={schema} />
+
+      <PageHeader section="Contato" title={page.title_pt} />
+
+      <section className="section-padding bg-cream-50">
+        <div className="container-default grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-16">
+          <ContactChannels />
+
+          <aside className="lg:sticky lg:top-28 lg:self-start border border-cream-200 bg-cream-100 p-8 lg:p-10">
+            <ContactForm />
+          </aside>
         </div>
       </section>
 
-      <section className="py-12 md:py-16">
-        <div className="container-default grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-16">
-          <div className="max-w-[56ch]">
-            <MarkdownContent content={page.content_pt} />
-          </div>
-          <aside className="lg:sticky lg:top-24 lg:self-start border border-[--color-paper-deep] p-8">
-            <h2 className="font-body text-[11px] uppercase tracking-[0.14em] text-[--color-ink-subtle] mb-6">
-              Envie uma mensagem
-            </h2>
-            <ContactForm />
-          </aside>
+      <section className="pb-16 lg:pb-20 bg-cream-50">
+        <div className="container-default">
+          <ContactMap />
         </div>
       </section>
     </>

@@ -1,6 +1,11 @@
 import type { Metadata } from 'next'
+import { Button } from '@cabral-souza/ui'
+import Link from 'next/link'
 import { SourcingForm } from '../../../../components/content/SourcingForm'
 import { JsonLd } from '../../../../components/seo/JsonLd'
+import { SourcingCaseCards } from '../../../../components/vender-obra/SourcingCaseCards'
+import { SourcingFaq } from '../../../../components/vender-obra/SourcingFaq'
+import { SourcingProcessSteps } from '../../../../components/vender-obra/SourcingProcessSteps'
 import { buildPageMetadata } from '../../../../lib/seo/metadata'
 
 export const metadata: Metadata = buildPageMetadata({
@@ -10,11 +15,11 @@ export const metadata: Metadata = buildPageMetadata({
   path: '/vender-obra',
 })
 
-const TRUST_ITEMS = [
-  { value: '40 anos', label: 'de experiência no mercado' },
-  { value: '5 dias', label: 'para análise preliminar' },
-  { value: '100%', label: 'confidencialidade garantida' },
-]
+const GUARANTEES = [
+  'Resposta em 5 dias úteis',
+  'Confidencialidade absoluta',
+  'Avaliação sem custo',
+] as const
 
 const serviceSchema = {
   '@context': 'https://schema.org',
@@ -31,48 +36,60 @@ export default function VenderObraPage() {
     <>
       <JsonLd data={serviceSchema} />
 
-      <section className="bg-[--color-paper-muted] border-b border-[--color-paper-deep] py-12 md:py-20">
-        <div className="container-default max-w-[72ch]">
-          <p className="label-caps text-[--color-accent] mb-4">Sourcing reverso</p>
-          <h1 className="font-display text-[2.25rem] md:text-[3.25rem] font-light tracking-[-0.02em] leading-[1.1] mb-6">
-            Sua obra merece avaliação à altura de sua história
-          </h1>
-          <p className="font-body text-[15px] leading-[1.85] text-[--color-ink-muted]">
-            Há quatro décadas, a Cabral &amp; Souza orienta famílias e herdeiros na venda de obras de arte com rigor
-            documental, confidencialidade e transparência. Nosso processo combina pesquisa de mercado, verificação de
-            autenticidade e proposta fundamentada — sem pressa comercial nem promessas vazias.
+      {/* Hero split 55/45 — form na primeira fold */}
+      <section className="grid grid-cols-1 lg:grid-cols-[11fr_9fr] min-h-[min(100vh,900px)] -mt-16 pt-16">
+        <div className="bg-ink-900 text-cream-300 flex flex-col justify-center px-6 py-16 lg:py-24 lg:px-12 xl:px-16">
+          <div className="max-w-[52ch]">
+            <p className="font-body font-medium uppercase tracking-eyebrow text-eyebrow text-bronze-500 mb-6">
+              Avaliação e Consignação
+            </p>
+            <h1 className="font-display font-normal text-title-xl text-cream-100 leading-[1.08] mb-6">
+              Sua obra merece
+              <br />
+              avaliação à altura
+              <br />
+              <span className="italic text-bronze-300">de sua história.</span>
+            </h1>
+            <p className="font-body text-lead text-cream-300/85 leading-relaxed mb-8">
+              Quatro décadas orientando famílias e herdeiros na venda de obras de arte com rigor documental,
+              confidencialidade absoluta e proposta fundamentada.
+            </p>
+
+            <ul className="flex flex-col sm:flex-row sm:flex-wrap gap-4 sm:gap-8 mb-10 list-none">
+              {GUARANTEES.map((item) => (
+                <li key={item} className="font-body text-body-sm text-cream-300/90 flex items-center gap-2">
+                  <span className="text-bronze-500" aria-hidden>
+                    ✓
+                  </span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+
+            <p className="font-body text-caption text-cream-300/50">
+              Mais de R$ 50 milhões em obras avaliadas desde 1987
+            </p>
+          </div>
+        </div>
+
+        <div className="bg-cream-100 flex flex-col justify-center px-6 py-12 lg:py-16 lg:px-10 xl:px-14 border-t lg:border-t-0 lg:border-l border-cream-200">
+          <SourcingForm id="sourcing-form-hero" />
+        </div>
+      </section>
+
+      <SourcingProcessSteps />
+      <SourcingCaseCards />
+      <SourcingFaq />
+
+      <section className="section-padding bg-ink-900 text-cream-300">
+        <div className="container-default max-w-narrow mx-auto text-center">
+          <h2 className="font-display font-normal text-title-sm text-cream-100 mb-4">Pronto para começar?</h2>
+          <p className="font-body text-body text-cream-300/80 mb-8">
+            Envie fotografias e informações básicas. Nossa equipe retorna em até 5 dias úteis.
           </p>
-        </div>
-      </section>
-
-      <section className="border-b border-[--color-paper-deep] bg-[--color-paper]">
-        <div className="container-default py-10">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center sm:text-left">
-            {TRUST_ITEMS.map((item) => (
-              <div key={item.label}>
-                <p className="font-display text-[1.75rem] font-light text-[--color-ink]">{item.value}</p>
-                <p className="font-body text-[12px] text-[--color-ink-subtle] mt-1">{item.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-12 md:py-16">
-        <div className="container-default max-w-[640px]">
-          <div className="mb-10 border border-[--color-paper-deep] p-6">
-            <h2 className="font-body text-[11px] uppercase tracking-[0.14em] text-[--color-ink-subtle] mb-4">
-              Como funciona
-            </h2>
-            <ol className="font-body text-[13px] leading-[1.8] text-[--color-ink-muted] list-decimal pl-5 space-y-2">
-              <li>Você envia fotos e informações básicas sobre a obra.</li>
-              <li>Nossa equipe realiza análise preliminar em até 5 dias úteis.</li>
-              <li>Se houver interesse, agendamos inspeção presencial ou por especialista.</li>
-              <li>Apresentamos proposta de compra ou consignação, conforme o caso.</li>
-            </ol>
-          </div>
-
-          <SourcingForm />
+          <Button asChild variant="primary" size="lg">
+            <Link href="#sourcing-form-hero">Solicitar avaliação</Link>
+          </Button>
         </div>
       </section>
     </>

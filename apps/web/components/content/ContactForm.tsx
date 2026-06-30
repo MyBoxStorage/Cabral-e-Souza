@@ -1,5 +1,6 @@
 'use client'
 
+import { Button } from '@cabral-souza/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
@@ -47,108 +48,115 @@ export function ContactForm() {
     }
   }
 
+  const inputClass =
+    'w-full border-0 border-b border-cream-200 bg-transparent px-0 py-3 font-body text-body text-ink-800 placeholder:italic placeholder:text-ink-700/50 focus:outline-none focus:border-bronze-500 transition-colors duration-base'
+  const labelClass =
+    'block font-body font-medium uppercase tracking-caps text-eyebrow text-bronze-500 mb-2'
+
   if (status === 'success') {
     return (
-      <div className="border border-[--color-accent]/30 bg-[--color-accent]/5 p-6 text-center">
-        <p className="font-display text-[1.25rem] font-light text-[--color-ink] mb-2">{t('success_title')}</p>
-        <p className="font-body text-[13px] text-[--color-ink-muted]">{t('success_description')}</p>
+      <div className="border border-bronze-500/30 bg-bronze-500/5 p-6 text-center">
+        <p className="font-display text-title-xs text-ink-800 mb-2">{t('success_title')}</p>
+        <p className="font-body text-body-sm text-ink-700">{t('success_description')}</p>
       </div>
     )
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5" noValidate>
-      <div>
-        <label htmlFor="contact-name" className="block font-body text-[11px] uppercase tracking-[0.12em] text-[--color-ink-subtle] mb-2">
-          {t('name')}
+    <div className="flex flex-col gap-6">
+      <h2 className="font-display font-medium text-title-xs text-ink-800">Envie uma mensagem</h2>
+
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5" noValidate>
+        <div>
+          <label htmlFor="contact-name" className={labelClass}>
+            {t('name')}
+          </label>
+          <input
+            id="contact-name"
+            {...register('name')}
+            aria-invalid={errors.name ? true : undefined}
+            aria-describedby={errors.name ? fieldErrorId('name') : undefined}
+            className={inputClass}
+          />
+          {errors.name && (
+            <p id={fieldErrorId('name')} role="alert" className="mt-1 font-body text-body-sm text-red-600">
+              {errors.name.message}
+            </p>
+          )}
+        </div>
+
+        <div>
+          <label htmlFor="contact-email" className={labelClass}>
+            {t('email')}
+          </label>
+          <input
+            id="contact-email"
+            type="email"
+            {...register('email')}
+            aria-invalid={errors.email ? true : undefined}
+            aria-describedby={errors.email ? fieldErrorId('email') : undefined}
+            className={inputClass}
+          />
+          {errors.email && (
+            <p id={fieldErrorId('email')} role="alert" className="mt-1 font-body text-body-sm text-red-600">
+              {errors.email.message}
+            </p>
+          )}
+        </div>
+
+        <div>
+          <label htmlFor="contact-phone" className={labelClass}>
+            {t('phone')}
+          </label>
+          <input id="contact-phone" type="tel" {...register('phone')} className={inputClass} />
+        </div>
+
+        <div>
+          <label htmlFor="contact-message" className={labelClass}>
+            {t('message')}
+          </label>
+          <textarea
+            id="contact-message"
+            rows={5}
+            {...register('message')}
+            aria-invalid={errors.message ? true : undefined}
+            aria-describedby={errors.message ? fieldErrorId('message') : undefined}
+            className={`${inputClass} resize-y`}
+          />
+          {errors.message && (
+            <p id={fieldErrorId('message')} role="alert" className="mt-1 font-body text-body-sm text-red-600">
+              {errors.message.message}
+            </p>
+          )}
+        </div>
+
+        <label className="flex items-start gap-3 cursor-pointer">
+          <input type="checkbox" {...register('consent_marketing')} className="mt-1 accent-bronze-500" />
+          <span className="font-body text-body-sm text-ink-700 leading-relaxed">{t('consent')}</span>
         </label>
-        <input
-          id="contact-name"
-          {...register('name')}
-          aria-invalid={errors.name ? true : undefined}
-          aria-describedby={errors.name ? fieldErrorId('name') : undefined}
-          className="w-full border border-[--color-paper-deep] bg-[--color-paper] px-4 py-3 font-body text-[14px] text-[--color-ink] focus:outline-none focus:border-[--color-accent]"
-        />
-        {errors.name && (
-          <p id={fieldErrorId('name')} role="alert" className="mt-1 font-body text-[12px] text-red-600">
-            {errors.name.message}
+
+        {status === 'error' && (
+          <p role="alert" className="font-body text-body-sm text-red-600">
+            {t('error')}
           </p>
         )}
+
+        <Button type="submit" variant="primary" size="lg" disabled={status === 'loading'} className="w-full">
+          {status === 'loading' ? t('sending') : t('submit')}
+        </Button>
+      </form>
+
+      <div className="flex items-center gap-4" aria-hidden>
+        <span className="h-px flex-1 bg-bronze-500/30" />
+        <span className="font-body text-eyebrow uppercase tracking-caps text-bronze-500">ou</span>
+        <span className="h-px flex-1 bg-bronze-500/30" />
       </div>
 
-      <div>
-        <label htmlFor="contact-email" className="block font-body text-[11px] uppercase tracking-[0.12em] text-[--color-ink-subtle] mb-2">
-          {t('email')}
-        </label>
-        <input
-          id="contact-email"
-          type="email"
-          {...register('email')}
-          aria-invalid={errors.email ? true : undefined}
-          aria-describedby={errors.email ? fieldErrorId('email') : undefined}
-          className="w-full border border-[--color-paper-deep] bg-[--color-paper] px-4 py-3 font-body text-[14px] text-[--color-ink] focus:outline-none focus:border-[--color-accent]"
-        />
-        {errors.email && (
-          <p id={fieldErrorId('email')} role="alert" className="mt-1 font-body text-[12px] text-red-600">
-            {errors.email.message}
-          </p>
-        )}
-      </div>
-
-      <div>
-        <label htmlFor="contact-phone" className="block font-body text-[11px] uppercase tracking-[0.12em] text-[--color-ink-subtle] mb-2">
-          {t('phone')}
-        </label>
-        <input
-          id="contact-phone"
-          type="tel"
-          {...register('phone')}
-          className="w-full border border-[--color-paper-deep] bg-[--color-paper] px-4 py-3 font-body text-[14px] text-[--color-ink] focus:outline-none focus:border-[--color-accent]"
-        />
-      </div>
-
-      <div>
-        <label htmlFor="contact-message" className="block font-body text-[11px] uppercase tracking-[0.12em] text-[--color-ink-subtle] mb-2">
-          {t('message')}
-        </label>
-        <textarea
-          id="contact-message"
-          rows={5}
-          {...register('message')}
-          aria-invalid={errors.message ? true : undefined}
-          aria-describedby={errors.message ? fieldErrorId('message') : undefined}
-          className="w-full border border-[--color-paper-deep] bg-[--color-paper] px-4 py-3 font-body text-[14px] text-[--color-ink] resize-y focus:outline-none focus:border-[--color-accent]"
-        />
-        {errors.message && (
-          <p id={fieldErrorId('message')} role="alert" className="mt-1 font-body text-[12px] text-red-600">
-            {errors.message.message}
-          </p>
-        )}
-      </div>
-
-      <label className="flex items-start gap-3 cursor-pointer">
-        <input type="checkbox" {...register('consent_marketing')} className="mt-1" />
-        <span className="font-body text-[12px] text-[--color-ink-subtle] leading-relaxed">{t('consent')}</span>
-      </label>
-
-      {status === 'error' && (
-        <p role="alert" className="font-body text-[12px] text-red-600">{t('error')}</p>
-      )}
-
-      <button
-        type="submit"
-        disabled={status === 'loading'}
-        className="font-body text-[11px] uppercase tracking-[0.1em] text-[--color-paper] bg-[--color-ink] hover:bg-[--color-accent] disabled:opacity-50 px-8 py-4 transition-colors duration-200"
-      >
-        {status === 'loading' ? t('sending') : t('submit')}
-      </button>
-
-      <p className="font-body text-[12px] text-[--color-ink-subtle] text-center">
-        Ou fale conosco pelo{' '}
-        <a href={whatsappUrl()} target="_blank" rel="noopener noreferrer" className="text-[--color-accent] hover:underline">
-          WhatsApp
+      <Button asChild variant="secondary" size="lg" className="w-full">
+        <a href={whatsappUrl()} target="_blank" rel="noopener noreferrer">
+          Falar via WhatsApp
         </a>
-      </p>
-    </form>
+      </Button>
+    </div>
   )
 }

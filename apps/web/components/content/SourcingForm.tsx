@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { Button } from '@cabral-souza/ui'
 import { submitSourcingLead } from '../../app/actions/sourcing'
 
 const CATEGORIES = [
@@ -30,7 +31,12 @@ interface PhotoPreview {
   name: string
 }
 
-export function SourcingForm() {
+interface SourcingFormProps {
+  id?: string
+  showTitle?: boolean
+}
+
+export function SourcingForm({ id = 'sourcing-form', showTitle = true }: SourcingFormProps) {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [errorMsg, setErrorMsg] = useState('')
   const [previews, setPreviews] = useState<PhotoPreview[]>([])
@@ -101,13 +107,16 @@ export function SourcingForm() {
     }
   }
 
+  const inputClass =
+    'w-full border-0 border-b border-cream-200 bg-transparent px-0 py-3 font-body text-body text-ink-800 placeholder:italic placeholder:text-ink-700/50 focus:outline-none focus:border-bronze-500 transition-colors duration-base'
+  const labelClass =
+    'block font-body font-medium uppercase tracking-caps text-eyebrow text-bronze-500 mb-2'
+
   if (status === 'success') {
     return (
-      <div className="border border-[--color-accent]/30 bg-[--color-accent]/5 p-8 text-center">
-        <p className="font-display text-[1.5rem] font-light text-[--color-ink] mb-3">
-          Recebemos sua solicitação
-        </p>
-        <p className="font-body text-[14px] leading-[1.7] text-[--color-ink-muted]">
+      <div className="border border-bronze-500/30 bg-bronze-500/5 p-8 text-center">
+        <p className="font-display text-title-xs text-ink-800 mb-3">Recebemos sua solicitação</p>
+        <p className="font-body text-body text-ink-700 leading-relaxed">
           Retornaremos em até 5 dias úteis com uma análise preliminar. Nossa equipe entrará em contato pelo email ou
           telefone informado.
         </p>
@@ -115,57 +124,86 @@ export function SourcingForm() {
     )
   }
 
-  const inputClass =
-    'w-full border border-[--color-paper-deep] bg-[--color-paper] px-4 py-3 font-body text-[14px] text-[--color-ink] focus:outline-none focus:border-[--color-accent]'
-  const labelClass =
-    'block font-body text-[11px] uppercase tracking-[0.12em] text-[--color-ink-subtle] mb-2'
-
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6" encType="multipart/form-data">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    <form id={id} onSubmit={handleSubmit} className="flex flex-col gap-5" encType="multipart/form-data">
+      {showTitle && (
+        <h2 className="font-display font-medium text-title-xs text-ink-800 mb-2">
+          Solicitar avaliação preliminar
+        </h2>
+      )}
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
-          <label htmlFor="seller_name" className={labelClass}>Nome completo *</label>
-          <input id="seller_name" name="seller_name" required className={inputClass} />
+          <label htmlFor={`${id}-seller_name`} className={labelClass}>
+            Nome completo *
+          </label>
+          <input id={`${id}-seller_name`} name="seller_name" required className={inputClass} />
         </div>
         <div>
-          <label htmlFor="seller_email" className={labelClass}>Email *</label>
-          <input id="seller_email" name="seller_email" type="email" required className={inputClass} />
+          <label htmlFor={`${id}-seller_email`} className={labelClass}>
+            E-mail *
+          </label>
+          <input id={`${id}-seller_email`} name="seller_email" type="email" required className={inputClass} />
         </div>
         <div>
-          <label htmlFor="seller_phone" className={labelClass}>Telefone / WhatsApp *</label>
-          <input id="seller_phone" name="seller_phone" type="tel" required className={inputClass} />
+          <label htmlFor={`${id}-seller_phone`} className={labelClass}>
+            Telefone / WhatsApp *
+          </label>
+          <input id={`${id}-seller_phone`} name="seller_phone" type="tel" required className={inputClass} />
         </div>
         <div>
-          <label htmlFor="seller_city" className={labelClass}>Cidade *</label>
-          <input id="seller_city" name="seller_city" required className={inputClass} />
+          <label htmlFor={`${id}-seller_city`} className={labelClass}>
+            Cidade *
+          </label>
+          <input id={`${id}-seller_city`} name="seller_city" required className={inputClass} />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>
-          <label htmlFor="technique_claimed" className={labelClass}>Tipo de obra *</label>
-          <select id="technique_claimed" name="technique_claimed" required className={inputClass}>
+          <label htmlFor={`${id}-technique_claimed`} className={labelClass}>
+            Tipo de obra *
+          </label>
+          <select id={`${id}-technique_claimed`} name="technique_claimed" required className={inputClass}>
             <option value="">Selecione...</option>
             {CATEGORIES.map((c) => (
-              <option key={c.value} value={c.value}>{c.label}</option>
+              <option key={c.value} value={c.value}>
+                {c.label}
+              </option>
             ))}
           </select>
         </div>
         <div>
-          <label htmlFor="artist_claimed" className={labelClass}>Artista (se souber)</label>
-          <input id="artist_claimed" name="artist_claimed" placeholder="Ex: Alfredo Volpi" className={inputClass} />
+          <label htmlFor={`${id}-artist_claimed`} className={labelClass}>
+            Artista (se souber)
+          </label>
+          <input
+            id={`${id}-artist_claimed`}
+            name="artist_claimed"
+            placeholder="Ex: Alfredo Volpi"
+            className={inputClass}
+          />
         </div>
       </div>
 
       <div>
-        <label htmlFor="dimensions_claimed" className={labelClass}>Dimensões aproximadas</label>
-        <input id="dimensions_claimed" name="dimensions_claimed" placeholder="Ex: 80 × 60 cm" className={inputClass} />
+        <label htmlFor={`${id}-dimensions_claimed`} className={labelClass}>
+          Dimensões aproximadas
+        </label>
+        <input
+          id={`${id}-dimensions_claimed`}
+          name="dimensions_claimed"
+          placeholder="Ex: 80 × 60 cm"
+          className={inputClass}
+        />
       </div>
 
       <div>
-        <label htmlFor="acquisition_history" className={labelClass}>Histórico de aquisição *</label>
+        <label htmlFor={`${id}-acquisition_history`} className={labelClass}>
+          Histórico de aquisição *
+        </label>
         <textarea
-          id="acquisition_history"
+          id={`${id}-acquisition_history`}
           name="acquisition_history"
           rows={4}
           required
@@ -175,39 +213,45 @@ export function SourcingForm() {
       </div>
 
       <div>
-        <label htmlFor="value_range" className={labelClass}>Expectativa de valor *</label>
-        <select id="value_range" name="value_range" required className={inputClass}>
+        <label htmlFor={`${id}-value_range`} className={labelClass}>
+          Expectativa de valor *
+        </label>
+        <select id={`${id}-value_range`} name="value_range" required className={inputClass}>
           <option value="">Selecione uma faixa...</option>
           {VALUE_RANGES.map((r) => (
-            <option key={r.value} value={r.value}>{r.label}</option>
+            <option key={r.value} value={r.value}>
+              {r.label}
+            </option>
           ))}
         </select>
       </div>
 
       <div>
-        <label htmlFor="photos" className={labelClass}>
+        <label htmlFor={`${id}-photos`} className={labelClass}>
           Fotos da obra ({MIN_PHOTOS} a {MAX_PHOTOS} imagens) *
         </label>
         <input
-          id="photos"
+          id={`${id}-photos`}
           name="photos"
           type="file"
           accept="image/jpeg,image/png,image/webp"
           multiple
           required
           onChange={handlePhotosChange}
-          className="w-full font-body text-[13px] text-[--color-ink-muted] file:mr-4 file:py-2 file:px-4 file:border-0 file:bg-[--color-ink] file:text-[--color-paper] file:font-body file:text-[11px] file:uppercase file:tracking-wider"
+          className="w-full font-body text-body-sm text-ink-700 file:mr-4 file:py-2 file:px-4 file:border-0 file:bg-ink-800 file:text-cream-100 file:font-body file:text-eyebrow file:uppercase file:tracking-caps"
         />
-        <p className="font-body text-[11px] text-[--color-ink-subtle] mt-2">
+        <p className="font-body text-caption text-ink-700 mt-2">
           Inclua foto geral, detalhes, assinatura e verso quando possível.
         </p>
         {photoError && (
-          <p role="alert" className="mt-2 font-body text-[12px] text-red-600">{photoError}</p>
+          <p role="alert" className="mt-2 font-body text-body-sm text-red-600">
+            {photoError}
+          </p>
         )}
         {previews.length > 0 && (
           <ul className="mt-4 grid grid-cols-3 sm:grid-cols-4 gap-3 list-none">
             {previews.map((preview) => (
-              <li key={preview.id} className="relative aspect-square bg-[--color-paper-muted] overflow-hidden">
+              <li key={preview.id} className="relative aspect-square bg-cream-200 overflow-hidden border border-cream-200">
                 <img
                   src={preview.url}
                   alt={preview.name}
@@ -217,33 +261,32 @@ export function SourcingForm() {
             ))}
           </ul>
         )}
-        {previews.length > 0 && (
-          <p className="font-body text-[11px] text-[--color-ink-subtle] mt-2">
-            {previews.length} foto{previews.length > 1 ? 's' : ''} selecionada{previews.length > 1 ? 's' : ''}
-          </p>
-        )}
       </div>
 
       <label className="flex items-start gap-3 cursor-pointer">
-        <input type="checkbox" name="consent_data" value="true" required className="mt-1" />
-        <span className="font-body text-[12px] text-[--color-ink-subtle] leading-relaxed">
+        <input type="checkbox" name="consent_data" value="true" required className="mt-1 accent-bronze-500" />
+        <span className="font-body text-body-sm text-ink-700 leading-relaxed">
           Autorizo o tratamento dos meus dados conforme a{' '}
-          <a href="/privacidade" className="text-[--color-accent] hover:underline">Política de Privacidade</a>{' '}
+          <a href="/privacidade" className="text-bronze-500 hover:underline">
+            Política de Privacidade
+          </a>{' '}
           (LGPD), exclusivamente para avaliação desta obra.
         </span>
       </label>
 
       {status === 'error' && (
-        <p role="alert" className="font-body text-[13px] text-red-600">{errorMsg}</p>
+        <p role="alert" className="font-body text-body-sm text-red-600">
+          {errorMsg}
+        </p>
       )}
 
-      <button
-        type="submit"
-        disabled={status === 'loading'}
-        className="font-body text-[11px] uppercase tracking-[0.1em] text-[--color-paper] bg-[--color-ink] hover:bg-[--color-accent] disabled:opacity-50 px-8 py-4 transition-colors duration-200"
-      >
-        {status === 'loading' ? 'Enviando...' : 'Solicitar avaliação preliminar'}
-      </button>
+      <Button type="submit" variant="primary" size="lg" disabled={status === 'loading'} className="w-full sm:w-auto">
+        {status === 'loading' ? 'Enviando...' : 'Solicitar avaliação →'}
+      </Button>
+
+      <p className="font-body text-caption text-ink-700">
+        Sua mensagem é confidencial e analisada por especialistas.
+      </p>
     </form>
   )
 }

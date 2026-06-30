@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
+import { PageHeader } from '@cabral-souza/ui'
 import { notFound } from 'next/navigation'
-import { InstitutionalCta } from '../../components/content/InstitutionalCta'
 import { MarkdownContent } from '../../components/content/MarkdownContent'
+import { InstitutionalCta } from '../../components/institutional/InstitutionalCta'
 import { buildPageMetadata } from '../seo/metadata'
 import { getSitePageBySlug } from '../queries/site-pages'
 
@@ -27,17 +28,11 @@ export async function InstitutionalPage({ slug }: InstitutionalPageProps) {
 
   return (
     <>
-      <section className="bg-[--color-paper-muted] border-b border-[--color-paper-deep] py-12 md:py-16">
-        <div className="container-default">
-          <h1 className="font-display text-[2.5rem] md:text-[3.5rem] font-light tracking-[-0.02em]">
-            {page.title_pt}
-          </h1>
-        </div>
-      </section>
+      <PageHeader title={page.title_pt} />
 
-      <section className="py-12 md:py-16">
-        <div className="container-default max-w-[72ch]">
-          <MarkdownContent content={page.content_pt} />
+      <section className="section-padding bg-cream-50">
+        <div className="container-default max-w-narrow mx-auto">
+          <MarkdownContent content={page.content_pt} variant="editorial" dropcap />
         </div>
       </section>
 
