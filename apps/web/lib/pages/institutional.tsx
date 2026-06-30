@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { InstitutionalCta } from '../../components/content/InstitutionalCta'
 import { MarkdownContent } from '../../components/content/MarkdownContent'
 import { buildPageMetadata } from '../seo/metadata'
 import { getSitePageBySlug } from '../queries/site-pages'
@@ -39,6 +40,8 @@ export async function InstitutionalPage({ slug }: InstitutionalPageProps) {
           <MarkdownContent content={page.content_pt} />
         </div>
       </section>
+
+      <InstitutionalCta />
     </>
   )
 }

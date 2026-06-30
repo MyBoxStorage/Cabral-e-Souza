@@ -205,3 +205,25 @@ export function itemListSchema(items: { name: string; url: string }[]) {
     })),
   }
 }
+
+export function collectionPageSchema(input: {
+  path: string
+  name: string
+  description?: string | null
+  items: { name: string; url: string }[]
+}) {
+  const siteUrl = getSiteUrl()
+  const url = `${siteUrl}${input.path}`
+
+  return stripUndefined({
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': url,
+    url,
+    name: input.name,
+    description: input.description ?? undefined,
+    inLanguage: 'pt-BR',
+    isPartOf: { '@id': `${siteUrl}/#organization` },
+    mainEntity: itemListSchema(input.items),
+  })
+}
