@@ -15,6 +15,29 @@ const WIKIMEDIA_USER_AGENT =
   'CabralSouzaSeed/1.0 (https://cabralesouza.com.br; contact: contato@cabralesouza.com.br)'
 
 const ASSETS_DIR = resolve(dirname(fileURLToPath(import.meta.url)), 'assets/artist-portraits')
+const MAX_WIDTH = 800
+const TARGET_MAX_BYTES = 80 * 1024
+
+async function optimizePortrait(raw: Buffer): Promise<Buffer> {
+  const sharp = (await import('sharp')).default
+  let quality = 75
+  let webp = await sharp(raw)
+    .rotate()
+    .resize({ width: MAX_WIDTH, withoutEnlargement: true })
+    .webp({ quality })
+    .toBuffer()
+
+  while (webp.length > TARGET_MAX_BYTES && quality > 50) {
+    quality -= 5
+    webp = await sharp(raw)
+      .rotate()
+      .resize({ width: MAX_WIDTH, withoutEnlargement: true })
+      .webp({ quality })
+      .toBuffer()
+  }
+
+  return webp
+}
 
 async function downloadToAssets(slug: string): Promise<Buffer> {
   const source = ARTIST_PORTRAIT_SOURCES[slug]
@@ -35,15 +58,11 @@ async function downloadToAssets(slug: string): Promise<Buffer> {
   }
 
   const raw = Buffer.from(await res.arrayBuffer())
-  const sharp = (await import('sharp')).default
-  const jpeg = await sharp(raw)
-    .rotate()
-    .resize({ width: 1200, withoutEnlargement: true })
-    .jpeg({ quality: 85, mozjpeg: true })
-    .toBuffer()
+  const webp = await optimizePortrait(raw)
 
-  writeFileSync(localPath, jpeg)
-  return jpeg
+  writeFileSync(localPath, webp)
+  console.log(`   ${slug}: ${(webp.length / 1024).toFixed(1)} KB`)
+  return webp
 }
 
 export function portraitPublicUrl(slug: string): string {
@@ -58,13 +77,13 @@ export async function seedArtistPortraits(db: Db): Promise<number> {
 
   for (const slug of Object.keys(ARTIST_PORTRAIT_SOURCES)) {
     const source = ARTIST_PORTRAIT_SOURCES[slug]
-    const jpeg = await downloadToAssets(slug)
+    const webp = await downloadToAssets(slug)
     const storagePath = `${ARTIST_PORTRAIT_STORAGE_PREFIX}/${source.filename}`
 
     const { error: uploadError } = await db.storage
       .from('piece-images')
-      .upload(storagePath, jpeg, {
-        contentType: 'image/jpeg',
+      .upload(storagePath, webp, {
+        contentType: 'image/webp',
         upsert: true,
       })
 

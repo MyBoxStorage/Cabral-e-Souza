@@ -11,25 +11,25 @@ export const ARTIST_PORTRAIT_SOURCES: Record<
 > = {
   'di-cavalcanti': {
     url: 'https://upload.wikimedia.org/wikipedia/commons/e/ef/Di_Cavalcanti%2C_1964_-_restored_%28cropped%29.tif',
-    filename: 'di-cavalcanti.jpg',
+    filename: 'di-cavalcanti.webp',
     note: 'Retrato 1964 (domínio público) — convertido de TIFF',
   },
   'pedro-americo': {
     url: 'https://upload.wikimedia.org/wikipedia/commons/d/d1/Pedro_Am%C3%A9rico%2C_ca%2C_1899.jpg',
-    filename: 'pedro-americo.jpg',
+    filename: 'pedro-americo.webp',
   },
   djanira: {
     url: 'https://upload.wikimedia.org/wikipedia/commons/1/1b/Djanira_da_Motta_e_Silva_at_work.jpg',
-    filename: 'djanira.jpg',
+    filename: 'djanira.webp',
   },
   'alfredo-volpi': {
     url: 'https://upload.wikimedia.org/wikipedia/commons/3/33/Concretistas_na_Galeria_das_%22Folhas%22_-_Volpi_e_Zanini.jpg',
-    filename: 'alfredo-volpi.jpg',
+    filename: 'alfredo-volpi.webp',
     note: 'Volpi à esquerda — melhor retrato disponível no Commons',
   },
   'sergio-camargo': {
     url: 'https://upload.wikimedia.org/wikipedia/commons/7/76/6427_Sergio_Camargo.jpg',
-    filename: 'sergio-camargo.jpg',
+    filename: 'sergio-camargo.webp',
   },
 }
 

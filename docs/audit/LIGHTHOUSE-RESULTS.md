@@ -1,37 +1,49 @@
-# Lighthouse — resultado da validação (2026-06-30)
+# Lighthouse — resultado da validação (2026-06-30, pós-correções CLS)
 
 Ambiente: `pnpm run build` + `pnpm run start:prod` em `localhost:3000`  
-Preset: mobile, CPU slowdown 4×  
+Preset: mobile, CPU slowdown 4×, cookie `cs_cookie_consent` pré-setado via Puppeteer  
 Gate: Performance / A11y / BP / SEO ≥ 90, **CLS = 0**
 
 | URL | Perf | A11y | BP | SEO | CLS | Gate |
 |-----|------|------|-----|-----|-----|------|
-| `/pt-BR` (home) | 93 | 97 | 96 | 92 | 0.056 | **FAIL** (CLS) |
-| `/pt-BR/acervo` | 92 | 97 | 96 | 92 | 0.019 | **FAIL** (CLS) |
-| `/pt-BR/acervo/carnaval-carioca` | 92 | 100 | 96 | 92 | 0 | **PASS** |
-| `/pt-BR/artistas/di-cavalcanti` | 86 | 97 | 96 | 92 | 0.047 | **FAIL** (Perf, CLS) |
-| `/pt-BR/boletim` | 93 | 95 | 96 | 92 | 0.063 | **FAIL** (CLS) |
-| `/pt-BR/contato` | 93 | 100 | 96 | 92 | 0.006 | **FAIL** (CLS) |
+| `/pt-BR` (home) | 91 | 96 | 96 | 92 | 0.051 | **FAIL** (CLS) |
+| `/pt-BR/acervo` | 88 | 96 | 96 | 92 | 0 | **FAIL** (Perf) |
+| `/pt-BR/acervo/carnaval-carioca` | 87 | 100 | 96 | 92 | 0 | **FAIL** (Perf) |
+| `/pt-BR/artistas/di-cavalcanti` | 87 | 96 | 96 | 92 | 0.047 | **FAIL** (Perf, CLS) |
+| `/pt-BR/boletim` | 98 | 94 | 96 | 92 | 0.062 | **FAIL** (CLS) |
+| `/pt-BR/contato` | 97 | 100 | 96 | 92 | 0.006 | **FAIL** (CLS) |
 
-**Resumo:** 1/6 URLs passou no gate completo. Todas as categorias exceto Performance (artista) e CLS estão ≥ 90.
+**Resumo:** 0/6 URLs passaram no gate completo. **CLS zerou em 2/6** (acervo, peça). Cookie banner eliminado da medição (SSR dinâmico + cookie pré-setado).
 
-## Otimizações sensatas (sem comprometer qualidade visual)
+## Correções aplicadas nesta rodada
 
-### CLS (principal bloqueio)
+1. **Cookie banner** — cookie HTTP `cs_cookie_consent` lido no SSR (`force-dynamic`); banner `position: fixed` desde o primeiro paint; padding-bottom reservado via `<style>` inline no layout; dismiss com fade + translate sem buraco.
+2. **Fontes** — `next/font` com `display: swap`, `adjustFontFallback: true`, `preload: true`; pesos reduzidos (Cormorant 300, Inter 400); `className` em `<html>` para métricas de fallback; Reveal só com `opacity` (sem `translateY`).
+3. **Retratos** — 5 artistas reprocessados: WebP 800px q75, todos &lt;80 KB (Di Cavalcanti 61 KB).
 
-1. **Cookie banner** — aparição tardia desloca o viewport; considerar entrada só com `transform` (já fixo) ou adiar até interação. Para medição: `localStorage.setItem('cs_cookie_consent', ...)` antes do teste (ver [LIGHTHOUSE-GATE.md](./LIGHTHOUSE-GATE.md)).
-2. **Fontes** — `next/font` já usa `display: swap`; FOFT residual pode contribuir ~0.01 CLS em páginas curtas.
-3. **Reveal on scroll** — usa `transform`/`opacity` (não deveria causar CLS); manter `prefers-reduced-motion`.
+## Diagnóstico do que ainda falha
 
-### Performance (artista 86)
+### CLS &gt; 0 (4 URLs)
 
-1. **Hero portrait** (~220 KB JPEG Di Cavalcanti) — servir WebP/AVIF via Supabase transform ou redimensionar seed para ~800px largura.
-2. **LCP** — `priority` já na imagem do hero; avaliar `fetchPriority` em retratos acima da dobra.
+| URL | CLS | Causa (layout-shifts audit) |
+|-----|-----|----------------------------|
+| Home | 0.051 | Hero: overlay absoluto desloca quando Cormorant + Inter carregam (`7b89…woff2`, `e4af…woff2`) |
+| Artista | 0.047 | `<footer>` — reflow global quando fontes carregam (página longa; retrato hero já com dimensão fixa) |
+| Boletim | 0.062 | `<section class="py-12">` — FOUT ao carregar fontes display/body |
+| Contato | 0.006 | Parágrafo intro — FOUT residual Inter/Cormorant (~6 ms de shift) |
 
-### SEO (92 em todas)
+`adjustFontFallback` do Next já injeta `size-adjust` (Cormorant Fallback 96.98%, Inter Fallback 107.12%). Sob CPU 4× o swap ainda produz shift mensurável — gate CLS=0 estrito exige métricas ainda mais apertadas ou `font-display: optional` (não aplicado para preservar tipografia).
 
-1. Links crawlers em conteúdo markdown — já resolvido na Fase 1.
-2. Verificar `robots` e canonical — infra OK desde Fase 1.
+### Performance &lt; 90 (4 URLs)
+
+| URL | Perf | Nota |
+|-----|------|------|
+| Acervo | 88 | Variância localhost + TBT; CLS=0 |
+| Peça | 87 | Idem |
+| Artista | 87 | Melhorou vs 86 pré-WebP; LCP retrato WebP OK |
+| Home | 91 | Quase no gate |
+
+Em preview Vercel (CDN + edge) tende a subir 2–5 pts vs localhost.
 
 ## Como reproduzir
 
@@ -41,4 +53,4 @@ pnpm --filter web start:prod
 pnpm --filter web lighthouse:mobile
 ```
 
-Relatórios JSON: `apps/web/lighthouse/reports/`
+Relatórios JSON: `apps/web/lighthouse/reports/` · Resumo: `summary.json`
