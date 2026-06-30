@@ -1,10 +1,12 @@
 import type { ReactNode } from 'react'
+import { slugifyHeading } from '../../lib/markdown-sections'
 
 interface MarkdownContentProps {
   content: string
   className?: string
   variant?: 'default' | 'editorial'
   dropcap?: boolean
+  headingAnchors?: boolean
 }
 
 function renderInline(text: string, editorial: boolean): ReactNode[] {
@@ -95,6 +97,7 @@ export function MarkdownContent({
   className = '',
   variant = 'default',
   dropcap = false,
+  headingAnchors = false,
 }: MarkdownContentProps) {
   const editorial = variant === 'editorial'
   const blocks = content.split('\n\n').filter(Boolean)
@@ -123,6 +126,7 @@ export function MarkdownContent({
         }
 
         if (block.startsWith('# ')) {
+          const heading = block.slice(2)
           return (
             <h2
               key={i}
@@ -132,35 +136,39 @@ export function MarkdownContent({
                   : 'font-display text-[2rem] font-light text-[--color-ink] mb-6 mt-10 first:mt-0'
               }
             >
-              {block.slice(2)}
+              {heading}
             </h2>
           )
         }
         if (block.startsWith('## ')) {
+          const heading = block.slice(3)
           return (
             <h3
               key={i}
+              id={headingAnchors ? slugifyHeading(heading) : undefined}
               className={
                 editorial
-                  ? 'font-display text-title-sm font-normal text-ink-800 mb-4 mt-10'
+                  ? 'font-display text-title-sm font-normal text-ink-800 mb-4 mt-10 scroll-mt-28'
                   : 'font-display text-[1.5rem] font-light text-[--color-ink] mb-4 mt-8'
               }
             >
-              {block.slice(3)}
+              {heading}
             </h3>
           )
         }
         if (block.startsWith('### ')) {
+          const heading = block.slice(4)
           return (
             <h4
               key={i}
+              id={headingAnchors ? slugifyHeading(heading) : undefined}
               className={
                 editorial
-                  ? 'font-body font-medium uppercase tracking-caps text-eyebrow text-bronze-500 mb-3 mt-8'
+                  ? 'font-body font-medium uppercase tracking-caps text-eyebrow text-bronze-500 mb-3 mt-8 scroll-mt-28'
                   : 'font-body text-[13px] uppercase tracking-[0.1em] text-[--color-accent] mb-3 mt-6'
               }
             >
-              {block.slice(4)}
+              {heading}
             </h4>
           )
         }

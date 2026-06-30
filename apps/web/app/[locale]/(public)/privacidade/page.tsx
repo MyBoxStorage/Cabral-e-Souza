@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
-import { buildInstitutionalMetadata, InstitutionalPage } from '../../../../lib/pages/institutional'
+import { buildLegalMetadata, LegalPage } from '../../../../lib/pages/legal'
 
 export const revalidate = 3600
 
 export async function generateMetadata(): Promise<Metadata> {
-  return buildInstitutionalMetadata('privacidade')
+  return buildLegalMetadata('privacidade')
 }
 
 export default function PrivacidadePage() {
-  return <InstitutionalPage slug="privacidade" />
+  return <LegalPage slug="privacidade" />
 }

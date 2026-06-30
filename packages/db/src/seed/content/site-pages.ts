@@ -240,11 +240,12 @@ O tratamento de dados pessoais pela Galeria fundamenta-se nas seguintes bases le
 - **Legítimo interesse** — para segurança das operações, prevenção a fraudes e melhoria dos serviços.
 - **Consentimento** — para envio de comunicações de marketing e uso de cookies não essenciais.
 
-## 5. Compartilhamento de dados
+## 5. Compartilhamento de dados e subprocessadores
 
 A Galeria não comercializa dados pessoais. O compartilhamento ocorre apenas quando necessário para:
 
 - Prestadores de serviço que auxiliam em logística, pagamentos, seguros e tecnologia, sob contratos que exigem proteção adequada dos dados.
+- **Subprocessadores de tecnologia:** utilizamos **Supabase** (banco de dados e armazenamento), **Resend** (envio de e-mails transacionais) e **Vercel** (hospedagem e entrega do site). Esses provedores tratam dados estritamente conforme nossas instruções e em ambiente compatível com a LGPD.
 - Autoridades públicas, quando exigido por lei ou ordem judicial.
 - Instituições financeiras e intermediários de pagamento, para processamento de transações.
 

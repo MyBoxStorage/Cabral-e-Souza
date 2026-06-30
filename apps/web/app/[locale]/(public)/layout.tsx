@@ -3,6 +3,7 @@ import { Loader } from '../../../components/Loader'
 import { CookieBanner } from '../../../components/layout/CookieBanner'
 import { Footer } from '../../../components/layout/Footer'
 import { Header } from '../../../components/layout/Header'
+import { WhatsAppFloatingButton } from '../../../components/layout/WhatsAppFloatingButton'
 import { JsonLd } from '../../../components/seo/JsonLd'
 import { CONSENT_COOKIE_NAME, parseConsentCookie } from '../../../lib/cookie-consent'
 import { localBusinessSchema } from '../../../lib/seo/schema'
@@ -33,6 +34,7 @@ export default async function PublicLayout({ children }: PublicLayoutProps) {
         {children}
       </main>
       <Footer />
+      <WhatsAppFloatingButton />
       {showCookieBanner && (
         <>
           <style

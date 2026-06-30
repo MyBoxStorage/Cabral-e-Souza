@@ -1,29 +1,35 @@
+import { Button } from '@cabral-souza/ui'
 import Link from 'next/link'
 
 export default function NotFound() {
   return (
-    <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-6 py-24">
-      <p className="label-caps mb-6">404</p>
-      <h1 className="font-display text-[2.5rem] md:text-[3.5rem] font-light tracking-[-0.02em] text-[--color-ink] mb-4">
-        Página não encontrada
+    <section
+      aria-labelledby="not-found-heading"
+      className="min-h-[80vh] flex flex-col items-center justify-center text-center px-6 py-24 bg-ink-900 text-cream-300 -mt-16 pt-16"
+    >
+      <p className="font-display font-light text-display text-bronze-500 leading-none mb-8" aria-hidden>
+        404
+      </p>
+      <h1
+        id="not-found-heading"
+        className="font-display font-normal text-title-md text-cream-100 max-w-[20ch] leading-tight mb-6"
+      >
+        A obra que você procura não foi encontrada
       </h1>
-      <p className="font-body text-[15px] leading-[1.8] text-[--color-ink-muted] max-w-[44ch] mb-10">
-        A obra, artista ou página que você procura não está disponível — pode ter sido movida ou retirada do acervo público.
+      <p className="font-body text-lead text-bronze-300/90 max-w-[44ch] mb-12 leading-relaxed">
+        Talvez tenha sido reservada, vendida ou esteja em outra sala da galeria.
       </p>
       <div className="flex flex-wrap items-center justify-center gap-4">
-        <Link
-          href="/"
-          className="font-body text-[11px] uppercase tracking-[0.1em] text-[--color-paper] bg-[--color-ink] hover:bg-[--color-accent] px-8 py-4 transition-colors duration-200"
-        >
-          Página inicial
-        </Link>
-        <Link
-          href="/acervo"
-          className="font-body text-[11px] uppercase tracking-[0.1em] text-[--color-accent] border-b border-[--color-accent] pb-[2px] hover:text-[--color-ink] hover:border-[--color-ink] transition-colors"
-        >
-          Explorar acervo
-        </Link>
+        <Button asChild variant="primary" size="lg">
+          <Link href="/acervo">Ver acervo</Link>
+        </Button>
+        <Button asChild variant="ghost" size="lg">
+          <Link href="/boletim">Boletim</Link>
+        </Button>
+        <Button asChild variant="secondary" size="lg">
+          <Link href="/contato">Falar com a galeria</Link>
+        </Button>
       </div>
-    </div>
+    </section>
   )
 }
