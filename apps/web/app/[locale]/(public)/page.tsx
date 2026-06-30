@@ -5,6 +5,7 @@ import { getLocale } from 'next-intl/server'
 import { ArtistCard } from '../../../components/artwork/ArtistCard'
 import { PieceCard } from '../../../components/artwork/PieceCard'
 import { BoletimCard } from '../../../components/content/BoletimCard'
+import { HomeAboutSection } from '../../../components/content/HomeAboutSection'
 import { VenderObraCta } from '../../../components/content/VenderObraCta'
 import { Reveal } from '../../../components/ui/Reveal'
 import { buildPageMetadata } from '../../../lib/seo/metadata'
@@ -33,6 +34,12 @@ export default async function HomePage() {
   const heroImage = heroPiece?.piece_images
     ?.slice()
     .sort((a, b) => (a.is_primary === b.is_primary ? a.sort_order - b.sort_order : a.is_primary ? -1 : 1))[0]
+
+  const aboutImage =
+    featuredPieces[1]?.piece_images
+      ?.slice()
+      .sort((a, b) => (a.is_primary === b.is_primary ? a.sort_order - b.sort_order : a.is_primary ? -1 : 1))[0]
+    ?? heroImage
 
   return (
     <>
@@ -211,20 +218,10 @@ export default async function HomePage() {
 
       {/* Institucional curto */}
       <Reveal>
-      <section className="bg-[--color-ink] text-[--color-paper] py-16 md:py-20">
-        <div className="container-default max-w-[56ch] text-center mx-auto">
-          <p className="font-body text-[15px] leading-[1.85] text-[rgba(250,250,247,0.75)] mb-8">
-            Fundada em 1987 no Rio de Janeiro, a Cabral &amp; Souza dedica-se à curadoria rigorosa de arte moderna e
-            contemporânea brasileira — com integridade documental, transparência comercial e orientação ao colecionador.
-          </p>
-          <Link
-            href="/sobre"
-            className="inline-block font-body text-[11px] uppercase tracking-[0.1em] text-[--color-accent] border-b border-[--color-accent] pb-[2px] hover:text-[--color-paper] hover:border-[--color-paper] transition-colors"
-          >
-            Conheça nossa história
-          </Link>
-        </div>
-      </section>
+        <HomeAboutSection
+          imageUrl={aboutImage?.url_large ?? aboutImage?.url_original ?? null}
+          imageAlt={aboutImage?.alt_text_pt ?? 'Obra do acervo Cabral & Souza'}
+        />
       </Reveal>
 
       {/* CTA vender obra */}
