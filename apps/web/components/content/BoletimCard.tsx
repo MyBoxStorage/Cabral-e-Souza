@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import type { BoletimPost } from '../../lib/queries/boletim'
+import { BoletimHeroFallback } from './BoletimHeroFallback'
 
 const CATEGORY_LABELS: Record<string, string> = {
   analise_leilao: 'Análise de Leilão',
@@ -28,11 +29,7 @@ export function BoletimCard({ post }: BoletimCardProps) {
           />
         </Link>
       ) : (
-        <div className="aspect-[16/9] bg-[--color-paper-muted] flex items-center justify-center border-b border-[--color-paper-deep]">
-          <span className="font-display text-[2rem] font-light text-[--color-ink-subtle]/40" aria-hidden>
-            Boletim
-          </span>
-        </div>
+        <BoletimHeroFallback title={post.title_pt} category={post.category} />
       )}
 
       <div className="p-6 flex flex-col flex-1">

@@ -5,6 +5,7 @@ import { getLocale } from 'next-intl/server'
 import { ArtistCard } from '../../../components/artwork/ArtistCard'
 import { PieceCard } from '../../../components/artwork/PieceCard'
 import { BoletimCard } from '../../../components/content/BoletimCard'
+import { VenderObraCta } from '../../../components/content/VenderObraCta'
 import { Reveal } from '../../../components/ui/Reveal'
 import { buildPageMetadata } from '../../../lib/seo/metadata'
 import { getPublishedArtists } from '../../../lib/queries/artists'
@@ -41,7 +42,7 @@ export default async function HomePage() {
         className="relative min-h-[calc(100dvh-72px)] bg-[--color-ink] text-[--color-paper] overflow-hidden"
       >
         <div className="container-default grid grid-cols-1 lg:grid-cols-2 min-h-[calc(100dvh-72px)] items-center">
-          <div className="relative z-10 flex flex-col justify-center py-16 lg:py-24 text-center lg:text-left min-h-[26rem] sm:min-h-[28rem] lg:min-h-[32rem]">
+          <div className="relative z-10 flex flex-col justify-center py-16 lg:py-24 text-center lg:text-left min-h-[26rem] sm:min-h-[28rem] lg:min-h-[32rem] order-2 lg:order-1">
             <p className="label-caps text-[--color-accent] mb-8">Galeria de Arte · Rio de Janeiro · Desde 1987</p>
 
             <h1
@@ -72,7 +73,7 @@ export default async function HomePage() {
           </div>
 
           {heroImage && (
-            <div className="relative min-h-[45vh] lg:min-h-[calc(100dvh-72px)] lg:-mr-[var(--space-16)]">
+            <div className="relative min-h-[45vh] lg:min-h-[calc(100dvh-72px)] lg:-mr-[var(--space-16)] order-1 lg:order-2">
               <Image
                 src={heroImage.url_large ?? heroImage.url_original}
                 alt={heroImage.alt_text_pt ?? heroPiece?.title_pt ?? 'Obra em destaque'}
@@ -82,7 +83,7 @@ export default async function HomePage() {
                 className="object-cover"
               />
               <div
-                className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-[--color-ink] via-[--color-ink]/40 to-transparent"
+                className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-[--color-ink]/80 via-[--color-ink]/25 to-transparent lg:from-[--color-ink] lg:via-[--color-ink]/40"
                 aria-hidden
               />
             </div>
@@ -228,22 +229,7 @@ export default async function HomePage() {
 
       {/* CTA vender obra */}
       <Reveal delay={60}>
-      <section className="border-t border-[--color-paper-deep] py-16 md:py-20">
-        <div className="container-default text-center">
-          <h2 className="font-display text-[1.75rem] md:text-[2.25rem] font-light text-[--color-ink] mb-4">
-            Possui uma obra que merece avaliação cuidadosa?
-          </h2>
-          <p className="font-body text-[14px] text-[--color-ink-muted] max-w-[44ch] mx-auto mb-8">
-            Avaliamos obras de arte e antiguidades com rigor documental, confidencialidade e resposta em até 5 dias úteis.
-          </p>
-          <Link
-            href="/vender-obra"
-            className="inline-block font-body text-[11px] uppercase tracking-[0.1em] text-[--color-paper] bg-[--color-ink] hover:bg-[--color-accent] px-8 py-4 transition-colors duration-200"
-          >
-            Solicitar avaliação
-          </Link>
-        </div>
-      </section>
+        <VenderObraCta />
       </Reveal>
     </>
   )
