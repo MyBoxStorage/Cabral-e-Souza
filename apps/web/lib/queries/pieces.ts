@@ -61,6 +61,25 @@ const LIST_SELECT = `
   piece_images(${IMAGE_SELECT})
 `.replace(/\s+/g, ' ').trim()
 
+export async function getFeaturedPieces(limit = 3): Promise<PieceListItem[]> {
+  const db = createAdminClient()
+
+  const { data, error } = await db
+    .from('pieces')
+    .select(LIST_SELECT)
+    .eq('featured', true)
+    .in('status', ['publico', 'reservado'])
+    .order('created_at', { ascending: false })
+    .limit(limit)
+
+  if (error) {
+    console.error('[getFeaturedPieces]', error.message)
+    return []
+  }
+
+  return (data ?? []) as unknown as PieceListItem[]
+}
+
 export async function getPublicPieces(filters: PieceFilters = {}): Promise<PieceListItem[]> {
   const db = createAdminClient()
   const { limit = 48, offset = 0, artistSlug, category, yearFrom, yearTo, search } = filters
