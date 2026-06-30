@@ -11,6 +11,7 @@
     "typecheck": "turbo run typecheck",
     "clean": "turbo run clean && rimraf node_modules",
     "db:seed:placeholders": "pnpm --filter=@cabral-souza/db seed:placeholders",
+    "db:seed:reference-works": "pnpm --filter=@cabral-souza/db seed:reference-works",
     "db:migrate": "pnpm --filter=@cabral-souza/db migrate"
   },
   "devDependencies": {

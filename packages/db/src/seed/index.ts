@@ -1,6 +1,8 @@
 import { createSeedClient } from './client'
 import { seedArtistPortraits } from './artist-portraits'
 import { seedPieceImages } from './images'
+import { seedReferenceWorkImages } from './reference-works'
+import { seedBoletimHeroImages } from './boletim-heroes'
 import { runMigrations } from './migrate'
 import { seedPieces } from './run-pieces'
 import { seedArtists } from './run-artists'
@@ -41,9 +43,14 @@ async function main() {
   const postsCount = await seedBoletim(db)
   console.log(`   ✓ ${postsCount} posts\n`)
 
-  console.log('6/6 Imagens placeholder...')
+  console.log('6/7 Imagens placeholder (tipográficas — fallback)...')
   const imagesCount = await seedPieceImages(db)
-  console.log(`   ✓ ${imagesCount} imagens enviadas ao bucket piece-images\n`)
+  console.log(`   ✓ ${imagesCount} imagens tipográficas (ignoradas se works/ já existir)\n`)
+
+  console.log('7/7 Imagens de referência (obras DP + boletim)...')
+  const worksCount = await seedReferenceWorkImages(db, { force: true })
+  const heroesCount = await seedBoletimHeroImages(db, { force: true })
+  console.log(`   ✓ ${worksCount} obras + ${heroesCount} heroes boletim\n`)
 
   console.log('✅ Seed concluído com sucesso.')
 }

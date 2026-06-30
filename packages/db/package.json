@@ -15,6 +15,7 @@
     "lint": "eslint .",
     "clean": "rimraf dist",
     "seed:placeholders": "tsx src/seed/index.ts",
+    "seed:reference-works": "tsx src/seed/run-reference-works.ts",
     "seed:artist-portraits": "tsx src/seed/run-artist-portraits.ts",
     "migrate": "tsx src/seed/run-migrate.ts",
     "test:sourcing-e2e": "tsx src/seed/test-sourcing-e2e.ts"
