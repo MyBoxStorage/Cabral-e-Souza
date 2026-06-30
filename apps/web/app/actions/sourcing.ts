@@ -68,7 +68,7 @@ export async function submitSourcingLead(formData: FormData): Promise<{ ok: true
 
   const expectedValue = VALUE_RANGE_MAP[data.value_range] ?? null
 
-  const { error } = await db.from('sourcing_leads').insert({
+  const { data: inserted, error } = await db.from('sourcing_leads').insert({
     seller_name: data.seller_name,
     seller_email: data.seller_email,
     seller_phone: data.seller_phone,
@@ -84,12 +84,17 @@ export async function submitSourcingLead(formData: FormData): Promise<{ ok: true
     consent_data: true,
     consent_at: new Date().toISOString(),
     status: 'aguardando_analise',
-  })
+  }).select('id').single()
 
-  if (error) {
-    console.error('[submitSourcingLead]', error.message)
+  if (error || !inserted) {
+    console.error('[submitSourcingLead]', error?.message)
     return { ok: false, error: 'Erro ao enviar solicitação. Tente novamente ou entre em contato pelo WhatsApp.' }
   }
+
+  const { notifySourcingLeadCreated } = await import('../../lib/notifications/sourcing-lead')
+  notifySourcingLeadCreated(inserted.id).catch((err) => {
+    console.error('[submitSourcingLead] notification failed', err)
+  })
 
   return { ok: true }
 }
