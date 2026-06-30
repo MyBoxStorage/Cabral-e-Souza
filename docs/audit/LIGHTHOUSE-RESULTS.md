@@ -54,3 +54,33 @@ pnpm --filter web lighthouse:mobile
 ```
 
 Relatórios JSON: `apps/web/lighthouse/reports/` · Resumo: `summary.json`
+
+---
+
+## Vercel Preview
+
+> **Status:** pendente — preencher após primeiro deploy preview.
+
+**Comando (substitua a URL):**
+
+```bash
+pnpm --filter web lighthouse:mobile -- --baseUrl=https://SEU-PROJETO.vercel.app
+```
+
+| URL | Perf | A11y | BP | SEO | CLS | Gate |
+|-----|------|------|-----|-----|-----|------|
+| `/pt-BR` | — | — | — | — | — | — |
+| `/pt-BR/acervo` | — | — | — | — | — | — |
+| `/pt-BR/acervo/carnaval-carioca` | — | — | — | — | — | — |
+| `/pt-BR/artistas/di-cavalcanti` | — | — | — | — | — | — |
+| `/pt-BR/boletim` | — | — | — | — | — | — |
+| `/pt-BR/contato` | — | — | — | — | — | — |
+
+### Comparação localhost vs preview
+
+| Métrica | Localhost (média) | Preview | Δ |
+|---------|-------------------|---------|---|
+| Performance | ~89 | — | — |
+| CLS (URLs com falha) | 0.006–0.062 | — | — |
+
+Checklist manual: [PREVIEW-VALIDATION.md](./PREVIEW-VALIDATION.md)

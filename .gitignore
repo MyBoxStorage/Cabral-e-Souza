@@ -39,3 +39,10 @@ npm-debug.log*
 # Supabase local
 supabase/.branches
 supabase/.temp
+
+# Build artifacts
+*.tsbuildinfo
+
+# Lighthouse local reports
+apps/web/lighthouse/reports/
+docs/audit/lighthouse-*.json

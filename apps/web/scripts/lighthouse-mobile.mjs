@@ -8,6 +8,7 @@
  * Uso:
  *   pnpm --filter web lighthouse:mobile
  *   pnpm --filter web lighthouse:mobile -- --url=http://localhost:3000/pt-BR/acervo
+ *   pnpm --filter web lighthouse:mobile -- --baseUrl=https://preview.vercel.app
  */
 
 import * as chromeLauncher from 'chrome-launcher'
@@ -25,22 +26,28 @@ const config = require(configPath)
 
 const args = process.argv.slice(2)
 const singleUrlArg = args.find((a) => a.startsWith('--url='))
+const baseUrlArg = args.find((a) => a.startsWith('--baseUrl='))
 const outDir = join(__dirname, '../lighthouse/reports')
+
+const effectiveConfig = {
+  ...config,
+  baseUrl: baseUrlArg?.replace('--baseUrl=', '') ?? config.baseUrl,
+}
 
 const CONSENT_COOKIE_VALUE = encodeURIComponent(
   JSON.stringify({ analytics: false, marketing: false, decided: true }),
 )
 
 function localePath(path) {
-  const locale = config.locale ?? 'pt-BR'
+  const locale = effectiveConfig.locale ?? 'pt-BR'
   if (path === '/') return `/${locale}`
   return `/${locale}${path}`
 }
 
 function buildUrls() {
   if (singleUrlArg) return [singleUrlArg.replace('--url=', '')]
-  const base = config.baseUrl.replace(/\/$/, '')
-  return (config.paths ?? ['/']).map((p) => `${base}${localePath(p)}`)
+  const base = effectiveConfig.baseUrl.replace(/\/$/, '')
+  return (effectiveConfig.paths ?? ['/']).map((p) => `${base}${localePath(p)}`)
 }
 
 function slugFromUrl(url) {
@@ -65,12 +72,14 @@ async function runLighthouse(url) {
       browserURL: `http://127.0.0.1:${chrome.port}`,
     })
     const page = await browser.newPage()
+    const targetHost = new URL(url).hostname
     await page.setCookie({
       name: 'cs_cookie_consent',
       value: CONSENT_COOKIE_VALUE,
-      domain: 'localhost',
+      domain: targetHost,
       path: '/',
       sameSite: 'Lax',
+      secure: url.startsWith('https'),
     })
     await page.close()
     browser.disconnect()
@@ -131,7 +140,7 @@ function passThresholds(scores, thresholds) {
 async function main() {
   await mkdir(outDir, { recursive: true })
   const urls = buildUrls()
-  const thresholds = config.thresholds ?? {}
+  const thresholds = effectiveConfig.thresholds ?? {}
   const results = []
 
   console.log(`\nLighthouse mobile — ${urls.length} URL(s)\n`)
