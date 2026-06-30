@@ -116,6 +116,38 @@ export async function getPublicPieces(filters: PieceFilters = {}): Promise<Piece
   return (data ?? []) as unknown as PieceListItem[]
 }
 
+export async function countPublicPieces(
+  filters: Omit<PieceFilters, 'limit' | 'offset'> = {},
+): Promise<number> {
+  const db = createAdminClient()
+  const { artistSlug, category, yearFrom, yearTo, search } = filters
+
+  let query = db
+    .from('pieces')
+    .select('id', { count: 'exact', head: true })
+    .in('status', ['publico', 'reservado'])
+
+  if (artistSlug) {
+    const { data: artist } = await db.from('artists').select('id').eq('slug', artistSlug).single()
+    if (artist) query = query.eq('artist_id', artist.id)
+    else return 0
+  }
+
+  if (category) query = query.eq('category', category)
+  if (yearFrom) query = query.gte('year_created', yearFrom)
+  if (yearTo) query = query.lte('year_created', yearTo)
+  if (search) query = query.ilike('title_pt', `%${search}%`)
+
+  const { count, error } = await query
+
+  if (error) {
+    console.error('[countPublicPieces]', error.message)
+    return 0
+  }
+
+  return count ?? 0
+}
+
 export async function getPieceBySlug(slug: string): Promise<PieceDetail | null> {
   const db = createAdminClient()
 
