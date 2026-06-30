@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { ArtistCard } from '../../../components/artwork/ArtistCard'
 import { PieceCard } from '../../../components/artwork/PieceCard'
@@ -24,44 +25,70 @@ export default async function HomePage() {
     getPublishedBoletimPosts(2),
   ])
 
+  const heroPiece = featuredPieces[0]
+  const heroImage = heroPiece?.piece_images
+    ?.slice()
+    .sort((a, b) => (a.is_primary === b.is_primary ? a.sort_order - b.sort_order : a.is_primary ? -1 : 1))[0]
+
   return (
     <>
       {/* Hero */}
       <section
         aria-labelledby="hero-heading"
-        className="relative min-h-[calc(100dvh-72px)] flex flex-col items-center justify-center text-center bg-[--color-ink] text-[--color-paper] px-6 py-24"
+        className="relative min-h-[calc(100dvh-72px)] bg-[--color-ink] text-[--color-paper] overflow-hidden"
       >
-        <p className="label-caps text-[--color-accent] mb-8">Galeria de Arte · Rio de Janeiro · Desde 1987</p>
+        <div className="container-default grid grid-cols-1 lg:grid-cols-2 min-h-[calc(100dvh-72px)] items-center">
+          <div className="relative z-10 flex flex-col justify-center py-16 lg:py-24 text-center lg:text-left">
+            <p className="label-caps text-[--color-accent] mb-8">Galeria de Arte · Rio de Janeiro · Desde 1987</p>
 
-        <h1
-          id="hero-heading"
-          className="font-display text-[clamp(2.75rem,7vw,6rem)] font-light leading-[1.05] tracking-[-0.02em] max-w-[14ch] mb-8"
-        >
-          Arte brasileira com rigor curatorial
-        </h1>
+            <h1
+              id="hero-heading"
+              className="font-display text-[clamp(2.75rem,7vw,5rem)] font-light leading-[1.05] tracking-[-0.02em] max-w-[14ch] mx-auto lg:mx-0 mb-8"
+            >
+              Arte brasileira com rigor curatorial
+            </h1>
 
-        <p className="font-body text-[--text-lg] leading-[1.8] text-[rgba(250,250,247,0.6)] max-w-[44ch] mb-12">
-          Modernismo, arte contemporânea e antiguidades selecionadas. Autenticidade documentada, proveniência verificada.
-        </p>
+            <p className="font-body text-[--text-lg] leading-[1.8] text-[rgba(250,250,247,0.75)] max-w-[44ch] mx-auto lg:mx-0 mb-12">
+              Modernismo, arte contemporânea e antiguidades selecionadas. Autenticidade documentada, proveniência verificada.
+            </p>
 
-        <div className="flex flex-wrap items-center justify-center gap-5">
-          <Link
-            href="/acervo"
-            className="font-body text-[11px] uppercase tracking-[0.1em] text-[--color-paper] bg-[--color-accent] hover:bg-[--color-accent-deep] px-8 py-4 transition-colors duration-200"
-          >
-            Explorar acervo
-          </Link>
-          <Link
-            href="/contato"
-            className="font-body text-[11px] uppercase tracking-[0.1em] text-[--color-accent] border-b border-[--color-accent] pb-[2px] hover:text-[--color-paper] hover:border-[--color-paper] transition-colors duration-200"
-          >
-            Falar com a galeria
-          </Link>
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-5">
+              <Link
+                href="/acervo"
+                className="font-body text-[11px] uppercase tracking-[0.1em] text-[--color-paper] bg-[--color-accent] hover:bg-[--color-accent-deep] px-8 py-4 transition-colors duration-200"
+              >
+                Explorar acervo
+              </Link>
+              <Link
+                href="/contato"
+                className="font-body text-[11px] uppercase tracking-[0.1em] text-[--color-accent] border-b border-[--color-accent] pb-[2px] hover:text-[--color-paper] hover:border-[--color-paper] transition-colors duration-200"
+              >
+                Falar com a galeria
+              </Link>
+            </div>
+          </div>
+
+          {heroImage && (
+            <div className="relative min-h-[45vh] lg:min-h-[calc(100dvh-72px)] lg:-mr-[var(--space-16)]">
+              <Image
+                src={heroImage.url_large ?? heroImage.url_original}
+                alt={heroImage.alt_text_pt ?? heroPiece?.title_pt ?? 'Obra em destaque'}
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+              />
+              <div
+                className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-[--color-ink] via-[--color-ink]/40 to-transparent"
+                aria-hidden
+              />
+            </div>
+          )}
         </div>
 
         <p
           aria-hidden
-          className="absolute bottom-8 font-body text-[10px] uppercase tracking-[0.18em] text-[rgba(139,115,85,0.4)]"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 lg:left-auto lg:translate-x-0 lg:left-8 font-body text-[10px] uppercase tracking-[0.18em] text-[rgba(139,115,85,0.4)]"
         >
           Est. 1987
         </p>
@@ -72,9 +99,9 @@ export default async function HomePage() {
         <div className="container-default">
           <dl className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-[--color-paper-deep]">
             {[
-              { value: '10+', label: 'Obras em acervo' },
               { value: '40', label: 'Anos de atuação' },
               { value: '100%', label: 'Autenticidade documentada' },
+              { value: 'RJ', label: 'Sede no Rio de Janeiro' },
             ].map((stat) => (
               <div key={stat.label} className="flex flex-col items-center py-6 px-8 text-center">
                 <dt className="font-display text-[2.5rem] font-light text-[--color-ink] leading-none mb-2">
@@ -123,7 +150,7 @@ export default async function HomePage() {
             <div className="mb-10">
               <p className="label-caps mb-3">Artistas</p>
               <h2 id="artists-heading" className="font-display text-[2rem] md:text-[2.5rem] font-light tracking-[-0.02em]">
-                Conheça nossos artistas
+                Artistas do acervo
               </h2>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-6 gap-y-10">
@@ -173,7 +200,7 @@ export default async function HomePage() {
       {/* Institucional curto */}
       <section className="bg-[--color-ink] text-[--color-paper] py-16 md:py-20">
         <div className="container-default max-w-[56ch] text-center mx-auto">
-          <p className="font-body text-[15px] leading-[1.85] text-[rgba(250,250,247,0.65)] mb-8">
+          <p className="font-body text-[15px] leading-[1.85] text-[rgba(250,250,247,0.75)] mb-8">
             Fundada em 1987 no Rio de Janeiro, a Cabral &amp; Souza dedica-se à curadoria rigorosa de arte moderna e
             contemporânea brasileira — com integridade documental, transparência comercial e orientação ao colecionador.
           </p>

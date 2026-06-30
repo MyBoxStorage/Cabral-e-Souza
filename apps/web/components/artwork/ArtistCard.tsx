@@ -24,7 +24,7 @@ export function ArtistCard({ artist, priority = false }: ArtistCardProps) {
               alt={`${artist.name} — retrato`}
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
-              className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-[1.03]"
+              className="object-cover grayscale-0 group-hover:scale-[1.015] transition-transform duration-500"
               priority={priority}
             />
           ) : (
