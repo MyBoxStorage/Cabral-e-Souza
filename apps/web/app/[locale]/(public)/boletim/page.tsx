@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
+import { PageHeader } from '@cabral-souza/ui'
 import Link from 'next/link'
 import { BoletimCard } from '../../../../components/content/BoletimCard'
+import { Reveal } from '../../../../components/ui/Reveal'
 import { JsonLd } from '../../../../components/seo/JsonLd'
 import { getPublishedBoletimPosts } from '../../../../lib/queries/boletim'
 import { buildPageMetadata, getSiteUrl } from '../../../../lib/seo/metadata'
@@ -30,44 +32,55 @@ export default async function BoletimPage() {
     })),
   })
 
+  const [featured, ...rest] = posts
+
   return (
     <>
       <JsonLd data={schema} />
-      <section className="bg-[--color-paper-muted] border-b border-[--color-paper-deep] py-12 md:py-16">
-        <div className="container-default">
-          <p className="label-caps text-[--color-accent] mb-4">Boletim</p>
-          <h1 className="font-display text-[2.5rem] md:text-[3.5rem] font-light tracking-[-0.02em]">
-            Boletim Cabral &amp; Souza
-          </h1>
-          <p className="font-body text-[--color-ink-muted] mt-3 max-w-[56ch]">
-            Análises de mercado, leituras de leilão e reflexões curatoriais sobre arte brasileira.
-          </p>
-        </div>
-      </section>
 
-      <section className="py-12 md:py-16">
-        <div className="container-default max-w-[72ch]">
+      <PageHeader
+        section="Boletim"
+        title="Boletim Cabral & Souza"
+        subtitle="Análises de mercado, leituras de leilão e reflexões curatoriais sobre arte brasileira."
+      />
+
+      <section className="section-padding bg-cream-50">
+        <div className="container-default">
           {posts.length === 0 ? (
-            <div className="text-center py-16">
-              <p className="font-display text-[1.5rem] font-light text-[--color-ink-subtle] mb-3">
+            <div className="text-center py-16 max-w-narrow mx-auto">
+              <p className="font-display text-title-sm font-normal text-ink-700/50 mb-3">
                 Publicações em preparação
               </p>
-              <p className="font-body text-[14px] text-[--color-ink-muted] mb-8">
+              <p className="font-body text-body text-ink-700 mb-8">
                 Em breve, análises de mercado e editoriais curatoriais.
               </p>
               <Link
                 href="/contato"
-                className="inline-block font-body text-[11px] uppercase tracking-[0.1em] text-[--color-ink] border border-[--color-ink] hover:bg-[--color-ink] hover:text-[--color-paper] px-6 py-3 transition-colors"
+                className="inline-block font-body text-eyebrow font-medium uppercase tracking-caps text-ink-800 border border-ink-800 hover:bg-ink-800 hover:text-cream-100 px-6 py-3 transition-colors duration-base"
               >
                 Receber novidades
               </Link>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {posts.map((post) => (
-                <BoletimCard key={post.id} post={post} />
-              ))}
-            </div>
+            <>
+              {featured && (
+                <Reveal>
+                  <div className="mb-12 lg:mb-16">
+                    <BoletimCard post={featured} />
+                  </div>
+                </Reveal>
+              )}
+
+              {rest.length > 0 && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+                  {rest.map((post, i) => (
+                    <Reveal key={post.id} delay={Math.min(i * 80, 400)}>
+                      <BoletimCard post={post} />
+                    </Reveal>
+                  ))}
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>

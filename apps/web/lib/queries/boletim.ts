@@ -44,3 +44,25 @@ export async function getBoletimSlugs(): Promise<string[]> {
 
   return (data ?? []).map((p) => p.slug)
 }
+
+export async function getAdjacentBoletimPosts(slug: string): Promise<{
+  prev: Pick<BoletimPost, 'slug' | 'title_pt'> | null
+  next: Pick<BoletimPost, 'slug' | 'title_pt'> | null
+}> {
+  const posts = await getPublishedBoletimPosts(100)
+  const index = posts.findIndex((p) => p.slug === slug)
+  if (index === -1) return { prev: null, next: null }
+
+  const prev = index > 0 ? posts[index - 1] : null
+  const next = index < posts.length - 1 ? posts[index + 1] : null
+
+  return {
+    prev: prev ? { slug: prev.slug, title_pt: prev.title_pt } : null,
+    next: next ? { slug: next.slug, title_pt: next.title_pt } : null,
+  }
+}
+
+export function estimateReadingTimeMinutes(content: string): number {
+  const words = content.trim().split(/\s+/).filter(Boolean).length
+  return Math.max(1, Math.ceil(words / 200))
+}

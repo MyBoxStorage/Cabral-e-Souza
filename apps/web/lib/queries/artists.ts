@@ -57,3 +57,30 @@ export async function getArtistSlugs(): Promise<string[]> {
 
   return (data ?? []).map((a) => a.slug)
 }
+
+export type ArtistComparable = {
+  id: string
+  auction_house: string
+  auction_date: string
+  work_title: string | null
+  work_year: number | null
+  hammer_price: number | null
+  currency: string | null
+  currency_at_brl: number | null
+}
+
+export async function getArtistAuctionComparables(artistId: string): Promise<ArtistComparable[]> {
+  const db = createAdminClient()
+  const { data, error } = await db
+    .from('auction_comparables')
+    .select('id,auction_house,auction_date,work_title,work_year,hammer_price,currency,currency_at_brl')
+    .eq('artist_id', artistId)
+    .order('auction_date', { ascending: false })
+    .limit(12)
+
+  if (error) {
+    console.error('[getArtistAuctionComparables]', error.message)
+    return []
+  }
+  return data ?? []
+}

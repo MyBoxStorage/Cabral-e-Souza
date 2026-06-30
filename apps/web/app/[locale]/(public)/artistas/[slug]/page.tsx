@@ -1,13 +1,19 @@
 import type { Metadata } from 'next'
+import { Button, FrameOrnamental, SectionHeader } from '@cabral-souza/ui'
 import { getLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import { PieceCard } from '../../../../../components/artwork/PieceCard'
-import { MarkdownContent } from '../../../../../components/content/MarkdownContent'
+import { ArtistVerbeteTabs } from '../../../../../components/artwork/ArtistVerbeteTabs'
+import { PieceArtworkCard } from '../../../../../components/artwork/PieceArtworkCard'
 import { JsonLd } from '../../../../../components/seo/JsonLd'
+import { splitArtistBio } from '../../../../../lib/artists'
 import { artistYears } from '../../../../../lib/format'
-import { getArtistBySlug, getArtistSlugs } from '../../../../../lib/queries/artists'
+import {
+  getArtistAuctionComparables,
+  getArtistBySlug,
+  getArtistSlugs,
+} from '../../../../../lib/queries/artists'
 import { countPublicPieces, getPublicPieces } from '../../../../../lib/queries/pieces'
 import { buildPageMetadata } from '../../../../../lib/seo/metadata'
 import { breadcrumbSchema, personSchema } from '../../../../../lib/seo/schema'
@@ -46,17 +52,20 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
   const artist = await getArtistBySlug(slug)
   if (!artist) notFound()
 
-  // Peças do artista em público
-  const [pieces, totalPieces] = await Promise.all([
+  const [pieces, totalPieces, comparables] = await Promise.all([
     getPublicPieces({ artistSlug: slug, limit: 8 }),
     countPublicPieces({ artistSlug: slug }),
+    getArtistAuctionComparables(artist.id),
   ])
 
   const bio =
-    locale === 'en-US' ? (artist.bio_en ?? artist.bio_pt)
-    : locale === 'fr-FR' ? (artist.bio_fr ?? artist.bio_pt)
-    : artist.bio_pt
+    locale === 'en-US'
+      ? (artist.bio_en ?? artist.bio_pt)
+      : locale === 'fr-FR'
+        ? (artist.bio_fr ?? artist.bio_pt)
+        : artist.bio_pt
 
+  const { biografia, mercado } = bio ? splitArtistBio(bio) : { biografia: '', mercado: '' }
   const years = artistYears(artist.birth_year, artist.death_year)
 
   const schema = [
@@ -81,143 +90,143 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
     <>
       <JsonLd data={schema} />
 
-      {/* Hero do artista */}
-      <section className="relative bg-[--color-ink] text-[--color-paper] overflow-hidden">
-        <div
-          className={[
-            'container-default py-16 md:py-24',
-            artist.hero_image_url
-              ? 'grid grid-cols-1 md:grid-cols-[1fr_auto] gap-8 items-end'
-              : 'max-w-[72ch]',
-          ].join(' ')}
-        >
-          <div>
-            <nav aria-label="Breadcrumb" className="mb-8">
-              <ol className="flex items-center gap-2 list-none font-body text-[12px] text-[rgba(250,250,247,0.4)]">
-                <li>
-                  <Link href="/artistas" className="hover:text-[--color-accent] transition-colors">
-                    Artistas
-                  </Link>
-                </li>
-                <li aria-hidden>/</li>
-                <li aria-current="page" className="text-[rgba(250,250,247,0.7)]">{artist.name}</li>
-              </ol>
-            </nav>
+      {/* Hero 50/50 */}
+      <section className="bg-cream-100 border-b border-cream-200">
+        <div className="container-default py-12 lg:py-20">
+          <nav aria-label="Breadcrumb" className="mb-8">
+            <ol className="flex items-center gap-2 list-none font-body text-body-sm text-ink-700">
+              <li>
+                <Link href="/artistas" className="hover:text-bronze-500 transition-colors duration-base">
+                  Artistas
+                </Link>
+              </li>
+              <li aria-hidden className="text-ink-700/40">
+                /
+              </li>
+              <li aria-current="page" className="text-ink-800">
+                {artist.name}
+              </li>
+            </ol>
+          </nav>
 
-            {artist.nationality && (
-              <p className="label-caps text-[--color-accent] mb-4">{artist.nationality}</p>
-            )}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div>
+              {artist.nationality && (
+                <p className="font-body font-medium uppercase tracking-eyebrow text-eyebrow text-bronze-500 mb-4">
+                  {artist.nationality}
+                </p>
+              )}
 
-            <h1 className="font-display text-[2.5rem] md:text-[4rem] font-light leading-[1.05] tracking-[-0.025em] mb-4">
-              {artist.name}
-            </h1>
+              <h1 className="font-display font-normal text-title-lg text-ink-800 leading-tight mb-4">
+                {artist.name}
+              </h1>
 
-            {years && (
-              <p className="font-body text-[1rem] text-[rgba(250,250,247,0.55)]">{years}</p>
-            )}
+              {years && <p className="font-body text-lead text-ink-700 mb-6">{years}</p>}
 
-            {artist.schools && artist.schools.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-6">
-                {artist.schools.map((school) => (
-                  <span
-                    key={school}
-                    className="font-body text-[10px] uppercase tracking-[0.1em] text-[rgba(250,250,247,0.5)] border border-[rgba(250,250,247,0.15)] px-3 py-1"
-                  >
-                    {school}
-                  </span>
-                ))}
+              {artist.schools && artist.schools.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {artist.schools.map((school) => (
+                    <span
+                      key={school}
+                      className="font-body text-eyebrow uppercase tracking-caps text-ink-700 border border-cream-200 px-3 py-1"
+                    >
+                      {school}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {artist.hero_image_url && (
+              <div className="flex justify-center lg:justify-end">
+                <FrameOrnamental className="w-full max-w-[320px]">
+                  <div className="relative aspect-[3/4] bg-cream-200">
+                    <Image
+                      src={artist.hero_image_url}
+                      alt={`${artist.name} — retrato`}
+                      fill
+                      sizes="(max-width: 1024px) 80vw, 320px"
+                      className="object-cover"
+                      priority
+                    />
+                  </div>
+                </FrameOrnamental>
               </div>
             )}
           </div>
-
-          {artist.hero_image_url && (
-            <div className="relative w-[200px] h-[280px] md:w-[260px] md:h-[360px] flex-shrink-0 overflow-hidden">
-              <Image
-                src={artist.hero_image_url}
-                alt={`${artist.name} — retrato`}
-                fill
-                sizes="260px"
-                className="object-cover"
-                priority
-              />
-            </div>
-          )}
         </div>
       </section>
 
-      <div className="container-default py-12 md:py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-16">
-          {/* Verbete */}
+      <div className="container-default section-padding">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-16">
           <div>
             {bio && (
-              <section aria-labelledby="bio-heading" className="mb-16">
-                <h2 id="bio-heading" className="font-body text-[11px] uppercase tracking-[0.14em] text-[--color-ink-subtle] mb-6">
-                  Verbete
-                </h2>
-                <MarkdownContent content={bio} />
-              </section>
+              <ArtistVerbeteTabs
+                biografia={biografia}
+                mercado={mercado}
+                comparables={comparables}
+              />
             )}
 
-            {/* Peças disponíveis */}
             {pieces.length > 0 && (
-              <section aria-labelledby="pieces-heading">
-                <h2 id="pieces-heading" className="font-body text-[11px] uppercase tracking-[0.14em] text-[--color-ink-subtle] mb-8">
-                  Obras Disponíveis na Galeria
-                </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-10">
+              <section aria-label="Obras disponíveis" className="mb-16">
+                <SectionHeader eyebrow="Acervo" title="Obras disponíveis" className="mb-10" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
                   {pieces.map((piece, i) => (
-                    <PieceCard key={piece.id} piece={piece} priority={i < 2} locale={locale} />
+                    <PieceArtworkCard key={piece.id} piece={piece} priority={i < 4} locale={locale} />
                   ))}
                 </div>
                 {totalPieces > pieces.length && (
-                  <div className="mt-10 text-center">
-                    <Link
-                      href={`/acervo?artista=${artist.slug}`}
-                      className="inline-block font-body text-[11px] uppercase tracking-[0.1em] text-[--color-ink] border border-[--color-ink] hover:bg-[--color-ink] hover:text-[--color-paper] px-8 py-4 transition-colors duration-200"
-                    >
-                      Ver todo o acervo de {artist.name}
-                    </Link>
+                  <div className="mt-12 text-center">
+                    <Button asChild variant="secondary">
+                      <Link href={`/acervo?artista=${artist.slug}`}>
+                        Ver todo o acervo de {artist.name}
+                      </Link>
+                    </Button>
                   </div>
                 )}
               </section>
             )}
+
+            <section className="bg-ink-900 text-cream-100 p-10 lg:p-14 text-center">
+              <p className="font-display text-title-xs font-normal mb-3">
+                Interesse em obras de {artist.name}?
+              </p>
+              <p className="font-body text-body text-cream-300/80 mb-8 max-w-[48ch] mx-auto">
+                Consulte nossa curadoria sobre disponibilidade, condições e dossiê de mercado.
+              </p>
+              <Button asChild variant="primary">
+                <Link href="/contato">Solicitar dossiê</Link>
+              </Button>
+            </section>
           </div>
 
-          {/* Sidebar */}
-          <aside className="flex flex-col gap-8 lg:self-start lg:sticky lg:top-24">
-            {/* Dados do artista */}
-            <div className="border border-[--color-paper-deep] p-6">
-              <h2 className="font-body text-[10px] uppercase tracking-[0.14em] text-[--color-ink-subtle] mb-5">
+          <aside className="flex flex-col gap-8 lg:self-start lg:sticky lg:top-28">
+            <div className="border border-cream-200 bg-cream-50 p-6">
+              <h2 className="font-body font-medium uppercase tracking-eyebrow text-eyebrow text-bronze-500 mb-5">
                 Dados
               </h2>
-              <dl className="flex flex-col gap-3">
+              <dl className="flex flex-col gap-4">
                 {[
-                  { label: 'Nascimento', value: artist.birth_year ? `${artist.birth_year}${artist.birth_place ? `, ${artist.birth_place}` : ''}` : null },
+                  {
+                    label: 'Nascimento',
+                    value: artist.birth_year
+                      ? `${artist.birth_year}${artist.birth_place ? `, ${artist.birth_place}` : ''}`
+                      : null,
+                  },
                   { label: 'Falecimento', value: artist.death_year?.toString() },
                   { label: 'Nacionalidade', value: artist.nationality },
-                ].filter((r) => r.value).map((row) => (
-                  <div key={row.label}>
-                    <dt className="font-body text-[10px] uppercase tracking-[0.1em] text-[--color-ink-subtle]">{row.label}</dt>
-                    <dd className="font-body text-[13px] text-[--color-ink] mt-0.5">{row.value}</dd>
-                  </div>
-                ))}
+                ]
+                  .filter((r) => r.value)
+                  .map((row) => (
+                    <div key={row.label}>
+                      <dt className="font-body text-eyebrow uppercase tracking-caps text-ink-700">
+                        {row.label}
+                      </dt>
+                      <dd className="font-body text-body-sm text-ink-800 mt-1">{row.value}</dd>
+                    </div>
+                  ))}
               </dl>
-            </div>
-
-            {/* CTA contato */}
-            <div className="border border-[--color-paper-deep] p-6 text-center">
-              <p className="font-display text-[1.0625rem] font-light text-[--color-ink] mb-2">
-                Interesse em obras deste artista?
-              </p>
-              <p className="font-body text-[12px] text-[--color-ink-subtle] mb-5">
-                Consulte nossa curadoria sobre disponibilidade e condições.
-              </p>
-              <Link
-                href="/contato"
-                className="inline-block w-full font-body text-[11px] uppercase tracking-[0.1em] text-[--color-paper] bg-[--color-ink] hover:bg-[--color-accent] py-3 transition-colors duration-200 text-center"
-              >
-                Solicitar dossiê
-              </Link>
             </div>
           </aside>
         </div>

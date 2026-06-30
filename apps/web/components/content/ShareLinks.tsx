@@ -23,24 +23,18 @@ export function ShareLinks({ title, url }: ShareLinksProps) {
   const whatsappText = encodeURIComponent(`${title}\n${url}`)
   const whatsappHref = `https://wa.me/?text=${whatsappText}`
 
+  const buttonClass =
+    'font-body text-eyebrow font-medium uppercase tracking-caps text-ink-800 border border-cream-200 hover:border-bronze-500 hover:text-bronze-500 px-5 py-2.5 transition-colors duration-base'
+
   return (
-    <div className="flex flex-wrap items-center gap-4 pt-6 mt-6 border-t border-[--color-paper-deep]">
-      <span className="font-body text-[10px] uppercase tracking-[0.14em] text-[--color-ink-subtle]">
+    <div className="flex flex-wrap items-center gap-4 pt-10 mt-10 border-t border-cream-200">
+      <span className="font-body font-medium uppercase tracking-eyebrow text-eyebrow text-bronze-500">
         Compartilhar
       </span>
-      <button
-        type="button"
-        onClick={copyLink}
-        className="font-body text-[11px] uppercase tracking-[0.1em] text-[--color-ink] border border-[--color-paper-deep] hover:border-[--color-accent] px-4 py-2 transition-colors"
-      >
+      <button type="button" onClick={copyLink} className={buttonClass}>
         {copied ? 'Link copiado' : 'Copiar link'}
       </button>
-      <a
-        href={whatsappHref}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="font-body text-[11px] uppercase tracking-[0.1em] text-[--color-ink] border border-[--color-paper-deep] hover:border-[--color-accent] px-4 py-2 transition-colors"
-      >
+      <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className={buttonClass}>
         WhatsApp
       </a>
     </div>

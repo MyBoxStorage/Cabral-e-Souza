@@ -9,14 +9,18 @@ const CATEGORY_LABELS: Record<string, string> = {
 interface BoletimHeroFallbackProps {
   title: string
   category: string
+  fullBleed?: boolean
 }
 
-export function BoletimHeroFallback({ title, category }: BoletimHeroFallbackProps) {
+export function BoletimHeroFallback({ title, category, fullBleed = false }: BoletimHeroFallbackProps) {
   const label = CATEGORY_LABELS[category] ?? category
 
   return (
     <div
-      className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-cream-100 via-cream-200 to-bronze-300/30"
+      className={[
+        'relative overflow-hidden bg-gradient-to-br from-cream-100 via-cream-200 to-bronze-300/30',
+        fullBleed ? 'h-full w-full' : 'aspect-[16/9]',
+      ].join(' ')}
       aria-hidden
     >
       <div className="absolute top-4 right-4 font-display text-title-xs text-bronze-500/30 select-none">
