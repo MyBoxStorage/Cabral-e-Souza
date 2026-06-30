@@ -1,0 +1,19 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "locale": "pt-BR",
+  "paths": [
+    "/",
+    "/acervo",
+    "/acervo/carnaval-carioca",
+    "/artistas/di-cavalcanti",
+    "/boletim",
+    "/contato"
+  ],
+  "thresholds": {
+    "performance": 90,
+    "accessibility": 90,
+    "best-practices": 90,
+    "seo": 90,
+    "cumulative-layout-shift": 0
+  }
+}
