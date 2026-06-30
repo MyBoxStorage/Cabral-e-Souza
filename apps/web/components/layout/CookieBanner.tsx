@@ -2,76 +2,67 @@
 
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useRef, useState } from 'react'
+import {
+  CONSENT_COOKIE_NAME,
+  consentCookieAttributes,
+  serializeConsentCookie,
+  type ConsentState,
+} from '../../lib/cookie-consent'
 
 const STORAGE_KEY = 'cs_cookie_consent'
+const DISMISS_MS = 280
 
-interface ConsentState {
-  analytics: boolean
-  marketing: boolean
-  decided: boolean
-}
-
-function loadConsent(): ConsentState | null {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    return raw ? (JSON.parse(raw) as ConsentState) : null
-  } catch {
-    return null
-  }
-}
-
-function saveConsent(state: ConsentState) {
+function persistConsent(state: ConsentState) {
+  const serialized = serializeConsentCookie(state)
+  document.cookie = `${CONSENT_COOKIE_NAME}=${serialized};${consentCookieAttributes()}`
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
   } catch {
-    // localStorage indisponível (modo privado restrito)
+    /* storage indisponível */
   }
+  window.dispatchEvent(new CustomEvent('cs:consent', { detail: state }))
 }
 
 export function CookieBanner() {
   const t = useTranslations('cookie')
-  const [visible, setVisible] = useState(false)
+  const bannerRef = useRef<HTMLDivElement>(null)
+  const [dismissing, setDismissing] = useState(false)
+  const [mounted, setMounted] = useState(true)
   const [analytics, setAnalytics] = useState(false)
   const [marketing, setMarketing] = useState(false)
 
-  useEffect(() => {
-    const saved = loadConsent()
-    if (!saved?.decided) {
-      setVisible(true)
-    }
-  }, [])
-
-  function applyConsent(state: ConsentState) {
-    saveConsent(state)
-    setVisible(false)
-
-    // Disparar evento customizado para que scripts de analytics/marketing escutem
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('cs:consent', { detail: state }))
-    }
+  function dismiss(state: ConsentState) {
+    persistConsent(state)
+    setDismissing(true)
+    window.setTimeout(() => setMounted(false), DISMISS_MS)
   }
 
   function acceptAll() {
-    applyConsent({ analytics: true, marketing: true, decided: true })
+    dismiss({ analytics: true, marketing: true, decided: true })
   }
 
   function acceptSelected() {
-    applyConsent({ analytics, marketing, decided: true })
+    dismiss({ analytics, marketing, decided: true })
   }
 
   function rejectAll() {
-    applyConsent({ analytics: false, marketing: false, decided: true })
+    dismiss({ analytics: false, marketing: false, decided: true })
   }
 
-  if (!visible) return null
+  if (!mounted) return null
 
   return (
     <div
+      ref={bannerRef}
       role="dialog"
       aria-modal="false"
       aria-label="Consentimento de cookies"
-      className="fixed bottom-0 left-0 right-0 z-50 md:bottom-6 md:left-6 md:right-auto md:max-w-[420px]"
+      className={[
+        'fixed bottom-0 left-0 right-0 z-50 md:bottom-6 md:left-6 md:right-auto md:max-w-[420px]',
+        'transition-[opacity,transform] duration-[280ms] ease-out motion-reduce:transition-none',
+        dismissing ? 'opacity-0 translate-y-2 motion-reduce:translate-y-0' : 'opacity-100 translate-y-0',
+      ].join(' ')}
     >
       <div className="bg-[--color-ink] text-[--color-paper] p-6 md:rounded-sm shadow-[0_8px_40px_rgba(0,0,0,0.2)]">
         <p className="font-display text-[1rem] tracking-[-0.01em] mb-2">{t('title')}</p>
@@ -86,9 +77,7 @@ export function CookieBanner() {
           .
         </p>
 
-        {/* Categorias */}
         <div className="flex flex-col gap-3 mb-6">
-          {/* Essenciais — sempre ativo */}
           <label className="flex items-start gap-3 cursor-not-allowed">
             <div className="mt-[2px] w-4 h-4 rounded-[2px] bg-[--color-accent] flex items-center justify-center flex-shrink-0">
               <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden>
@@ -101,7 +90,6 @@ export function CookieBanner() {
             </div>
           </label>
 
-          {/* Analytics */}
           <label className="flex items-start gap-3 cursor-pointer group">
             <div className="relative mt-[2px] flex-shrink-0">
               <input
@@ -125,7 +113,6 @@ export function CookieBanner() {
             </div>
           </label>
 
-          {/* Marketing */}
           <label className="flex items-start gap-3 cursor-pointer group">
             <div className="relative mt-[2px] flex-shrink-0">
               <input
@@ -150,9 +137,9 @@ export function CookieBanner() {
           </label>
         </div>
 
-        {/* Botões */}
         <div className="flex flex-col gap-2">
           <button
+            type="button"
             onClick={acceptAll}
             className="w-full font-body text-[11px] uppercase tracking-[0.1em] text-[--color-ink] bg-[--color-accent] hover:bg-[--color-accent-deep] py-3 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[--color-accent] focus-visible:ring-offset-1 focus-visible:ring-offset-[--color-ink]"
           >
@@ -160,12 +147,14 @@ export function CookieBanner() {
           </button>
           <div className="flex gap-2">
             <button
+              type="button"
               onClick={acceptSelected}
               className="flex-1 font-body text-[11px] uppercase tracking-[0.1em] text-[--color-paper] border border-[rgba(250,250,247,0.2)] hover:border-[--color-accent] hover:text-[--color-accent] py-2.5 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[--color-accent]"
             >
               {t('accept_selected')}
             </button>
             <button
+              type="button"
               onClick={rejectAll}
               className="flex-1 font-body text-[11px] uppercase tracking-[0.1em] text-[rgba(250,250,247,0.6)] hover:text-[rgba(250,250,247,0.85)] py-2.5 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[--color-accent]"
             >

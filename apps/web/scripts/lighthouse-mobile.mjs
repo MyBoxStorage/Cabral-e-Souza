@@ -10,12 +10,13 @@
  *   pnpm --filter web lighthouse:mobile -- --url=http://localhost:3000/pt-BR/acervo
  */
 
-import { spawn } from 'node:child_process'
-import { existsSync } from 'node:fs'
+import * as chromeLauncher from 'chrome-launcher'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createRequire } from 'node:module'
+import lighthouse from 'lighthouse'
+import puppeteer from 'puppeteer-core'
 
 const require = createRequire(import.meta.url)
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -25,6 +26,10 @@ const config = require(configPath)
 const args = process.argv.slice(2)
 const singleUrlArg = args.find((a) => a.startsWith('--url='))
 const outDir = join(__dirname, '../lighthouse/reports')
+
+const CONSENT_COOKIE_VALUE = encodeURIComponent(
+  JSON.stringify({ analytics: false, marketing: false, decided: true }),
+)
 
 function localePath(path) {
   const locale = config.locale ?? 'pt-BR'
@@ -49,49 +54,47 @@ function slugFromUrl(url) {
 
 async function runLighthouse(url) {
   const slug = slugFromUrl(url)
-  const outputRel = `lighthouse/reports/${slug}`
+  const jsonPath = join(outDir, slug)
 
-  return new Promise((resolve, reject) => {
-    const child = spawn(
-      'npx',
-      [
-        'lighthouse',
-        url,
-        '--preset=perf',
-        '--only-categories=performance,accessibility,best-practices,seo',
-        '--form-factor=mobile',
-        '--screenEmulation.mobile=true',
-        '--throttling.cpuSlowdownMultiplier=4',
-        '--output=json',
-        `--output-path=${outputRel}`,
-        '--chrome-flags=--headless --no-sandbox --disable-gpu',
-        '--quiet',
-      ],
-      { stdio: ['ignore', 'pipe', 'pipe'], shell: true, cwd: join(__dirname, '..') },
-    )
-
-    let stderr = ''
-    child.stderr?.on('data', (d) => { stderr += d.toString() })
-
-    child.on('close', (code) => {
-      if (code !== 0) {
-        reject(new Error(`Lighthouse failed for ${url}\n${stderr}`))
-        return
-      }
-      const candidates = [
-        join(__dirname, '..', outputRel),
-        join(__dirname, '..', `${outputRel}.report.json`),
-        join(outDir, slug),
-        join(outDir, `${slug}.report.json`),
-      ]
-      const jsonPath = candidates.find((p) => existsSync(p))
-      if (!jsonPath) {
-        reject(new Error(`Lighthouse JSON not found for ${url}\n${stderr}`))
-        return
-      }
-      resolve({ url, jsonPath })
-    })
+  const chrome = await chromeLauncher.launch({
+    chromeFlags: ['--headless', '--no-sandbox', '--disable-gpu'],
   })
+
+  try {
+    const browser = await puppeteer.connect({
+      browserURL: `http://127.0.0.1:${chrome.port}`,
+    })
+    const page = await browser.newPage()
+    await page.setCookie({
+      name: 'cs_cookie_consent',
+      value: CONSENT_COOKIE_VALUE,
+      domain: 'localhost',
+      path: '/',
+      sameSite: 'Lax',
+    })
+    await page.close()
+    browser.disconnect()
+
+    const runnerResult = await lighthouse(url, {
+      logLevel: 'error',
+      output: 'json',
+      port: chrome.port,
+      onlyCategories: ['performance', 'accessibility', 'best-practices', 'seo'],
+      formFactor: 'mobile',
+      screenEmulation: { mobile: true },
+      throttling: { cpuSlowdownMultiplier: 4 },
+      disableStorageReset: true,
+    })
+
+    if (!runnerResult?.report) {
+      throw new Error(`Lighthouse returned no report for ${url}`)
+    }
+
+    await writeFile(jsonPath, runnerResult.report)
+    return { url, jsonPath }
+  } finally {
+    await chrome.kill()
+  }
 }
 
 async function summarize(jsonPath) {

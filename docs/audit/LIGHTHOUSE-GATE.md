@@ -35,15 +35,23 @@ pnpm --filter web start:prod
 
 O servidor sobe em `http://localhost:3000`. Deixe este terminal aberto.
 
-### 2. (Recomendado) Suprimir cookie banner no teste
+### 2. Suprimir cookie banner no teste automatizado
 
-O banner de cookies aparece após 1,5 s e pode afetar CLS. Antes de rodar o Lighthouse, em qualquer página aberta no Chrome DevTools → Console:
+O script `lighthouse:mobile` envia o cookie HTTP `cs_cookie_consent` via `--extra-headers` (arquivo `lighthouse/consent-headers.json`) — o banner não é renderizado no SSR quando `decided: true`.
+
+Para testes manuais no Chrome DevTools → Application → Cookies → `localhost`:
+
+| Nome | Valor |
+|------|-------|
+| `cs_cookie_consent` | `%7B%22analytics%22%3Afalse%2C%22marketing%22%3Afalse%2C%22decided%22%3Atrue%7D` |
+
+Ou no Console (define cookie + localStorage legado):
 
 ```javascript
-localStorage.setItem('cs_cookie_consent', JSON.stringify({ analytics: false, marketing: false, decided: true }))
+document.cookie = 'cs_cookie_consent=' + encodeURIComponent(JSON.stringify({ analytics: false, marketing: false, decided: true })) + ';path=/;max-age=31536000;SameSite=Lax'
 ```
 
-Recarregue a página. O script automatizado não faz isso — para gate CLS=0 estrito, aceite ou rejeite cookies manualmente uma vez antes da medição, ou use a opção manual do DevTools abaixo.
+Recarregue a página.
 
 ### 3. Auditoria automatizada (CLI)
 
