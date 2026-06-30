@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { PieceCard } from '../../../../../components/artwork/PieceCard'
+import { MarkdownContent } from '../../../../../components/content/MarkdownContent'
 import { artistYears } from '../../../../../lib/format'
 import { getArtistBySlug, getArtistSlugs } from '../../../../../lib/queries/artists'
 import { getPublicPieces } from '../../../../../lib/queries/pieces'
@@ -137,29 +138,7 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
                 <h2 id="bio-heading" className="font-body text-[11px] uppercase tracking-[0.14em] text-[--color-ink-subtle] mb-6">
                   Verbete
                 </h2>
-                <div className="font-body text-[15px] leading-[1.85] text-[--color-ink-muted] prose-headings:font-display prose-headings:font-light prose-headings:text-[--color-ink]">
-                  {bio.split('\n').filter(Boolean).map((para, i) => {
-                    if (para.startsWith('#')) {
-                      return (
-                        <p key={i} className="font-display text-[1.5rem] font-light text-[--color-ink] mb-4 mt-8 first:mt-0">
-                          {para.replace(/^#+\s*/, '')}
-                        </p>
-                      )
-                    }
-                    if (para.startsWith('**') && para.endsWith('**')) {
-                      return (
-                        <p key={i} className="font-body text-[13px] uppercase tracking-[0.08em] text-[--color-accent] mt-6 mb-2">
-                          {para.slice(2, -2)}
-                        </p>
-                      )
-                    }
-                    return (
-                      <p key={i} className="mb-5">
-                        {para}
-                      </p>
-                    )
-                  })}
-                </div>
+                <MarkdownContent content={bio} />
               </section>
             )}
 

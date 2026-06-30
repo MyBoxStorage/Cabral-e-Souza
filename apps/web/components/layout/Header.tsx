@@ -1,6 +1,7 @@
+'use client'
+
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
-import { LocaleSwitcher } from './LocaleSwitcher'
 import { MobileMenu } from './MobileMenu'
 
 export function Header() {
@@ -20,7 +21,6 @@ export function Header() {
       style={{ transition: 'border-color 200ms ease' }}
     >
       <div className="container-default flex items-center justify-between h-16 md:h-[72px]">
-        {/* Wordmark */}
         <Link
           href="/"
           aria-label="Cabral & Souza — página inicial"
@@ -37,7 +37,6 @@ export function Header() {
           </span>
         </Link>
 
-        {/* Nav central — desktop */}
         <nav aria-label="Menu principal" className="hidden md:flex items-center gap-7">
           {navLinks.map((link) => (
             <Link
@@ -50,10 +49,8 @@ export function Header() {
           ))}
         </nav>
 
-        {/* Direita — locale + contato desktop + hamburger mobile */}
         <div className="flex items-center gap-4 md:gap-6">
           <div className="hidden md:flex items-center gap-4">
-            <LocaleSwitcher />
             <Link
               href="/contato"
               className="font-body text-[11px] uppercase tracking-[0.1em] text-[--color-paper] bg-[--color-ink] hover:bg-[--color-accent] px-4 py-2 transition-colors duration-200"
@@ -62,7 +59,6 @@ export function Header() {
             </Link>
           </div>
 
-          {/* Hambúrguer — mobile only */}
           <MobileMenu links={navLinks} />
         </div>
       </div>

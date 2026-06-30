@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { whatsappUrl } from '@cabral-souza/shared'
 import { submitLead } from '../../app/actions/lead'
 
 const schema = z.object({
@@ -16,8 +17,6 @@ const schema = z.object({
 })
 
 type FormValues = z.infer<typeof schema>
-
-const WHATSAPP_URL = 'https://wa.me/5521970027830'
 
 export function ContactForm() {
   const t = useTranslations('lead_form')
@@ -119,12 +118,12 @@ export function ContactForm() {
         disabled={status === 'loading'}
         className="font-body text-[11px] uppercase tracking-[0.1em] text-[--color-paper] bg-[--color-ink] hover:bg-[--color-accent] disabled:opacity-50 px-8 py-4 transition-colors duration-200"
       >
-        {status === 'loading' ? t('submitting') : t('submit')}
+        {status === 'loading' ? t('sending') : t('submit')}
       </button>
 
       <p className="font-body text-[12px] text-[--color-ink-subtle] text-center">
         Ou fale conosco pelo{' '}
-        <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="text-[--color-accent] hover:underline">
+        <a href={whatsappUrl()} target="_blank" rel="noopener noreferrer" className="text-[--color-accent] hover:underline">
           WhatsApp
         </a>
       </p>

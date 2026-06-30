@@ -1,6 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { BUSINESS, whatsappUrl } from '@cabral-souza/shared'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -23,7 +24,7 @@ interface LeadFormProps {
   whatsappNumber?: string
 }
 
-export function LeadForm({ pieceId, pieceTitle, whatsappNumber = '5521970027830' }: LeadFormProps) {
+export function LeadForm({ pieceId, pieceTitle, whatsappNumber = BUSINESS.phone.whatsappE164 }: LeadFormProps) {
   const t = useTranslations('lead_form')
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
 
@@ -65,7 +66,11 @@ export function LeadForm({ pieceId, pieceTitle, whatsappNumber = '5521970027830'
     )
   }
 
-  const wppMessage = encodeURIComponent(`Olá! Tenho interesse na obra "${pieceTitle}". Podem me dar mais informações?`)
+  const wppMessage = `Olá! Tenho interesse na obra "${pieceTitle}". Podem me dar mais informações?`
+  const wppHref =
+    whatsappNumber === BUSINESS.phone.whatsappE164
+      ? whatsappUrl(wppMessage)
+      : `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(wppMessage)}`
 
   return (
     <div className="flex flex-col gap-6">
@@ -170,7 +175,7 @@ export function LeadForm({ pieceId, pieceTitle, whatsappNumber = '5521970027830'
 
       {/* WhatsApp */}
       <a
-        href={`https://wa.me/${whatsappNumber}?text=${wppMessage}`}
+        href={wppHref}
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center justify-center gap-3 w-full font-body text-[11px] uppercase tracking-[0.1em] text-[--color-ink] border border-[--color-paper-deep] hover:border-[--color-accent] hover:text-[--color-accent] py-4 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[--color-accent]"

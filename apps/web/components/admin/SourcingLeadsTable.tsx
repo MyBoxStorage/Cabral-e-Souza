@@ -97,7 +97,6 @@ function PhotoLightbox({
           ‹
         </button>
       )}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={photo.signedUrl}
         alt={`Foto ${activeIndex + 1}`}
@@ -268,7 +267,6 @@ function SourcingLeadRow({ lead }: { lead: AdminSourcingLead }) {
                         onClick={(e) => { e.stopPropagation(); setLightboxIndex(i) }}
                         className="aspect-square overflow-hidden border border-[--color-border] bg-[--color-paper] hover:border-[--color-accent] transition-colors"
                       >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={photo.signedUrl} alt="" className="w-full h-full object-cover" />
                       </button>
                     ))}

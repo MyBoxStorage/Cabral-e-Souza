@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
-import { LocaleSwitcher } from './LocaleSwitcher'
+import { whatsappUrl } from '@cabral-souza/shared'
 
 interface NavLink {
   href: `/${string}`
@@ -20,7 +20,6 @@ export function MobileMenu({ links }: MobileMenuProps) {
   const menuRef = useRef<HTMLDivElement>(null)
   const triggerRef = useRef<HTMLButtonElement>(null)
 
-  // Fechar com Escape
   useEffect(() => {
     if (!open) return
     function onKey(e: KeyboardEvent) {
@@ -33,7 +32,6 @@ export function MobileMenu({ links }: MobileMenuProps) {
     return () => document.removeEventListener('keydown', onKey)
   }, [open])
 
-  // Bloquear scroll do body quando aberto
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
@@ -69,7 +67,6 @@ export function MobileMenu({ links }: MobileMenuProps) {
         />
       </button>
 
-      {/* Overlay */}
       {open && (
         <div
           className="fixed inset-0 bg-[--color-ink]/40 z-40 md:hidden"
@@ -78,18 +75,18 @@ export function MobileMenu({ links }: MobileMenuProps) {
         />
       )}
 
-      {/* Drawer */}
       <div
         id="mobile-menu"
         ref={menuRef}
         role="dialog"
         aria-modal="true"
         aria-label={t('open_menu')}
+        hidden={!open}
         className={[
           'fixed top-0 right-0 h-full w-[280px] bg-[--color-paper] z-50 md:hidden',
           'flex flex-col pt-20 pb-12 px-8 gap-2',
           'transition-transform duration-300 ease-out',
-          open ? 'translate-x-0' : 'translate-x-full',
+          open ? 'translate-x-0' : 'translate-x-full pointer-events-none',
           'shadow-[-8px_0_40px_rgba(0,0,0,0.08)]',
         ].join(' ')}
       >
@@ -119,10 +116,9 @@ export function MobileMenu({ links }: MobileMenuProps) {
           </ul>
         </nav>
 
-        <div className="mt-auto flex flex-col gap-4">
-          <LocaleSwitcher />
+        <div className="mt-auto">
           <a
-            href="https://wa.me/5521970027830"
+            href={whatsappUrl()}
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => setOpen(false)}

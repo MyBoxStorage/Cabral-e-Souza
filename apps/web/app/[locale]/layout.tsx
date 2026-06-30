@@ -4,6 +4,7 @@ import { getMessages } from 'next-intl/server'
 import { Cormorant_Garamond, Inter } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import { routing } from '../../i18n/routing'
+import { isNonPrimaryLocale } from '../../lib/seo/metadata'
 import '../../styles/globals.css'
 
 const cormorant = Cormorant_Garamond({
@@ -20,11 +21,19 @@ const inter = Inter({
   display: 'swap',
 })
 
-export const metadata: Metadata = {
-  title: {
-    template: '%s | Cabral & Souza',
-    default: 'Cabral & Souza — Galeria de Arte e Antiguidades',
-  },
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  return {
+    title: {
+      template: '%s | Cabral & Souza',
+      default: 'Cabral & Souza — Galeria de Arte e Antiguidades',
+    },
+    ...(isNonPrimaryLocale(locale) ? { robots: { index: false, follow: false } } : {}),
+  }
 }
 
 interface LocaleLayoutProps {

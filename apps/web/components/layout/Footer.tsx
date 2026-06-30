@@ -1,16 +1,14 @@
+'use client'
+
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
-
-const INSTAGRAM_URL = 'https://instagram.com/cabralesouza'
-const WHATSAPP_URL = 'https://wa.me/5521970027830'
-const CNPJ = '00.000.000/0001-00' // Atualizar com CNPJ real
+import { BUSINESS, whatsappUrl } from '@cabral-souza/shared'
 
 export function Footer() {
   const t = useTranslations('footer')
-  const tc = useTranslations('contact')
   const year = new Date().getFullYear()
 
-    const navLinks: { href: `/${string}`; label: string }[] = [
+  const navLinks: { href: `/${string}`; label: string }[] = [
     { href: '/acervo', label: 'Acervo' },
     { href: '/artistas', label: 'Artistas' },
     { href: '/boletim', label: 'Boletim' },
@@ -25,31 +23,28 @@ export function Footer() {
 
   return (
     <footer className="bg-[--color-ink] text-[--color-paper]">
-      {/* Linha dourada no topo */}
       <div className="h-px bg-[--color-accent] opacity-40" />
 
       <div className="container-default py-16 md:py-20">
         <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr] gap-12 md:gap-8">
-          {/* Coluna 1 — Identidade */}
           <div className="flex flex-col gap-6">
             <div>
               <p className="font-display text-[1.25rem] tracking-[-0.01em] text-[--color-paper]">
-                Cabral &amp; Souza
+                {BUSINESS.name}
               </p>
               <p className="font-body text-[10px] uppercase tracking-[0.18em] text-[--color-accent] mt-1">
-                Galeria de Arte
+                {BUSINESS.tagline}
               </p>
             </div>
             <p className="font-body text-[13px] leading-[1.7] text-[rgba(250,250,247,0.55)] max-w-[280px]">
               {t('tagline')}
             </p>
-            {/* Social */}
             <div className="flex items-center gap-4">
               <a
-                href={INSTAGRAM_URL}
+                href={BUSINESS.social.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Instagram da Cabral & Souza"
+                aria-label={`Instagram da ${BUSINESS.name}`}
                 className="text-[rgba(250,250,247,0.4)] hover:text-[--color-accent] transition-colors duration-200"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
@@ -57,10 +52,10 @@ export function Footer() {
                 </svg>
               </a>
               <a
-                href={WHATSAPP_URL}
+                href={whatsappUrl()}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="WhatsApp da Cabral & Souza"
+                aria-label={`WhatsApp da ${BUSINESS.name}`}
                 className="text-[rgba(250,250,247,0.4)] hover:text-[--color-accent] transition-colors duration-200"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
@@ -70,7 +65,6 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Coluna 2 — Galeria */}
           <div>
             <p className="font-body text-[10px] uppercase tracking-[0.14em] text-[--color-accent] mb-5">
               {t('nav_title')}
@@ -89,7 +83,6 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Coluna 3 — Jurídico */}
           <div>
             <p className="font-body text-[10px] uppercase tracking-[0.14em] text-[--color-accent] mb-5">
               {t('legal_title')}
@@ -105,51 +98,48 @@ export function Footer() {
                   </Link>
                 </li>
               ))}
-              <li>
-                <span className="font-body text-[13px] text-[rgba(250,250,247,0.35)] cursor-default">
-                  {t('cnart')}
-                </span>
-              </li>
+              {BUSINESS.cnartMember && (
+                <li>
+                  <span className="font-body text-[13px] text-[rgba(250,250,247,0.35)]">
+                    {t('cnart')}
+                  </span>
+                </li>
+              )}
             </ul>
           </div>
 
-          {/* Coluna 4 — Contato */}
           <div>
             <p className="font-body text-[10px] uppercase tracking-[0.14em] text-[--color-accent] mb-5">
               {t('contact_title')}
             </p>
             <address className="not-italic flex flex-col gap-3">
               <p className="font-body text-[13px] leading-[1.6] text-[rgba(250,250,247,0.55)]">
-                {t('address')}
+                {BUSINESS.addressFormatted}
               </p>
               <p className="font-body text-[13px] text-[rgba(250,250,247,0.55)]">
-                {t('hours')}
+                {BUSINESS.hours}
               </p>
               <a
-                href={`mailto:${tc('email')}`}
+                href={`mailto:${BUSINESS.email}`}
                 className="font-body text-[13px] text-[rgba(250,250,247,0.55)] hover:text-[--color-accent] transition-colors duration-200"
               >
-                {tc('email')}
+                {BUSINESS.email}
               </a>
               <a
-                href={WHATSAPP_URL}
+                href={whatsappUrl()}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-body text-[13px] text-[rgba(250,250,247,0.55)] hover:text-[--color-accent] transition-colors duration-200"
               >
-                {tc('whatsapp')}
+                {BUSINESS.phone.whatsappDisplay}
               </a>
             </address>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="mt-16 pt-6 border-t border-[rgba(250,250,247,0.08)] flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
-          <p className="font-body text-[11px] text-[rgba(250,250,247,0.3)]">
+        <div className="mt-16 pt-6 border-t border-[rgba(250,250,247,0.08)]">
+          <p className="font-body text-[11px] text-[rgba(250,250,247,0.45)]">
             {t('copyright', { year })}
-          </p>
-          <p className="font-body text-[11px] text-[rgba(250,250,247,0.3)]">
-            CNPJ {CNPJ}
           </p>
         </div>
       </div>
