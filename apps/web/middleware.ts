@@ -1,4 +1,5 @@
 import { createServerClient } from '@supabase/ssr'
+import { BUSINESS } from '@cabral-souza/shared'
 import createIntlMiddleware from 'next-intl/middleware'
 import { type NextRequest, NextResponse } from 'next/server'
 import { isAllowedAdminEmail } from './lib/auth/admin-emails'
@@ -24,8 +25,22 @@ function adminLoginPath(pathname: string): string {
   return locale ? `/${locale}/admin/login` : '/admin/login'
 }
 
+function stripDisabledLocalePrefix(pathname: string): string | null {
+  if (BUSINESS.i18nPublicEnabled) return null
+  const match = pathname.match(/^\/(en-US|fr-FR)(\/.*)?$/)
+  if (!match) return null
+  return match[2] || '/'
+}
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
+
+  const stripped = stripDisabledLocalePrefix(pathname)
+  if (stripped !== null) {
+    const url = request.nextUrl.clone()
+    url.pathname = stripped
+    return NextResponse.redirect(url)
+  }
 
   // /admin/login nunca passa pela guarda
   if (isAdminLoginRoute(pathname)) {
