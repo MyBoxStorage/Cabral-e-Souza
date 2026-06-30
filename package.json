@@ -10,7 +10,8 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\" --ignore-path .gitignore",
     "typecheck": "turbo run typecheck",
     "clean": "turbo run clean && rimraf node_modules",
-    "db:seed:placeholders": "pnpm --filter=@cabral-souza/db seed:placeholders"
+    "db:seed:placeholders": "pnpm --filter=@cabral-souza/db seed:placeholders",
+    "db:migrate": "pnpm --filter=@cabral-souza/db migrate"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

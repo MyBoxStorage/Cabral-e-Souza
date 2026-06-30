@@ -8,8 +8,8 @@ type Db = SupabaseClient<Database>
 export async function seedSitePages(db: Db): Promise<number> {
   const { error: probe } = await db.from('site_pages').select('id').limit(1)
   if (probe?.message?.includes('site_pages')) {
-    console.warn('   ⚠ Tabela site_pages ausente — páginas servidas via conteúdo estático')
-    return SITE_PAGES.length
+    console.warn('   ⚠ Tabela site_pages ausente — execute: pnpm db:migrate')
+    return 0
   }
 
   let count = 0

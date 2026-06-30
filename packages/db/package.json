@@ -14,7 +14,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "clean": "rimraf dist",
-    "seed:placeholders": "tsx src/seed/index.ts"
+    "seed:placeholders": "tsx src/seed/index.ts",
+    "migrate": "tsx src/seed/run-migrate.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.8",
