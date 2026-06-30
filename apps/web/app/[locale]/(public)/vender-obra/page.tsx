@@ -1,21 +1,26 @@
 import type { Metadata } from 'next'
 import { SourcingForm } from '../../../../components/content/SourcingForm'
+import { JsonLd } from '../../../../components/seo/JsonLd'
+import { buildPageMetadata } from '../../../../lib/seo/metadata'
 
-export const metadata: Metadata = {
-  title: 'Avalie e venda sua obra de arte | Cabral & Souza',
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Avalie e venda sua obra de arte',
   description:
     'Solicite avaliação preliminar de obras de arte e antiguidades. Galeria carioca com 40 anos de experiência, processo documentado e resposta em até 5 dias úteis.',
-}
+  path: '/vender-obra',
+})
 
-const jsonLd = {
+const TRUST_ITEMS = [
+  { value: '40 anos', label: 'de experiência no mercado' },
+  { value: '5 dias', label: 'para análise preliminar' },
+  { value: '100%', label: 'confidencialidade garantida' },
+]
+
+const serviceSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
   name: 'Avaliação e aquisição de obras de arte',
-  provider: {
-    '@type': 'ArtGallery',
-    name: 'Cabral & Souza Galeria de Arte',
-    url: process.env['NEXT_PUBLIC_SITE_URL'],
-  },
+  provider: { '@id': `${process.env['NEXT_PUBLIC_SITE_URL'] ?? 'https://cabralesouza.com.br'}/#organization` },
   description:
     'Serviço de avaliação preliminar e aquisição de obras de arte moderna, contemporânea e antiguidades para famílias e herdeiros.',
   areaServed: { '@type': 'Country', name: 'Brasil' },
@@ -24,14 +29,11 @@ const jsonLd = {
 export default function VenderObraPage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={serviceSchema} />
 
       <section className="bg-[--color-paper-muted] border-b border-[--color-paper-deep] py-12 md:py-20">
         <div className="container-default max-w-[72ch]">
-          <p className="label-caps mb-4">Sourcing reverso</p>
+          <p className="label-caps text-[--color-accent] mb-4">Sourcing reverso</p>
           <h1 className="font-display text-[2.25rem] md:text-[3.25rem] font-light tracking-[-0.02em] leading-[1.1] mb-6">
             Sua obra merece avaliação à altura de sua história
           </h1>
@@ -40,6 +42,19 @@ export default function VenderObraPage() {
             documental, confidencialidade e transparência. Nosso processo combina pesquisa de mercado, verificação de
             autenticidade e proposta fundamentada — sem pressa comercial nem promessas vazias.
           </p>
+        </div>
+      </section>
+
+      <section className="border-b border-[--color-paper-deep] bg-[--color-paper]">
+        <div className="container-default py-10">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center sm:text-left">
+            {TRUST_ITEMS.map((item) => (
+              <div key={item.label}>
+                <p className="font-display text-[1.75rem] font-light text-[--color-ink]">{item.value}</p>
+                <p className="font-body text-[12px] text-[--color-ink-subtle] mt-1">{item.label}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

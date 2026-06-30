@@ -5,9 +5,12 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { PieceCard } from '../../../../../components/artwork/PieceCard'
 import { MarkdownContent } from '../../../../../components/content/MarkdownContent'
+import { JsonLd } from '../../../../../components/seo/JsonLd'
 import { artistYears } from '../../../../../lib/format'
 import { getArtistBySlug, getArtistSlugs } from '../../../../../lib/queries/artists'
 import { getPublicPieces } from '../../../../../lib/queries/pieces'
+import { buildPageMetadata } from '../../../../../lib/seo/metadata'
+import { breadcrumbSchema, personSchema } from '../../../../../lib/seo/schema'
 
 export const revalidate = 3600
 
@@ -26,12 +29,15 @@ export async function generateMetadata({ params }: ArtistPageProps): Promise<Met
   if (!artist) return { title: 'Artista não encontrado' }
 
   const years = artistYears(artist.birth_year, artist.death_year)
-  return {
+  return buildPageMetadata({
     title: `${artist.name}${years ? ` ${years}` : ''}`,
     description:
       artist.bio_pt?.slice(0, 160).replace(/#+\s*/g, '') ??
       `Obras e verbete de ${artist.name} na Cabral & Souza Galeria de Arte.`,
-  }
+    path: `/artistas/${slug}`,
+    ...(artist.hero_image_url ? { ogImage: artist.hero_image_url } : {}),
+    ogType: 'profile',
+  })
 }
 
 export default async function ArtistPage({ params }: ArtistPageProps) {
@@ -50,27 +56,27 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
 
   const years = artistYears(artist.birth_year, artist.death_year)
 
-  // Schema.org Person JSON-LD
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: artist.name,
-    birthDate: artist.birth_year?.toString(),
-    deathDate: artist.death_year?.toString(),
-    birthPlace: artist.birth_place ?? undefined,
-    nationality: artist.nationality ?? undefined,
-    description: bio?.replace(/#+\s*/g, '').slice(0, 200),
-    image: artist.hero_image_url ?? undefined,
-    url: `${process.env['NEXT_PUBLIC_SITE_URL']}/artistas/${artist.slug}`,
-    knowsAbout: artist.schools ?? [],
-  }
+  const schema = [
+    breadcrumbSchema([
+      { name: 'Artistas', path: '/artistas' },
+      { name: artist.name, path: `/artistas/${artist.slug}` },
+    ]),
+    personSchema({
+      slug: artist.slug,
+      name: artist.name,
+      bio,
+      image: artist.hero_image_url,
+      birthYear: artist.birth_year,
+      deathYear: artist.death_year,
+      birthPlace: artist.birth_place,
+      nationality: artist.nationality,
+      schools: artist.schools,
+    }),
+  ]
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={schema} />
 
       {/* Hero do artista */}
       <section className="relative bg-[--color-ink] text-[--color-paper] overflow-hidden">
@@ -121,7 +127,7 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
                 alt={`${artist.name} — retrato`}
                 fill
                 sizes="260px"
-                className="object-cover grayscale"
+                className="object-cover"
                 priority
               />
             </div>

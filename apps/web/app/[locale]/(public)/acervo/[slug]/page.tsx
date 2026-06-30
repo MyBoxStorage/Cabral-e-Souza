@@ -4,8 +4,12 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ImageGallery } from '../../../../../components/artwork/ImageGallery'
 import { LeadForm } from '../../../../../components/artwork/LeadForm'
+import { JsonLd } from '../../../../../components/seo/JsonLd'
+import { CATEGORY_LABELS } from '../../../../../lib/acervo'
 import { formatBRL, formatDimensions, formatYear, artistYears } from '../../../../../lib/format'
 import { getPieceBySlug, getPieceSlugs, getDisplayPrice } from '../../../../../lib/queries/pieces'
+import { buildPageMetadata } from '../../../../../lib/seo/metadata'
+import { breadcrumbSchema, visualArtworkSchema } from '../../../../../lib/seo/schema'
 
 export const revalidate = 300
 
@@ -25,18 +29,17 @@ export async function generateMetadata({ params }: PiecePageProps): Promise<Meta
 
   const artist = piece.artists?.name ?? ''
   const year = formatYear(piece.year_created, piece.year_created_circa)
+  const ogImage = piece.piece_images[0]?.url_large ?? piece.piece_images[0]?.url_original
 
-  return {
+  return buildPageMetadata({
     title: `${piece.title_pt}${artist ? ` — ${artist}` : ''}`,
     description:
       piece.seo_description_pt ??
       [piece.technique_pt, year, piece.description_pt?.slice(0, 140)].filter(Boolean).join('. '),
-    openGraph: {
-      images: piece.piece_images[0]
-        ? [{ url: piece.piece_images[0].url_large ?? piece.piece_images[0].url_original }]
-        : [],
-    },
-  }
+    path: `/acervo/${slug}`,
+    ...(ogImage ? { ogImage } : {}),
+    ogType: 'article',
+  })
 }
 
 export default async function PiecePage({ params }: PiecePageProps) {
@@ -55,50 +58,41 @@ export default async function PiecePage({ params }: PiecePageProps) {
     : locale === 'fr-FR' ? (piece.description_fr ?? piece.description_pt)
     : piece.description_pt
 
-  // Schema.org VisualArtwork JSON-LD
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'VisualArtwork',
-    name: title,
-    description: description ?? undefined,
-    image: piece.piece_images[0]?.url_large ?? piece.piece_images[0]?.url_original,
-    artMedium: piece.technique_pt ?? undefined,
-    artworkSurface: undefined,
-    height: piece.height_cm ? `${piece.height_cm} cm` : undefined,
-    width: piece.width_cm ? `${piece.width_cm} cm` : undefined,
-    dateCreated: piece.year_created?.toString(),
-    creator: artist
-      ? {
-          '@type': 'Person',
-          name: artist.name,
-          url: `${process.env['NEXT_PUBLIC_SITE_URL']}/artistas/${artist.slug}`,
-          birthDate: artist.birth_year?.toString(),
-          deathDate: artist.death_year?.toString(),
-          nationality: artist.nationality ?? undefined,
-        }
-      : undefined,
-    offers:
-      displayPrice !== null
+  // Schema.org
+  const images = piece.piece_images
+    .map((img) => img.url_large ?? img.url_original)
+    .filter(Boolean)
+
+  const schema = [
+    breadcrumbSchema([
+      { name: 'Acervo', path: '/acervo' },
+      { name: title, path: `/acervo/${slug}` },
+    ]),
+    visualArtworkSchema({
+      slug,
+      title,
+      description,
+      images,
+      technique: piece.technique_pt,
+      heightCm: piece.height_cm,
+      widthCm: piece.width_cm,
+      year: formatYear(piece.year_created, piece.year_created_circa),
+      price: displayPrice,
+      artist: artist
         ? {
-            '@type': 'Offer',
-            price: displayPrice,
-            priceCurrency: 'BRL',
-            availability: 'https://schema.org/InStock',
+            name: artist.name,
+            slug: artist.slug,
+            birthYear: artist.birth_year,
+            deathYear: artist.death_year,
+            nationality: artist.nationality,
           }
-        : undefined,
-    provider: {
-      '@type': 'LocalBusiness',
-      name: 'Cabral & Souza Galeria de Arte',
-      url: process.env['NEXT_PUBLIC_SITE_URL'],
-    },
-  }
+        : null,
+    }),
+  ]
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={schema} />
 
       <div className="container-default py-12 md:py-16">
         {/* Breadcrumb */}
@@ -106,14 +100,14 @@ export default async function PiecePage({ params }: PiecePageProps) {
           <ol className="flex items-center gap-2 list-none font-body text-[12px] text-[--color-ink-subtle]">
             <li><Link href="/acervo" className="hover:text-[--color-accent] transition-colors">Acervo</Link></li>
             <li aria-hidden>/</li>
-            <li aria-current="page" className="text-[--color-ink] truncate max-w-[30ch]">{piece.title_pt}</li>
+            <li aria-current="page" className="text-[--color-ink] truncate max-w-[30ch]">{title}</li>
           </ol>
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-12 xl:gap-20">
           {/* Galeria */}
           <div className="lg:sticky lg:top-24 lg:self-start">
-            <ImageGallery images={piece.piece_images} title={piece.title_pt} />
+            <ImageGallery images={piece.piece_images} title={title} />
           </div>
 
           {/* Dados */}
@@ -138,16 +132,6 @@ export default async function PiecePage({ params }: PiecePageProps) {
               </h1>
             </div>
 
-            {/* Preço */}
-            <div className="border-t border-b border-[--color-paper-deep] py-5">
-              <p className="font-body text-[11px] uppercase tracking-[0.12em] text-[--color-ink-subtle] mb-1">
-                Valor
-              </p>
-              <p className="font-display text-[1.75rem] font-light text-[--color-ink]">
-                {displayPrice !== null ? formatBRL(displayPrice) : 'Sob consulta'}
-              </p>
-            </div>
-
             {/* Ficha Técnica */}
             <div>
               <h2 className="font-body text-[11px] uppercase tracking-[0.14em] text-[--color-ink-subtle] mb-4">
@@ -158,7 +142,7 @@ export default async function PiecePage({ params }: PiecePageProps) {
                   { label: 'Técnica', value: piece.technique_pt },
                   { label: 'Ano', value: formatYear(piece.year_created, piece.year_created_circa) },
                   { label: 'Dimensões', value: formatDimensions(piece.height_cm, piece.width_cm, piece.depth_cm) },
-                  { label: 'Categoria', value: piece.category },
+                  { label: 'Categoria', value: piece.category ? CATEGORY_LABELS[piece.category] ?? piece.category : undefined },
                   { label: 'Assinada', value: piece.is_signed ? 'Sim' : piece.is_signed === false ? 'Não' : undefined },
                   { label: 'Origem', value: piece.origin === 'propria' ? 'Acervo próprio' : piece.origin === 'consignada' ? 'Consignada' : 'Parceria' },
                 ]
@@ -183,6 +167,16 @@ export default async function PiecePage({ params }: PiecePageProps) {
                 </p>
               </div>
             )}
+
+            {/* Preço */}
+            <div className="border-t border-b border-[--color-paper-deep] py-5">
+              <p className="font-body text-[11px] uppercase tracking-[0.12em] text-[--color-ink-subtle] mb-1">
+                Valor
+              </p>
+              <p className="font-display text-[1.75rem] font-light text-[--color-ink]">
+                {displayPrice !== null ? formatBRL(displayPrice) : 'Sob consulta'}
+              </p>
+            </div>
 
             {/* Proveniência */}
             {piece.provenance_pt && (

@@ -7,12 +7,12 @@ export function getSiteUrl(): string {
 
 export interface PageMetadataOptions {
   title: string
-  description?: string
+  description?: string | undefined
   /** Path without locale prefix, e.g. `/acervo` or `/acervo/slug` */
   path?: string
-  ogImage?: string
+  ogImage?: string | undefined
   noIndex?: boolean
-  ogType?: 'website' | 'article'
+  ogType?: 'website' | 'article' | 'profile'
 }
 
 export function buildPageMetadata(options: PageMetadataOptions): Metadata {
@@ -27,6 +27,10 @@ export function buildPageMetadata(options: PageMetadataOptions): Metadata {
     description,
     alternates: {
       canonical,
+      languages: {
+        'pt-BR': canonical,
+        'x-default': canonical,
+      },
     },
     openGraph: {
       title: options.title,

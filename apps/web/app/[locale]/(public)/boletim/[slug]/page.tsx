@@ -2,7 +2,11 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { MarkdownContent } from '../../../../../components/content/MarkdownContent'
+import { ShareLinks } from '../../../../../components/content/ShareLinks'
+import { JsonLd } from '../../../../../components/seo/JsonLd'
 import { getBoletimPostBySlug, getBoletimSlugs } from '../../../../../lib/queries/boletim'
+import { buildPageMetadata, getSiteUrl } from '../../../../../lib/seo/metadata'
+import { articleSchema, breadcrumbSchema } from '../../../../../lib/seo/schema'
 
 export const revalidate = 3600
 
@@ -19,10 +23,12 @@ export async function generateMetadata({ params }: BoletimPostPageProps): Promis
   const { slug } = await params
   const post = await getBoletimPostBySlug(slug)
   if (!post) return { title: 'Publicação não encontrada' }
-  return {
+  return buildPageMetadata({
     title: post.seo_title ?? post.title_pt,
     description: post.seo_description ?? post.excerpt_pt ?? undefined,
-  }
+    path: `/boletim/${slug}`,
+    ogType: 'article',
+  })
 }
 
 export default async function BoletimPostPage({ params }: BoletimPostPageProps) {
@@ -30,29 +36,25 @@ export default async function BoletimPostPage({ params }: BoletimPostPageProps) 
   const post = await getBoletimPostBySlug(slug)
   if (!post) notFound()
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: post.title_pt,
-    description: post.excerpt_pt,
-    datePublished: post.published_at,
-    author: {
-      '@type': 'Organization',
-      name: post.author ?? 'Cabral & Souza Galeria de Arte',
-    },
-    publisher: {
-      '@type': 'Organization',
-      name: 'Cabral & Souza Galeria de Arte',
-      url: process.env['NEXT_PUBLIC_SITE_URL'],
-    },
-  }
+  const postUrl = `${getSiteUrl()}/boletim/${slug}`
+
+  const schema = [
+    breadcrumbSchema([
+      { name: 'Boletim', path: '/boletim' },
+      { name: post.title_pt, path: `/boletim/${slug}` },
+    ]),
+    articleSchema({
+      slug,
+      title: post.title_pt,
+      description: post.excerpt_pt,
+      publishedAt: post.published_at,
+      author: post.author,
+    }),
+  ]
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={schema} />
 
       <section className="bg-[--color-paper-muted] border-b border-[--color-paper-deep] py-12 md:py-16">
         <div className="container-default max-w-[72ch]">
@@ -90,6 +92,7 @@ export default async function BoletimPostPage({ params }: BoletimPostPageProps) 
       <section className="py-12 md:py-16">
         <div className="container-default max-w-[72ch]">
           <MarkdownContent content={post.content_pt} />
+          <ShareLinks title={post.title_pt} url={postUrl} />
         </div>
       </section>
     </>

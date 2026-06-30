@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { MarkdownContent } from '../../components/content/MarkdownContent'
+import { buildPageMetadata } from '../seo/metadata'
 import { getSitePageBySlug } from '../queries/site-pages'
 
 export const revalidate = 3600
@@ -12,10 +13,11 @@ interface InstitutionalPageProps {
 export async function buildInstitutionalMetadata(slug: string): Promise<Metadata> {
   const page = await getSitePageBySlug(slug)
   if (!page) return { title: 'Página não encontrada' }
-  return {
+  return buildPageMetadata({
     title: page.seo_title_pt ?? page.title_pt,
     description: page.seo_description_pt ?? undefined,
-  }
+    path: `/${slug}`,
+  })
 }
 
 export async function InstitutionalPage({ slug }: InstitutionalPageProps) {

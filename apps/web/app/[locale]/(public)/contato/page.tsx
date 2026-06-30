@@ -3,16 +3,18 @@ import { notFound } from 'next/navigation'
 import { ContactForm } from '../../../../components/content/ContactForm'
 import { MarkdownContent } from '../../../../components/content/MarkdownContent'
 import { getSitePageBySlug } from '../../../../lib/queries/site-pages'
+import { buildPageMetadata } from '../../../../lib/seo/metadata'
 
 export const revalidate = 3600
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getSitePageBySlug('contato')
-  if (!page) return { title: 'Contato' }
-  return {
+  if (!page) return buildPageMetadata({ title: 'Contato', path: '/contato' })
+  return buildPageMetadata({
     title: page.seo_title_pt ?? page.title_pt,
     description: page.seo_description_pt ?? undefined,
-  }
+    path: '/contato',
+  })
 }
 
 export default async function ContatoPage() {

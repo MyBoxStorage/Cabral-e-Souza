@@ -1,14 +1,16 @@
 import type { Metadata } from 'next'
 import { ArtistCard } from '../../../../components/artwork/ArtistCard'
 import { getPublishedArtists } from '../../../../lib/queries/artists'
+import { buildPageMetadata } from '../../../../lib/seo/metadata'
 
 export const revalidate = 3600
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: 'Artistas',
   description:
     'Verbetes de artistas representados pela Cabral & Souza: Di Cavalcanti, Alfredo Volpi, Djanira, Sergio Camargo, Pedro Américo e outros mestres da arte brasileira.',
-}
+  path: '/artistas',
+})
 
 export default async function ArtistasPage() {
   const artists = await getPublishedArtists()
