@@ -1,13 +1,8 @@
 import Image from 'next/image'
 import { ArtworkCard, type ArtworkStatus } from '@cabral-souza/ui'
 import { whatsappUrl } from '@cabral-souza/shared'
-import {
-  formatBRL,
-  formatDimensions,
-  formatYear,
-  getLocalizedTitle,
-} from '../../lib/format'
-import { getDisplayPrice, type PieceListItem } from '../../lib/queries/pieces'
+import { formatDimensions, formatYear, getLocalizedTitle } from '../../lib/format'
+import { type PieceListItem } from '../../lib/queries/pieces'
 
 const CATEGORY_LABELS: Record<string, string> = {
   pintura: 'Pintura',
@@ -27,6 +22,13 @@ function mapStatus(status: string): ArtworkStatus {
   return 'available'
 }
 
+function buildEyebrow(piece: PieceListItem): string | undefined {
+  const categoryLabel = CATEGORY_LABELS[piece.category] ?? piece.category
+  const parts = [piece.technique_pt, categoryLabel].filter(Boolean)
+  if (parts.length === 0) return undefined
+  return parts.join(' · ').toUpperCase()
+}
+
 interface PieceArtworkCardProps {
   piece: PieceListItem
   locale?: string
@@ -41,7 +43,6 @@ export function PieceArtworkCard({ piece, locale = 'pt-BR', priority = false }: 
       .find((img) => img.is_primary) ?? piece.piece_images[0]
 
   const title = getLocalizedTitle(piece, locale)
-  const displayPrice = getDisplayPrice(piece)
   const dimensions = formatDimensions(piece.height_cm, piece.width_cm)
   const year = formatYear(piece.year_created, piece.year_created_circa)
 
@@ -51,27 +52,28 @@ export function PieceArtworkCard({ piece, locale = 'pt-BR', priority = false }: 
       alt={primaryImage.alt_text_pt ?? title}
       fill
       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-      className="object-contain"
+      className="h-full w-full object-cover"
       priority={priority}
     />
   ) : (
-    <div className="flex items-center justify-center aspect-[4/5] bg-cream-200">
+    <div className="flex h-full w-full items-center justify-center bg-cream-200">
       <span className="font-body text-eyebrow uppercase tracking-caps text-ink-700">Sem imagem</span>
     </div>
   )
+
+  const eyebrow = buildEyebrow(piece)
 
   return (
     <ArtworkCard
       artwork={{
         image: imageNode,
         alt: primaryImage?.alt_text_pt ?? title,
-        category: CATEGORY_LABELS[piece.category] ?? piece.category,
+        ...(eyebrow ? { category: eyebrow } : {}),
         title,
         ...(piece.artists?.name ? { artist: piece.artists.name } : {}),
         ...(piece.technique_pt ? { medium: piece.technique_pt } : {}),
         ...(year ? { year } : {}),
         ...(dimensions ? { dimensions } : {}),
-        price: displayPrice !== null ? formatBRL(displayPrice) : null,
         status: mapStatus(piece.status),
         href: `/acervo/${piece.slug}`,
         whatsappHref: whatsappUrl(

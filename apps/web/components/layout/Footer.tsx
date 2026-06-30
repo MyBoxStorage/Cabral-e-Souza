@@ -53,7 +53,7 @@ export async function Footer() {
 
   return (
     <footer className="bg-ink-900 text-cream-300">
-      <div className="container-default py-24">
+      <div className="container-default py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-10">
           <div className="flex flex-col gap-6 sm:col-span-2 lg:col-span-1">
             <Logo tone="on-dark" href="/" className="[&_span:first-child]:text-title-xs" />

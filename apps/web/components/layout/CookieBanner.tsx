@@ -24,6 +24,71 @@ function persistConsent(state: ConsentState) {
   window.dispatchEvent(new CustomEvent('cs:consent', { detail: state }))
 }
 
+function ToggleRow({
+  id,
+  label,
+  description,
+  checked,
+  onChange,
+  disabled = false,
+}: {
+  id: string
+  label: string
+  description: string
+  checked: boolean
+  onChange?: (checked: boolean) => void
+  disabled?: boolean
+}) {
+  return (
+    <label
+      htmlFor={id}
+      className={[
+        'flex items-start gap-3',
+        disabled ? 'cursor-not-allowed opacity-90' : 'cursor-pointer group',
+      ].join(' ')}
+    >
+      <div className="relative mt-0.5 shrink-0">
+        <input
+          id={id}
+          type="checkbox"
+          checked={checked}
+          disabled={disabled}
+          onChange={onChange ? (e) => onChange(e.target.checked) : undefined}
+          className="peer sr-only"
+        />
+        <div
+          className={[
+            'flex h-4 w-4 items-center justify-center rounded-sm border transition-colors duration-base',
+            'border-cream-300/30 peer-checked:border-bronze-500 peer-checked:bg-bronze-500',
+            'peer-focus-visible:ring-2 peer-focus-visible:ring-bronze-300 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-ink-900',
+            disabled ? 'bg-bronze-500 border-bronze-500' : '',
+          ].join(' ')}
+          aria-hidden
+        >
+          {(checked || disabled) && (
+            <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+              <path
+                d="M1 4l3 3 5-6"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-cream-100"
+              />
+            </svg>
+          )}
+        </div>
+      </div>
+      <div>
+        <p className="font-body text-body-sm font-medium text-cream-100 group-hover:text-bronze-300 transition-colors">
+          {label}
+        </p>
+        <p className="mt-0.5 font-body text-caption text-cream-300/60 leading-relaxed">{description}</p>
+      </div>
+    </label>
+  )
+}
+
 export function CookieBanner() {
   const t = useTranslations('cookie')
   const bannerRef = useRef<HTMLDivElement>(null)
@@ -59,106 +124,70 @@ export function CookieBanner() {
       aria-modal="false"
       aria-label="Consentimento de cookies"
       className={[
-        'fixed bottom-0 left-0 right-0 z-50 md:bottom-6 md:left-6 md:right-auto md:max-w-[420px]',
+        'fixed bottom-0 left-0 right-0 z-50',
+        'border-t border-bronze-500/20 bg-ink-900 shadow-[0_-8px_32px_rgba(26,22,18,0.35)]',
         'transition-[opacity,transform] duration-[280ms] ease-out motion-reduce:transition-none',
         dismissing ? 'opacity-0 translate-y-2 motion-reduce:translate-y-0' : 'opacity-100 translate-y-0',
       ].join(' ')}
     >
-      <div className="bg-[--color-ink] text-[--color-paper] p-6 md:rounded-sm shadow-[0_8px_40px_rgba(0,0,0,0.2)]">
-        <p className="font-display text-[1rem] tracking-[-0.01em] mb-2">{t('title')}</p>
-        <p className="font-body text-[12px] leading-[1.7] text-[rgba(250,250,247,0.6)] mb-5">
-          {t('description')}{' '}
-          <Link
-            href="/privacidade"
-            className="text-[--color-accent] hover:underline underline-offset-2 transition-colors"
-          >
-            {t('privacy_link')}
-          </Link>
-          .
-        </p>
+      <div className="container-default max-w-[1200px] py-6">
+        <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end lg:gap-10">
+          <div>
+            <p className="font-display text-title-xs text-cream-100 mb-2">{t('title')}</p>
+            <p className="font-body text-body-sm text-cream-300/75 leading-relaxed mb-5 max-w-2xl">
+              {t('description')}{' '}
+              <Link href="/privacidade" className="text-bronze-300 hover:text-bronze-500 underline underline-offset-2">
+                {t('privacy_link')}
+              </Link>
+              .
+            </p>
 
-        <div className="flex flex-col gap-3 mb-6">
-          <label className="flex items-start gap-3 cursor-not-allowed">
-            <div className="mt-[2px] w-4 h-4 rounded-[2px] bg-[--color-accent] flex items-center justify-center flex-shrink-0">
-              <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden>
-                <path d="M1 4l3 3 5-6" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
-            <div>
-              <p className="font-body text-[12px] font-medium text-[--color-paper]">{t('essential_label')}</p>
-              <p className="font-body text-[11px] text-[rgba(250,250,247,0.45)] mt-0.5">{t('essential_description')}</p>
-            </div>
-          </label>
-
-          <label className="flex items-start gap-3 cursor-pointer group">
-            <div className="relative mt-[2px] flex-shrink-0">
-              <input
-                type="checkbox"
+            <div className="flex flex-col gap-3 max-w-xl">
+              <ToggleRow
+                id="cookie-essential"
+                label={t('essential_label')}
+                description={t('essential_description')}
+                checked
+                disabled
+              />
+              <ToggleRow
+                id="cookie-analytics"
+                label={t('analytics_label')}
+                description={t('analytics_description')}
                 checked={analytics}
-                onChange={(e) => setAnalytics(e.target.checked)}
-                className="sr-only peer"
-                aria-label={t('analytics_label')}
+                onChange={setAnalytics}
               />
-              <div className="w-4 h-4 rounded-[2px] border border-[rgba(250,250,247,0.25)] peer-checked:bg-[--color-accent] peer-checked:border-[--color-accent] peer-focus-visible:ring-1 peer-focus-visible:ring-[--color-accent] transition-colors flex items-center justify-center">
-                {analytics && (
-                  <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden>
-                    <path d="M1 4l3 3 5-6" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                )}
-              </div>
-            </div>
-            <div>
-              <p className="font-body text-[12px] font-medium text-[--color-paper] group-hover:text-[--color-accent] transition-colors">{t('analytics_label')}</p>
-              <p className="font-body text-[11px] text-[rgba(250,250,247,0.45)] mt-0.5">{t('analytics_description')}</p>
-            </div>
-          </label>
-
-          <label className="flex items-start gap-3 cursor-pointer group">
-            <div className="relative mt-[2px] flex-shrink-0">
-              <input
-                type="checkbox"
+              <ToggleRow
+                id="cookie-marketing"
+                label={t('marketing_label')}
+                description={t('marketing_description')}
                 checked={marketing}
-                onChange={(e) => setMarketing(e.target.checked)}
-                className="sr-only peer"
-                aria-label={t('marketing_label')}
+                onChange={setMarketing}
               />
-              <div className="w-4 h-4 rounded-[2px] border border-[rgba(250,250,247,0.25)] peer-checked:bg-[--color-accent] peer-checked:border-[--color-accent] peer-focus-visible:ring-1 peer-focus-visible:ring-[--color-accent] transition-colors flex items-center justify-center">
-                {marketing && (
-                  <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden>
-                    <path d="M1 4l3 3 5-6" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                )}
-              </div>
             </div>
-            <div>
-              <p className="font-body text-[12px] font-medium text-[--color-paper] group-hover:text-[--color-accent] transition-colors">{t('marketing_label')}</p>
-              <p className="font-body text-[11px] text-[rgba(250,250,247,0.45)] mt-0.5">{t('marketing_description')}</p>
-            </div>
-          </label>
-        </div>
+          </div>
 
-        <div className="flex flex-col gap-2">
-          <button
-            type="button"
-            onClick={acceptAll}
-            className="w-full font-body text-[11px] uppercase tracking-[0.1em] text-[--color-ink] bg-[--color-accent] hover:bg-[--color-accent-deep] py-3 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[--color-accent] focus-visible:ring-offset-1 focus-visible:ring-offset-[--color-ink]"
-          >
-            {t('accept_all')}
-          </button>
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row lg:flex-col lg:min-w-[220px]">
             <button
               type="button"
-              onClick={acceptSelected}
-              className="flex-1 font-body text-[11px] uppercase tracking-[0.1em] text-[--color-paper] border border-[rgba(250,250,247,0.2)] hover:border-[--color-accent] hover:text-[--color-accent] py-2.5 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[--color-accent]"
+              onClick={acceptAll}
+              className="font-body text-eyebrow font-medium uppercase tracking-caps bg-bronze-500 text-cream-100 hover:bg-bronze-700 px-5 py-3 rounded-md transition-colors duration-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bronze-300"
             >
-              {t('accept_selected')}
+              {t('accept_all')}
             </button>
             <button
               type="button"
               onClick={rejectAll}
-              className="flex-1 font-body text-[11px] uppercase tracking-[0.1em] text-[rgba(250,250,247,0.6)] hover:text-[rgba(250,250,247,0.85)] py-2.5 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[--color-accent]"
+              className="font-body text-eyebrow font-medium uppercase tracking-caps border border-cream-300/50 text-cream-300 hover:border-cream-300 hover:bg-cream-100/5 px-5 py-3 rounded-md transition-colors duration-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bronze-300"
             >
               {t('reject_all')}
+            </button>
+            <button
+              type="button"
+              onClick={acceptSelected}
+              className="font-body text-eyebrow font-medium uppercase tracking-caps border border-bronze-500 text-bronze-300 hover:bg-bronze-500 hover:text-cream-100 px-5 py-3 rounded-md transition-colors duration-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bronze-300"
+            >
+              {t('accept_selected')}
             </button>
           </div>
         </div>

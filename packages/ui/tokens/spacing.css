@@ -25,9 +25,14 @@
   --container-wide: 1440px;
   --container-full: 1680px;
 
-  /* Section padding */
-  --section-padding-y-mobile: var(--space-16);
-  --section-padding-y-desktop: clamp(var(--space-20), 4vw + 3rem, var(--space-32));
+  /* Section padding — legacy alias (section-default) */
+  --section-padding-y-mobile: clamp(var(--space-16), 5vw, var(--space-20));
+  --section-padding-y-desktop: clamp(var(--space-16), 5vw, var(--space-20));
+
+  /* Section rhythm */
+  --section-tight-y: clamp(var(--space-12), 4vw, var(--space-16));
+  --section-default-y: clamp(var(--space-16), 5vw, var(--space-20));
+  --section-spacious-y: clamp(var(--space-20), 6vw, var(--space-24));
   --container-padding-x-mobile: var(--space-6);
   --container-padding-x-desktop: clamp(var(--space-8), 4vw, var(--space-16));
 

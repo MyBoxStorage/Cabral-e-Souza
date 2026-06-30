@@ -1,22 +1,20 @@
 import { cn } from '../lib/cn'
-import { Seal } from './Seal'
 
 export type ArtworkStatus = 'available' | 'reserved' | 'sold'
 
 export interface ArtworkCardData {
   image: React.ReactNode
   alt: string
+  /** Eyebrow line — e.g. "PINTURA A ÓLEO · PINTURA" */
   category?: string
   title: string
   artist?: string
   medium?: string
   year?: string
   dimensions?: string
-  price?: string | null
   status?: ArtworkStatus
   href?: string
   whatsappHref?: string
-  showCuratedSeal?: boolean
 }
 
 export interface ArtworkCardProps {
@@ -24,107 +22,96 @@ export interface ArtworkCardProps {
   className?: string
 }
 
+function StatusBadge({ label }: { label: string }) {
+  return (
+    <span className="badge-corner absolute top-3 right-3 z-10 whitespace-nowrap border border-bronze-500 bg-cream-100/95 px-2.5 py-1 font-body text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-bronze-500">
+      {label}
+    </span>
+  )
+}
+
 function TechnicalLine({ artwork }: { artwork: ArtworkCardData }) {
   const parts = [artwork.artist, artwork.medium, artwork.year, artwork.dimensions].filter(Boolean)
   if (parts.length === 0) return null
 
   return (
-    <p className="font-display italic text-caption text-ink-700 leading-relaxed">
+    <p className="artwork-card__technical font-display italic text-caption text-ink-700 leading-normal line-clamp-2">
       {parts.join(' · ')}
     </p>
   )
 }
 
 export function ArtworkCard({ artwork, className }: ArtworkCardProps) {
-  const {
-    image,
-    category,
-    title,
-    price,
-    status = 'available',
-    href,
-    whatsappHref,
-    showCuratedSeal = true,
-  } = artwork
+  const { image, category, title, status = 'available', href, whatsappHref } = artwork
 
   const statusLabel =
     status === 'reserved' ? 'Reservada' : status === 'sold' ? 'Vendida' : null
 
-  const imageBlock = (
-    <div
-      className={cn(
-        'artwork-card__frame',
-        'border-2 border-bronze-500 bg-cream-50 p-4',
-        'transition-[border-color,box-shadow,transform] duration-base ease-smooth',
-        'group-hover:-translate-y-1 group-hover:border-bronze-700 group-hover:shadow-lg',
-      )}
-    >
-      <div className="relative w-full aspect-[4/5] overflow-hidden bg-cream-100">{image}</div>
-    </div>
+  const imageInner = (
+    <>
+      {image}
+      {statusLabel && <StatusBadge label={statusLabel} />}
+    </>
   )
 
   return (
-    <article className={cn('artwork-card group', className)}>
-      <div className="artwork-card__image-wrapper relative mb-4">
+    <article
+      className={cn(
+        'artwork-card group bg-cream-50 border border-transparent',
+        'transition-[border-color,box-shadow,transform] duration-base ease-smooth',
+        'hover:border-bronze-300 hover:shadow-md hover:-translate-y-0.5',
+        className,
+      )}
+    >
+      <div className="artwork-card__image relative aspect-[4/5] overflow-hidden bg-cream-100">
         {href ? (
           <a
             href={href}
-            className="block focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bronze-300"
+            className="block relative w-full h-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bronze-300"
             aria-label={title}
           >
-            {imageBlock}
+            {imageInner}
           </a>
         ) : (
-          imageBlock
+          imageInner
         )}
-
-        <div className="artwork-card__seals absolute inset-0 pointer-events-none">
-          {showCuratedSeal && (
-            <div className="absolute top-3 left-3 z-10">
-              <Seal variant="curated">Acervo Curado</Seal>
-            </div>
-          )}
-          {statusLabel && (
-            <div className="absolute top-3 right-3 z-10">
-              <Seal variant="status">{statusLabel}</Seal>
-            </div>
-          )}
-        </div>
       </div>
 
-      <div className="artwork-card__meta flex flex-col gap-1">
+      <div className="artwork-card__body flex flex-col gap-3 px-5 py-6">
         {category && (
-          <span className="artwork-card__eyebrow font-body font-medium uppercase tracking-eyebrow text-eyebrow text-bronze-500">
+          <span className="artwork-card__eyebrow font-body text-[0.6875rem] font-medium uppercase tracking-[0.16em] text-bronze-500">
             {category}
           </span>
         )}
 
         {href ? (
           <a href={href} className="block group/title">
-            <h3 className="artwork-card__title font-display font-medium text-title-xs text-ink-800 leading-snug group-hover/title:text-bronze-500 transition-colors duration-base">
+            <h3 className="artwork-card__title font-display font-medium text-title-sm text-ink-800 leading-snug line-clamp-2 m-0 group-hover/title:text-bronze-500 transition-colors duration-base">
               {title}
             </h3>
           </a>
         ) : (
-          <h3 className="artwork-card__title font-display font-medium text-title-xs text-ink-800 leading-snug">
+          <h3 className="artwork-card__title font-display font-medium text-title-sm text-ink-800 leading-snug line-clamp-2 m-0">
             {title}
           </h3>
         )}
 
         <TechnicalLine artwork={artwork} />
 
-        <p className="artwork-card__price font-body text-body-sm text-ink-800 mt-1">
-          {price ?? 'Sob consulta'}
-        </p>
-
         {whatsappHref && (
           <a
             href={whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="artwork-card__cta font-body text-body-sm font-medium text-bronze-500 mt-2 hover:underline hover:underline-offset-4 w-fit"
+            className="artwork-card__cta group/cta mt-1 inline-flex items-center gap-2 font-body text-[0.6875rem] font-medium uppercase tracking-[0.18em] text-bronze-500 hover:text-bronze-700 w-fit transition-colors duration-base"
           >
-            Consultar via WhatsApp →
+            Consultar via WhatsApp
+            <span
+              aria-hidden
+              className="inline-block transition-transform duration-base ease-smooth group-hover/cta:translate-x-1"
+            >
+              →
+            </span>
           </a>
         )}
       </div>

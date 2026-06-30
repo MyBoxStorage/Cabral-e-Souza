@@ -4,7 +4,7 @@ export function HomeAboutSection() {
   return (
     <section
       aria-labelledby="home-about-heading"
-      className="section-padding bg-cream-100"
+      className="section-default bg-cream-100"
     >
       <div className="container-default grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
         <div className="relative aspect-[4/3] overflow-hidden border-2 border-bronze-500">

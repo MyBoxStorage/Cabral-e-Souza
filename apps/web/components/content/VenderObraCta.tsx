@@ -11,7 +11,7 @@ export function VenderObraCta() {
   return (
     <section
       aria-labelledby="vender-obra-cta-heading"
-      className="py-24 md:py-32 bg-ink-900 text-cream-300"
+      className="section-spacious bg-ink-900 text-cream-300"
     >
       <div className="container-default max-w-3xl mx-auto text-center">
         <p className="font-body font-medium uppercase tracking-eyebrow text-eyebrow text-bronze-500 mb-6">

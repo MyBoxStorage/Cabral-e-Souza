@@ -125,14 +125,17 @@
     }
   }
 
-  .section-padding {
-    padding-block: var(--section-padding-y-mobile);
+  .section-padding,
+  .section-default {
+    padding-block: var(--section-default-y);
   }
 
-  @media (min-width: 1024px) {
-    .section-padding {
-      padding-block: var(--section-padding-y-desktop);
-    }
+  .section-tight {
+    padding-block: var(--section-tight-y);
+  }
+
+  .section-spacious {
+    padding-block: var(--section-spacious-y);
   }
 
   .sr-only {

@@ -16,7 +16,7 @@ export function StatsBar({ items, dark = false, className }: StatsBarProps) {
   return (
     <div
       className={cn(
-        'stats-bar py-16 md:py-20',
+        'stats-bar py-[var(--section-tight-y)]',
         dark ? 'bg-ink-900' : 'bg-cream-50',
         className,
       )}

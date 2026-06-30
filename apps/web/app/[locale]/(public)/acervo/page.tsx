@@ -151,9 +151,9 @@ export default async function AcervoPage({ searchParams }: AcervoPageProps) {
 
       <AcervoFilters params={params} artists={artists} />
 
-      <section className="section-padding bg-cream-100">
+      <section className="section-default bg-cream-100">
         <div className="container-default">
-          <div className="flex flex-wrap items-center justify-between gap-4 mb-10">
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
             <h2 className="font-display font-medium text-title-sm text-ink-800">
               {activeCollection ? `Obras · ${activeCollection.title_pt}` : 'Todas as obras'}
             </h2>
@@ -213,7 +213,7 @@ export default async function AcervoPage({ searchParams }: AcervoPageProps) {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12">
                 {pieces.map((piece, i) => (
                   <PieceArtworkCard key={piece.id} piece={piece} priority={i < 4} locale={locale} />
                 ))}

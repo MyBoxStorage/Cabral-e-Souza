@@ -38,7 +38,7 @@ export default async function HomePage() {
   const yearsOfTradition = new Date().getFullYear() - BUSINESS.foundedYear
 
   const [featuredPieces, artists, boletimPosts] = await Promise.all([
-    getFeaturedPieces(4),
+    getFeaturedPieces(3),
     getPublishedArtists(),
     getPublishedBoletimPosts(2),
   ])
@@ -86,15 +86,15 @@ export default async function HomePage() {
 
       {featuredPieces.length > 0 && (
         <Reveal>
-          <section aria-labelledby="featured-heading" className="section-padding bg-cream-100">
+          <section aria-labelledby="featured-heading" className="section-default bg-cream-100">
             <div className="container-default">
               <SectionHeader
                 eyebrow="Acervo"
                 title="Destaques do Acervo"
                 link={{ href: '/acervo', label: 'Ver acervo completo' }}
-                className="mb-12"
+                className="mb-8"
               />
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {featuredPieces.map((piece, i) => (
                   <Reveal key={piece.id} delay={i * 80}>
                     <PieceArtworkCard piece={piece} priority={i < 2} locale={locale} />
@@ -108,17 +108,17 @@ export default async function HomePage() {
 
       {displayArtists.length > 0 && (
         <Reveal>
-          <section aria-labelledby="artists-heading" className="section-padding bg-cream-100">
+          <section aria-labelledby="artists-heading" className="section-default bg-cream-100">
             <div className="container-default">
-              <SectionHeader eyebrow="Artistas" title="Artistas do acervo" className="mb-12" />
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8">
+              <SectionHeader eyebrow="Artistas" title="Artistas do acervo" className="mb-8" />
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
                 {displayArtists.map((artist, i) => (
                   <Reveal key={artist.id} delay={i * 80}>
                     <ArtistCard artist={artist} priority={i < 2} />
                   </Reveal>
                 ))}
               </div>
-              <div className="mt-12 text-center">
+              <div className="mt-8 text-center">
                 <ButtonLink href="/artistas" variant="tertiary" showChevron>
                   Ver todos os artistas
                 </ButtonLink>
@@ -130,17 +130,17 @@ export default async function HomePage() {
 
       {boletimPosts.length > 0 && (
         <Reveal>
-          <section aria-labelledby="boletim-heading" className="section-padding bg-cream-100">
+          <section aria-labelledby="boletim-heading" className="section-default bg-cream-100">
             <div className="container-default">
-              <SectionHeader eyebrow="Boletim" title="Análises e mercado" className="mb-12" />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <SectionHeader eyebrow="Boletim" title="Análises e mercado" className="mb-8" />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {boletimPosts.map((post, i) => (
                   <Reveal key={post.id} delay={i * 80}>
                     <BoletimCard post={post} />
                   </Reveal>
                 ))}
               </div>
-              <div className="mt-12 text-center">
+              <div className="mt-8 text-center">
                 <ButtonLink href="/boletim" variant="tertiary" showChevron>
                   Ver boletim completo
                 </ButtonLink>
