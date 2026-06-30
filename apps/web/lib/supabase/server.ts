@@ -1,6 +1,8 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import type { Database } from '@cabral-souza/db'
+import { isAllowedAdminEmail } from '../auth/admin-emails'
+import { supabaseCookieOptions } from './cookie-options'
 
 /**
  * Cliente Supabase para Server Components / Server Actions / Route Handlers.
@@ -13,6 +15,7 @@ export async function createSupabaseServerClient() {
     process.env['NEXT_PUBLIC_SUPABASE_URL']!,
     process.env['NEXT_PUBLIC_SUPABASE_ANON_KEY']!,
     {
+      cookieOptions: supabaseCookieOptions,
       cookies: {
         getAll() {
           return cookieStore.getAll()
@@ -38,12 +41,7 @@ export async function getAdminUser() {
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user?.email) return null
-
-  const allowedEmails = (process.env['ADMIN_EMAILS'] ?? '')
-    .split(',')
-    .map((e) => e.trim().toLowerCase())
-
-  if (!allowedEmails.includes(user.email.toLowerCase())) return null
+  if (!isAllowedAdminEmail(user.email)) return null
 
   return user
 }

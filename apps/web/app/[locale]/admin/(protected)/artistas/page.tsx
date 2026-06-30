@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { getAdminArtists } from '../../../../lib/queries/admin'
+import { getAdminArtists } from '../../../../../lib/queries/admin'
 
 export const metadata = { title: 'Artistas' }
 

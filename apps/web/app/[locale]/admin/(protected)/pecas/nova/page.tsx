@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { PieceForm } from '../../../../../components/admin/PieceForm'
-import { getAdminArtists } from '../../../../../lib/queries/admin'
+import { PieceForm } from '../../../../../../components/admin/PieceForm'
+import { getAdminArtists } from '../../../../../../lib/queries/admin'
 
 export const metadata = { title: 'Nova Peça' }
 

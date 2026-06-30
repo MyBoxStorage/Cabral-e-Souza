@@ -1,6 +1,6 @@
 import { createAdminClient } from '@cabral-souza/db'
-import { ViewingRoomGenerator } from '../../../../components/admin/ViewingRoomGenerator'
-import { getAdminViewingRooms } from '../../../../lib/queries/admin'
+import { ViewingRoomGenerator } from '../../../../../components/admin/ViewingRoomGenerator'
+import { getAdminViewingRooms } from '../../../../../lib/queries/admin'
 
 export const metadata = { title: 'Viewing Rooms' }
 

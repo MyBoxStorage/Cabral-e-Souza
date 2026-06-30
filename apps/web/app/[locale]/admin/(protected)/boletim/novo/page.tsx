@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { BoletimForm } from '../../../../../components/admin/BoletimForm'
+import { BoletimForm } from '../../../../../../components/admin/BoletimForm'
 
 export const metadata = { title: 'Nova Publicação' }
 

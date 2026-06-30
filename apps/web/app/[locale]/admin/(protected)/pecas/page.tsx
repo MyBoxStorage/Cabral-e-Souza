@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { getAdminPieces } from '../../../../lib/queries/admin'
-import { formatBRL } from '../../../../lib/format'
+import { getAdminPieces } from '../../../../../lib/queries/admin'
+import { formatBRL } from '../../../../../lib/format'
 
 export const metadata = { title: 'Acervo' }
 

@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import Link from 'next/link'
-import { getAdminKPIs } from '../../../lib/queries/admin'
+import { getAdminKPIs } from '../../../../lib/queries/admin'
 
 export const metadata = { title: 'Dashboard' }
 

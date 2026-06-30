@@ -1,6 +1,7 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { type NextRequest, NextResponse } from 'next/server'
+import { supabaseCookieOptions } from '../../../../lib/supabase/cookie-options'
 
 export async function POST(request: NextRequest) {
   const cookieStore = await cookies()
@@ -9,6 +10,7 @@ export async function POST(request: NextRequest) {
     process.env['NEXT_PUBLIC_SUPABASE_URL']!,
     process.env['NEXT_PUBLIC_SUPABASE_ANON_KEY']!,
     {
+      cookieOptions: supabaseCookieOptions,
       cookies: {
         getAll() { return cookieStore.getAll() },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

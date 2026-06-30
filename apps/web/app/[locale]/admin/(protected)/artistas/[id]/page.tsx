@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ArtistForm } from '../../../../../components/admin/ArtistForm'
-import { getAdminArtistById } from '../../../../../lib/queries/admin'
+import { ArtistForm } from '../../../../../../components/admin/ArtistForm'
+import { getAdminArtistById } from '../../../../../../lib/queries/admin'
 
 export const metadata = { title: 'Editar Artista' }
 

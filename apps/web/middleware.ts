@@ -1,31 +1,45 @@
 import { createServerClient } from '@supabase/ssr'
 import createIntlMiddleware from 'next-intl/middleware'
 import { type NextRequest, NextResponse } from 'next/server'
+import { isAllowedAdminEmail } from './lib/auth/admin-emails'
 import { routing } from './i18n/routing'
+import { supabaseCookieOptions } from './lib/supabase/cookie-options'
 
 const intlMiddleware = createIntlMiddleware(routing)
+
+const LOCALE_PREFIX = '(?:pt-BR|en-US|fr-FR)'
+const ADMIN_PREFIX = `(?:\\/(?:${LOCALE_PREFIX}))?\\/admin`
+
+/** Rota pública — apenas /admin/login (sem guarda de sessão) */
+function isAdminLoginRoute(pathname: string): boolean {
+  return new RegExp(`^${ADMIN_PREFIX}\\/login(?:\\/|$)`).test(pathname)
+}
+
+function isAdminRoute(pathname: string): boolean {
+  return new RegExp(`^${ADMIN_PREFIX}(?:\\/|$)`).test(pathname)
+}
+
+function adminLoginPath(pathname: string): string {
+  const locale = pathname.match(/^\/(pt-BR|en-US|fr-FR)\//)?.[1]
+  return locale ? `/${locale}/admin/login` : '/admin/login'
+}
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // Verificar se é rota de admin (ex: /admin, /en-US/admin, /fr-FR/admin)
-  const isAdminRoute = /^\/(?:pt-BR\/|en-US\/|fr-FR\/)?admin/.test(pathname)
-  const isLoginRoute = /^\/(?:pt-BR\/|en-US\/|fr-FR\/)?admin\/login/.test(pathname)
-  const isCallbackRoute = /^\/(?:pt-BR\/|en-US\/|fr-FR\/)?admin\/auth\/callback/.test(pathname)
-
-  // Rotas de auth não precisam de guarda
-  if (isLoginRoute || isCallbackRoute) {
+  // /admin/login nunca passa pela guarda
+  if (isAdminLoginRoute(pathname)) {
     return intlMiddleware(request)
   }
 
-  if (isAdminRoute) {
-    // Verificar sessão Supabase via cookies
+  if (isAdminRoute(pathname)) {
     let response = NextResponse.next({ request })
 
     const supabase = createServerClient(
       process.env['NEXT_PUBLIC_SUPABASE_URL']!,
       process.env['NEXT_PUBLIC_SUPABASE_ANON_KEY']!,
       {
+        cookieOptions: supabaseCookieOptions,
         cookies: {
           getAll() { return request.cookies.getAll() },
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -43,25 +57,16 @@ export async function middleware(request: NextRequest) {
     const { data: { user } } = await supabase.auth.getUser()
 
     if (!user) {
-      // Não autenticado — redirecionar para login preservando locale
-      const locale = pathname.match(/^\/(pt-BR|en-US|fr-FR)\//)?.[1] ?? ''
-      const loginPath = locale ? `/${locale}/admin/login` : '/admin/login'
-      const loginUrl = new URL(loginPath, request.url)
+      const loginUrl = new URL(adminLoginPath(pathname), request.url)
       loginUrl.searchParams.set('redirect', pathname)
       return NextResponse.redirect(loginUrl)
     }
 
-    // Verificar se é email autorizado
-    const allowedEmails = (process.env['ADMIN_EMAILS'] ?? '')
-      .split(',')
-      .map((e) => e.trim().toLowerCase())
-
-    if (!allowedEmails.includes((user.email ?? '').toLowerCase())) {
-      const loginUrl = new URL('/admin/login?error=unauthorized', request.url)
+    if (!isAllowedAdminEmail(user.email ?? '')) {
+      const loginUrl = new URL(`${adminLoginPath(pathname)}?error=unauthorized`, request.url)
       return NextResponse.redirect(loginUrl)
     }
 
-    // Aplicar i18n e retornar com cookies de sessão atualizados
     const intlResponse = intlMiddleware(request)
     response.headers.forEach((value, key) => intlResponse.headers.set(key, value))
     return intlResponse

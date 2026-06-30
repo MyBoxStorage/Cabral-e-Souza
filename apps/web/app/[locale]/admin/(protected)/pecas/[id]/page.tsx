@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { PieceForm } from '../../../../../components/admin/PieceForm'
-import { getAdminArtists, getAdminPieceById } from '../../../../../lib/queries/admin'
-import { deletePiece } from '../../../../../app/actions/piece'
+import { PieceForm } from '../../../../../../components/admin/PieceForm'
+import { getAdminArtists, getAdminPieceById } from '../../../../../../lib/queries/admin'
+import { deletePiece } from '../../../../../../app/actions/piece'
 
 export const metadata = { title: 'Editar Peça' }
 

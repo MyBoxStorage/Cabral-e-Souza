@@ -1,5 +1,5 @@
-import { getAdminLeads } from '../../../../lib/queries/admin'
-import { LeadsTable } from '../../../../components/admin/LeadsTable'
+import { getAdminLeads } from '../../../../../lib/queries/admin'
+import { LeadsTable } from '../../../../../components/admin/LeadsTable'
 
 export const metadata = { title: 'Leads' }
 

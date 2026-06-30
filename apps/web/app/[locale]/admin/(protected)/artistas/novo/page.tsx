@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArtistForm } from '../../../../../components/admin/ArtistForm'
+import { ArtistForm } from '../../../../../../components/admin/ArtistForm'
 
 export const metadata = { title: 'Novo Artista' }
 
