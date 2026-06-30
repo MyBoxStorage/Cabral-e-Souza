@@ -3,16 +3,17 @@ import { cn } from '../lib/cn'
 
 const sealVariants = cva(
   [
-    'inline-flex items-center',
-    'font-body font-medium uppercase tracking-eyebrow text-eyebrow',
-    'border px-2.5 py-1.5',
-    'bg-cream-100/90 text-bronze-500 border-bronze-500',
+    'inline-flex items-center justify-center',
+    'whitespace-nowrap shrink-0',
+    'font-body font-medium uppercase tracking-eyebrow text-[0.625rem] sm:text-eyebrow',
+    'border px-3 py-1',
+    'bg-cream-100/95 text-bronze-500 border-bronze-500',
   ],
   {
     variants: {
       variant: {
         curated: 'border-bronze-500',
-        status: 'border-bronze-500',
+        status: 'border-bronze-500 bg-cream-50/95',
         premium: 'border-bronze-700 text-bronze-700',
       },
     },

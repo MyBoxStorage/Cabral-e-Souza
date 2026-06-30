@@ -71,6 +71,12 @@
     color: var(--color-ink-900);
   }
 
+  em,
+  i {
+    font-family: var(--font-display);
+    font-style: italic;
+  }
+
   ::selection {
     background-color: var(--color-bronze-300);
     color: var(--color-ink-900);

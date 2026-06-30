@@ -22,7 +22,7 @@ export function BoletimCard({ post }: BoletimCardProps) {
     : null
 
   return (
-    <article className="group flex flex-col h-full border border-cream-200 bg-cream-50 overflow-hidden hover:border-bronze-500/40 hover:shadow-md transition-[border-color,box-shadow] duration-base">
+    <article className="group flex flex-col h-full border border-bronze-500/20 bg-cream-50 overflow-hidden hover:border-bronze-500/50 hover:shadow-md transition-[border-color,box-shadow,transform] duration-base hover:-translate-y-0.5">
       {post.hero_image_url ? (
         <Link
           href={`/boletim/${post.slug}`}
@@ -42,20 +42,24 @@ export function BoletimCard({ post }: BoletimCardProps) {
         </Link>
       )}
 
-      <div className="p-6 flex flex-col flex-1">
+      <div className="p-6 flex flex-col flex-1 min-w-0">
         <p className="font-body font-medium uppercase tracking-eyebrow text-eyebrow text-bronze-500 mb-3">
           {categoryLabel}
-          {dateLabel && <span className="text-ink-700/60 ml-3 normal-case tracking-normal font-normal">{dateLabel}</span>}
+          {dateLabel && (
+            <span className="text-ink-700/60 ml-3 normal-case tracking-normal font-normal text-caption">
+              {dateLabel}
+            </span>
+          )}
         </p>
 
-        <h3 className="font-display font-medium text-title-sm text-ink-800 leading-snug mb-3 flex-1">
+        <h3 className="font-display font-medium text-title-xs text-ink-800 leading-snug mb-3 line-clamp-3">
           <Link href={`/boletim/${post.slug}`} className="hover:text-bronze-500 transition-colors duration-base">
             {post.title_pt}
           </Link>
         </h3>
 
         {post.excerpt_pt && (
-          <p className="font-body text-body text-ink-700 mb-4 line-clamp-3 leading-relaxed">
+          <p className="font-body text-body-sm text-ink-700 mb-4 line-clamp-3 leading-relaxed">
             {post.excerpt_pt}
           </p>
         )}

@@ -3,6 +3,19 @@ import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'
 import { Logo } from './Logo'
 
+function MapPinIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden className="shrink-0 mt-0.5">
+      <path
+        d="M12 21s7-4.5 7-11a7 7 0 1 0-14 0c0 6.5 7 11 7 11Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+      />
+      <circle cx="12" cy="10" r="2.5" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
+  )
+}
+
 export async function Footer() {
   const t = await getTranslations('footer')
   const year = new Date().getFullYear()
@@ -36,26 +49,31 @@ export async function Footer() {
   ]
 
   const linkClass =
-    'font-body text-caption text-cream-300/70 hover:text-bronze-300 transition-colors duration-base'
+    'font-body text-caption text-cream-300/70 hover:text-bronze-300 hover:opacity-100 transition-[color,opacity] duration-base'
 
   return (
     <footer className="bg-ink-900 text-cream-300">
       <div className="container-default py-24">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-10">
           <div className="flex flex-col gap-6 sm:col-span-2 lg:col-span-1">
-            <Logo tone="on-dark" href="/" />
-            <p className="font-body text-eyebrow uppercase tracking-eyebrow text-bronze-500">
+            <Logo tone="on-dark" href="/" className="[&_span:first-child]:text-title-xs" />
+            <p className="font-body font-medium uppercase tracking-eyebrow text-eyebrow text-bronze-500">
               Galeria de Arte · Est. {BUSINESS.foundedYear}
             </p>
             <p className="font-body text-caption text-cream-300/70 leading-relaxed max-w-xs">
               {t('tagline')}
             </p>
-            <address className="not-italic font-body text-caption text-cream-300/70 leading-relaxed">
-              {BUSINESS.address.street}
-              <br />
-              {BUSINESS.address.neighborhood} — {BUSINESS.address.city}, {BUSINESS.address.state}
-              <br />
-              {BUSINESS.addressZipLine}
+            <address className="not-italic flex gap-2.5 font-body text-caption text-cream-300/70 leading-relaxed">
+              <span className="text-bronze-500">
+                <MapPinIcon />
+              </span>
+              <span>
+                {BUSINESS.address.street}
+                <br />
+                {BUSINESS.address.neighborhood} — {BUSINESS.address.city}, {BUSINESS.address.state}
+                <br />
+                {BUSINESS.addressZipLine}
+              </span>
             </address>
           </div>
 
@@ -108,7 +126,7 @@ export async function Footer() {
         <hr className="my-12 border-0 border-t border-bronze-500/25" />
 
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <p className="font-body text-caption text-cream-300/70">
+          <p className="font-body text-caption text-cream-300/60">
             {t('copyright', { year })}
           </p>
           <nav aria-label={t('legal_title')} className="flex flex-wrap gap-x-4 gap-y-2">

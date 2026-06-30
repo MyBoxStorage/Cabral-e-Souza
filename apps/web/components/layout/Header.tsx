@@ -10,8 +10,8 @@ import { MobileMenu } from './MobileMenu'
 
 const SCROLL_THRESHOLD = 80
 
-/** Rotas com hero escuro no topo — header transparente com texto claro */
-const DARK_HERO_ROUTES = ['/', '/sobre', '/vender-obra']
+/** Rotas com hero escuro full-width no topo */
+const FULL_DARK_HERO_ROUTES = ['/sobre', '/vender-obra']
 
 function normalizePath(pathname: string): string {
   const stripped = pathname.replace(/^\/(pt-BR|en-US|fr-FR)(?=\/|$)/, '')
@@ -27,7 +27,17 @@ function isNavActive(pathname: string, href: string): boolean {
 function resolveLogoTone(scrolled: boolean, pathname: string): LogoTone {
   if (scrolled) return 'on-dark'
   const current = normalizePath(pathname)
-  return DARK_HERO_ROUTES.includes(current) ? 'on-dark' : 'on-cream'
+  // Home: logo fica sobre coluna escura à esquerda
+  if (current === '/' || FULL_DARK_HERO_ROUTES.includes(current)) return 'on-dark'
+  return 'on-cream'
+}
+
+function resolveNavOnDark(scrolled: boolean, pathname: string): boolean {
+  if (scrolled) return true
+  const current = normalizePath(pathname)
+  // Home split: nav fica sobre painel creme à direita
+  if (current === '/') return false
+  return FULL_DARK_HERO_ROUTES.includes(current)
 }
 
 export function Header() {
@@ -53,13 +63,13 @@ export function Header() {
   }, [])
 
   const logoTone = resolveLogoTone(scrolled, pathname)
-  const onDarkHero = logoTone === 'on-dark'
+  const navOnDark = resolveNavOnDark(scrolled, pathname)
 
   const navLinkClass = (active: boolean) =>
     [
       'font-body font-medium uppercase tracking-caps text-eyebrow',
       'transition-colors duration-slow ease-smooth',
-      scrolled || onDarkHero
+      navOnDark
         ? active
           ? 'text-bronze-300'
           : 'text-cream-300/80 hover:text-bronze-300'
@@ -104,7 +114,10 @@ export function Header() {
             </ButtonLink>
           </div>
 
-          <MobileMenu links={navLinks} headerTone={scrolled || onDarkHero ? 'on-dark' : 'on-cream'} />
+          <MobileMenu
+            links={navLinks}
+            headerTone={scrolled || navOnDark ? 'on-dark' : 'on-cream'}
+          />
         </div>
       </div>
     </header>

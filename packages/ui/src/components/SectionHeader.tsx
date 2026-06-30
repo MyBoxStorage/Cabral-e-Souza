@@ -36,7 +36,7 @@ export function SectionHeader({
         )}
         <h2
           className={cn(
-            'font-display font-medium text-title-md',
+            'font-display font-medium text-title-md leading-tight',
             dark ? 'text-cream-300' : 'text-ink-800',
           )}
         >
@@ -47,7 +47,7 @@ export function SectionHeader({
       {link && (
         <a
           href={link.href}
-          className="font-body text-body-sm font-medium text-bronze-500 hover:underline hover:underline-offset-4 shrink-0"
+          className="font-body text-body-sm font-medium text-bronze-500 hover:underline hover:underline-offset-4 shrink-0 sm:mb-1"
         >
           {link.label} →
         </a>

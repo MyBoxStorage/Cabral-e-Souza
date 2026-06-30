@@ -54,7 +54,7 @@ export function ArtworkCard({ artwork, className }: ArtworkCardProps) {
     <div
       className={cn(
         'artwork-card__frame',
-        'border-2 border-bronze-500 bg-cream-100 p-4',
+        'border-2 border-bronze-500 bg-cream-50 p-4',
         'transition-[border-color,box-shadow,transform] duration-base ease-smooth',
         'group-hover:-translate-y-1 group-hover:border-bronze-700 group-hover:shadow-lg',
       )}
@@ -78,9 +78,17 @@ export function ArtworkCard({ artwork, className }: ArtworkCardProps) {
           imageBlock
         )}
 
-        <div className="artwork-card__seals absolute inset-x-0 top-0 flex justify-between p-3 pointer-events-none">
-          {showCuratedSeal && <Seal variant="curated">Acervo Curado</Seal>}
-          {statusLabel && <Seal variant="status">{statusLabel}</Seal>}
+        <div className="artwork-card__seals absolute inset-0 pointer-events-none">
+          {showCuratedSeal && (
+            <div className="absolute top-3 left-3 z-10">
+              <Seal variant="curated">Acervo Curado</Seal>
+            </div>
+          )}
+          {statusLabel && (
+            <div className="absolute top-3 right-3 z-10">
+              <Seal variant="status">{statusLabel}</Seal>
+            </div>
+          )}
         </div>
       </div>
 

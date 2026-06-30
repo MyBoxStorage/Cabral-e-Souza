@@ -32,8 +32,8 @@ const buttonVariants = cva(
           'active:translate-y-0',
         ],
         ghost: [
-          'bg-transparent text-cream-300 border border-cream-300/30',
-          'hover:border-cream-300 hover:bg-cream-100/5',
+          'bg-transparent text-cream-300 border border-cream-300/50',
+          'hover:border-cream-300 hover:bg-cream-100/10 hover:text-cream-100',
         ],
       },
       size: {
