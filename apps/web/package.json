@@ -8,6 +8,7 @@
     "start": "next start",
     "start:prod": "next start -p 3000",
     "lighthouse:mobile": "node scripts/lighthouse-mobile.mjs",
+    "diagnose:images": "node scripts/diagnose-images.mjs",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test:notifications": "npx tsx scripts/test-notifications.ts",

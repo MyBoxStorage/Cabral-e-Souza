@@ -46,3 +46,4 @@ supabase/.temp
 # Lighthouse local reports
 apps/web/lighthouse/reports/
 docs/audit/lighthouse-*.json
+.vercel
