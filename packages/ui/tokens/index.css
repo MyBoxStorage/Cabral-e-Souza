@@ -3,64 +3,83 @@
 @import './spacing.css';
 @import './effects.css';
 
-/* Tailwind v4 — mapeamento de tokens para utilities */
-@theme inline {
-  /* Cores */
-  --color-ink-900: var(--color-ink-900);
-  --color-ink-800: var(--color-ink-800);
-  --color-ink-700: var(--color-ink-700);
-  --color-cream-50: var(--color-cream-50);
-  --color-cream-100: var(--color-cream-100);
-  --color-cream-200: var(--color-cream-200);
-  --color-cream-300: var(--color-cream-300);
-  --color-bronze-300: var(--color-bronze-300);
-  --color-bronze-500: var(--color-bronze-500);
-  --color-bronze-700: var(--color-bronze-700);
-  --color-success: var(--color-success);
-  --color-error: var(--color-error);
-  --color-whatsapp: var(--color-whatsapp);
+/*
+ * Tailwind v4 @theme — valores literais (NUNCA var(--token) com o mesmo nome:
+ * `@theme inline { --color-ink-900: var(--color-ink-900) }` gera referência
+ * circular em :root e zera cores/fontes em produção).
+ *
+ * :root em colors.css / typography.css permanece para utilities custom em globals.css.
+ * Fontes (--font-display, --font-body) vêm do next/font no <html>, não do @theme.
+ */
+@theme {
+  /* Cores v3 */
+  --color-ink-900: #1a1612;
+  --color-ink-800: #2a221b;
+  --color-ink-700: #3d3429;
+  --color-cream-50: #faf6ed;
+  --color-cream-100: #f5efe2;
+  --color-cream-200: #ebe3d2;
+  --color-cream-300: #ede5d4;
+  --color-bronze-300: #c4a878;
+  --color-bronze-500: #9a6f3f;
+  --color-bronze-700: #6f4f2c;
+  --color-success: #2d5a3d;
+  --color-error: #8a2424;
+  --color-whatsapp: #25d366;
 
-  /* Aliases legados no theme */
-  --color-ink: var(--color-ink);
-  --color-ink-muted: var(--color-ink-muted);
-  --color-ink-subtle: var(--color-ink-subtle);
-  --color-paper: var(--color-paper);
-  --color-paper-muted: var(--color-paper-muted);
-  --color-paper-deep: var(--color-paper-deep);
-  --color-accent: var(--color-accent);
-  --color-accent-deep: var(--color-accent-deep);
-  --color-accent-pale: var(--color-accent-pale);
-  --color-danger: var(--color-danger);
-  --color-warning: var(--color-warning);
+  /* Aliases legados */
+  --color-ink: #1a1612;
+  --color-ink-muted: #2a221b;
+  --color-ink-subtle: #3d3429;
+  --color-paper: #f5efe2;
+  --color-paper-muted: #ebe3d2;
+  --color-paper-deep: #ebe3d2;
+  --color-accent: #9a6f3f;
+  --color-accent-deep: #6f4f2c;
+  --color-accent-pale: #c4a878;
+  --color-danger: #8a2424;
+  --color-warning: #c4a878;
 
-  /* Fontes */
-  --font-display: var(--font-display);
-  --font-body: var(--font-body);
-  --font-mono: var(--font-mono);
-
-  /* Sombras */
-  --shadow-sm: var(--shadow-sm);
-  --shadow-md: var(--shadow-md);
-  --shadow-lg: var(--shadow-lg);
-  --shadow-glow-bronze: var(--shadow-glow-bronze);
-
-  /* Radius */
-  --radius-sm: var(--radius-sm);
-  --radius-md: var(--radius-md);
-  --radius-lg: var(--radius-lg);
-  --radius-full: var(--radius-full);
-
-  /* Timing */
-  --ease-smooth: var(--ease-smooth);
-  --ease-editorial: var(--ease-editorial);
-  --ease-luxury: var(--ease-luxury);
-  --duration-fast: var(--duration-fast);
-  --duration-base: var(--duration-base);
-  --duration-slow: var(--duration-slow);
-  --duration-cinematic: var(--duration-cinematic);
+  /* Tipografia — escala editorial */
+  --text-eyebrow: clamp(0.6875rem, 0.65rem + 0.2vw, 0.75rem);
+  --text-caption: clamp(0.75rem, 0.7rem + 0.2vw, 0.8125rem);
+  --text-body-sm: clamp(0.875rem, 0.85rem + 0.1vw, 0.9375rem);
+  --text-body: clamp(0.9375rem, 0.9rem + 0.2vw, 1rem);
+  --text-body-lg: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+  --text-lead: clamp(1.125rem, 1rem + 0.6vw, 1.375rem);
+  --text-title-xs: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+  --text-title-sm: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+  --text-title-md: clamp(2rem, 1.6rem + 2vw, 2.75rem);
+  --text-title-lg: clamp(2.75rem, 2rem + 3.75vw, 4.5rem);
+  --text-title-xl: clamp(3.5rem, 2.5rem + 5vw, 6rem);
+  --text-display: clamp(4rem, 2.5rem + 7vw, 8rem);
 
   /* Letter spacing */
-  --tracking-caps: var(--tracking-caps);
-  --tracking-eyebrow: var(--tracking-eyebrow);
-  --tracking-wide: var(--tracking-wide);
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.02em;
+  --tracking-wider: 0.08em;
+  --tracking-caps: 0.14em;
+  --tracking-eyebrow: 0.18em;
+
+  /* Sombras */
+  --shadow-sm: 0 1px 2px rgba(26, 22, 18, 0.04);
+  --shadow-md: 0 4px 12px rgba(26, 22, 18, 0.06), 0 2px 4px rgba(26, 22, 18, 0.04);
+  --shadow-lg: 0 12px 28px rgba(26, 22, 18, 0.08), 0 6px 12px rgba(26, 22, 18, 0.05);
+  --shadow-glow-bronze: 0 0 24px rgba(154, 111, 63, 0.15);
+
+  /* Radius */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-full: 9999px;
+
+  /* Timing */
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-editorial: cubic-bezier(0.32, 0.08, 0.24, 1);
+  --ease-luxury: cubic-bezier(0.32, 0.08, 0.24, 1);
+  --duration-fast: 150ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+  --duration-cinematic: 600ms;
 }
