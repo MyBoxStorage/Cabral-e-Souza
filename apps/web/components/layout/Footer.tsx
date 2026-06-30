@@ -138,7 +138,7 @@ export function Footer() {
         </div>
 
         <div className="mt-16 pt-6 border-t border-[rgba(250,250,247,0.08)]">
-          <p className="font-body text-[11px] text-[rgba(250,250,247,0.45)]">
+          <p className="font-body text-[11px] text-[rgba(250,250,247,0.6)]">
             {t('copyright', { year })}
           </p>
         </div>

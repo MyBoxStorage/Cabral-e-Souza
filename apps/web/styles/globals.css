@@ -14,6 +14,7 @@
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
     font-size: 16px;
+    color-scheme: light only;
   }
 
   body {
@@ -115,6 +116,27 @@
     .container-default {
       padding-inline: var(--space-16);
     }
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
   }
 
   /* Login admin: paleta escura fixa — ignora prefers-color-scheme do sistema */
