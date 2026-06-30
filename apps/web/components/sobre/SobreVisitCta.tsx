@@ -1,6 +1,5 @@
-import { Button } from '@cabral-souza/ui'
+import { ButtonLink } from '@/components/ui/ButtonLink'
 import { BUSINESS, whatsappUrl } from '@cabral-souza/shared'
-import Link from 'next/link'
 
 export function SobreVisitCta() {
   return (
@@ -20,14 +19,16 @@ export function SobreVisitCta() {
           {BUSINESS.hours} · {BUSINESS.hoursDetail}
         </p>
         <div className="flex flex-wrap items-center justify-center gap-4">
-          <Button asChild variant="primary">
-            <Link href="/contato">Agendar visita</Link>
-          </Button>
-          <Button asChild variant="secondary">
-            <a href={whatsappUrl('Olá! Gostaria de agendar uma visita à galeria.')} target="_blank" rel="noopener noreferrer">
-              Falar via WhatsApp
-            </a>
-          </Button>
+          <ButtonLink href="/contato" variant="primary">
+            Agendar visita
+          </ButtonLink>
+          <ButtonLink
+            href={whatsappUrl('Olá! Gostaria de agendar uma visita à galeria.')}
+            external
+            variant="secondary"
+          >
+            Falar via WhatsApp
+          </ButtonLink>
         </div>
       </div>
     </section>

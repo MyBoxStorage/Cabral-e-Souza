@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
-import { Button, SectionHeader, StatsBar } from '@cabral-souza/ui'
+import { SectionHeader, StatsBar } from '@cabral-souza/ui'
+import { ButtonLink } from '@/components/ui/ButtonLink'
 import { BUSINESS } from '@cabral-souza/shared'
-import Link from 'next/link'
 import { getLocale } from 'next-intl/server'
 import { ArtistCard } from '../../../components/artwork/ArtistCard'
 import { PieceArtworkCard } from '../../../components/artwork/PieceArtworkCard'
@@ -119,9 +119,9 @@ export default async function HomePage() {
                 ))}
               </div>
               <div className="mt-12 text-center">
-                <Button asChild variant="tertiary" showChevron>
-                  <Link href="/artistas">Ver todos os artistas</Link>
-                </Button>
+                <ButtonLink href="/artistas" variant="tertiary" showChevron>
+                  Ver todos os artistas
+                </ButtonLink>
               </div>
             </div>
           </section>
@@ -141,9 +141,9 @@ export default async function HomePage() {
                 ))}
               </div>
               <div className="mt-12 text-center">
-                <Button asChild variant="tertiary" showChevron>
-                  <Link href="/boletim">Ver boletim completo</Link>
-                </Button>
+                <ButtonLink href="/boletim" variant="tertiary" showChevron>
+                  Ver boletim completo
+                </ButtonLink>
               </div>
             </div>
           </section>

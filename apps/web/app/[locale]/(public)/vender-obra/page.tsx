@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
-import { Button } from '@cabral-souza/ui'
-import Link from 'next/link'
+import { ButtonLink } from '@/components/ui/ButtonLink'
 import { SourcingForm } from '../../../../components/content/SourcingForm'
 import { JsonLd } from '../../../../components/seo/JsonLd'
 import { SourcingCaseCards } from '../../../../components/vender-obra/SourcingCaseCards'
@@ -87,9 +86,9 @@ export default function VenderObraPage() {
           <p className="font-body text-body text-cream-300/80 mb-8">
             Envie fotografias e informações básicas. Nossa equipe retorna em até 5 dias úteis.
           </p>
-          <Button asChild variant="primary" size="lg">
-            <Link href="#sourcing-form-hero">Solicitar avaliação</Link>
-          </Button>
+          <ButtonLink href="#sourcing-form-hero" variant="primary" size="lg">
+            Solicitar avaliação
+          </ButtonLink>
         </div>
       </section>
     </>

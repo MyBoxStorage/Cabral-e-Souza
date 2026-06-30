@@ -1,5 +1,4 @@
-import { Button } from '@cabral-souza/ui'
-import Link from 'next/link'
+import { ButtonLink } from '@/components/ui/ButtonLink'
 
 export default function NotFound() {
   return (
@@ -20,15 +19,15 @@ export default function NotFound() {
         Talvez tenha sido reservada, vendida ou esteja em outra sala da galeria.
       </p>
       <div className="flex flex-wrap items-center justify-center gap-4">
-        <Button asChild variant="primary" size="lg">
-          <Link href="/acervo">Ver acervo</Link>
-        </Button>
-        <Button asChild variant="ghost" size="lg">
-          <Link href="/boletim">Boletim</Link>
-        </Button>
-        <Button asChild variant="secondary" size="lg">
-          <Link href="/contato">Falar com a galeria</Link>
-        </Button>
+        <ButtonLink href="/acervo" variant="primary" size="lg">
+          Ver acervo
+        </ButtonLink>
+        <ButtonLink href="/boletim" variant="ghost" size="lg">
+          Boletim
+        </ButtonLink>
+        <ButtonLink href="/contato" variant="secondary" size="lg">
+          Falar com a galeria
+        </ButtonLink>
       </div>
     </section>
   )

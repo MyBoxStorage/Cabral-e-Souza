@@ -1,9 +1,11 @@
 import type { Metadata } from 'next'
-import { Button, FrameOrnamental, Seal, SectionHeader } from '@cabral-souza/ui'
+import { FrameOrnamental, Seal, SectionHeader } from '@cabral-souza/ui'
+import { ButtonLink } from '@/components/ui/ButtonLink'
 import { whatsappUrl } from '@cabral-souza/shared'
 import { getLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { CuratorialEssay } from '../../../../../components/artwork/CuratorialEssay'
 import { ImageGallery } from '../../../../../components/artwork/ImageGallery'
 import { LeadForm } from '../../../../../components/artwork/LeadForm'
@@ -216,14 +218,12 @@ export default async function PiecePage({ params }: PiecePageProps) {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                <Button asChild variant="primary" size="lg">
-                  <a href={whatsappUrl(waMessage)} target="_blank" rel="noopener noreferrer">
-                    Consultar via WhatsApp
-                  </a>
-                </Button>
-                <Button asChild variant="secondary" size="lg">
-                  <a href="#interesse-form">Solicitar mais informações</a>
-                </Button>
+                <ButtonLink href={whatsappUrl(waMessage)} external variant="primary" size="lg">
+                  Consultar via WhatsApp
+                </ButtonLink>
+                <ButtonLink href="#interesse-form" variant="secondary" size="lg">
+                  Solicitar mais informações
+                </ButtonLink>
               </div>
             </div>
           </div>
@@ -242,11 +242,12 @@ export default async function PiecePage({ params }: PiecePageProps) {
                   key={img.id}
                   className="border-2 border-bronze-500/30 bg-cream-100 p-3 aspect-[4/3] relative overflow-hidden"
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     src={img.url_medium ?? img.url_original}
                     alt={img.alt_text_pt ?? title}
-                    className="w-full h-full object-contain"
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-contain"
                   />
                 </div>
               ))}

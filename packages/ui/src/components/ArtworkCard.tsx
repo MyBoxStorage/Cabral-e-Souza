@@ -59,7 +59,7 @@ export function ArtworkCard({ artwork, className }: ArtworkCardProps) {
         'group-hover:-translate-y-1 group-hover:border-bronze-700 group-hover:shadow-lg',
       )}
     >
-      <div className="relative w-full [&_img]:w-full [&_img]:h-auto [&_img]:object-contain">{image}</div>
+      <div className="relative w-full aspect-[4/5] overflow-hidden bg-cream-100">{image}</div>
     </div>
   )
 

@@ -83,11 +83,8 @@ function DropcapParagraph({ children }: { children: ReactNode }) {
   }
 
   return (
-    <p className="mb-6 font-body text-body-lg text-ink-800 leading-loose">
-      <span className="float-left font-display text-title-lg text-bronze-500 leading-none pr-3 pt-1">
-        {text.charAt(0)}
-      </span>
-      {text.slice(1)}
+    <p className="editorial-dropcap mb-6 font-body text-body-lg text-ink-800 leading-loose">
+      {text}
     </p>
   )
 }

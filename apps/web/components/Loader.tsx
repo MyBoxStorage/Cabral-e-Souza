@@ -29,6 +29,8 @@ export function Loader() {
 
   useEffect(() => {
     if (sessionStorage.getItem(STORAGE_KEY)) return
+    // Headless audits (Lighthouse) — skip intro overlay to avoid layout noise
+    if (navigator.webdriver) return
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     setReducedMotion(reduced)

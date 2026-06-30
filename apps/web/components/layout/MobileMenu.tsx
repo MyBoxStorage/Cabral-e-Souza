@@ -1,6 +1,6 @@
 'use client'
 
-import { Button } from '@cabral-souza/ui'
+import { ButtonLink } from '@/components/ui/ButtonLink'
 import { BUSINESS, whatsappUrl } from '@cabral-souza/shared'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
@@ -153,11 +153,9 @@ export function MobileMenu({ links, headerTone = 'on-cream' }: MobileMenuProps) 
         </nav>
 
         <div className="px-6 pb-10 pt-6 border-t border-ink-700/60 flex flex-col gap-6">
-          <Button asChild variant="primary" size="md" className="w-full justify-center">
-            <Link href="/contato" onClick={() => setOpen(false)}>
-              {t('contato')}
-            </Link>
-          </Button>
+          <ButtonLink href="/contato" variant="primary" size="md" className="w-full justify-center" onClick={() => setOpen(false)}>
+            {t('contato')}
+          </ButtonLink>
 
           <p className="font-body text-caption text-cream-300/50 leading-relaxed">
             {BUSINESS.address.street}

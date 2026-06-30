@@ -58,6 +58,7 @@ export function HeroArtworkPanel({
           width={800}
           height={1000}
           priority
+          fetchPriority="high"
           sizes="(max-width: 1024px) 90vw, 40vw"
           className="w-full h-auto object-contain"
         />

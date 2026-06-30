@@ -49,10 +49,9 @@ export function PieceArtworkCard({ piece, locale = 'pt-BR', priority = false }: 
     <Image
       src={primaryImage.url_medium ?? primaryImage.url_original}
       alt={primaryImage.alt_text_pt ?? title}
-      width={600}
-      height={750}
+      fill
       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-      className="w-full h-auto"
+      className="object-contain"
       priority={priority}
     />
   ) : (

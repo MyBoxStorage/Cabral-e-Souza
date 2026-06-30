@@ -1,6 +1,7 @@
 'use client'
 
 import { Button } from '@cabral-souza/ui'
+import { ButtonLink } from '@/components/ui/ButtonLink'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
@@ -152,11 +153,9 @@ export function ContactForm() {
         <span className="h-px flex-1 bg-bronze-500/30" />
       </div>
 
-      <Button asChild variant="secondary" size="lg" className="w-full">
-        <a href={whatsappUrl()} target="_blank" rel="noopener noreferrer">
-          Falar via WhatsApp
-        </a>
-      </Button>
+      <ButtonLink href={whatsappUrl()} external variant="secondary" size="lg" className="w-full">
+        Falar via WhatsApp
+      </ButtonLink>
     </div>
   )
 }

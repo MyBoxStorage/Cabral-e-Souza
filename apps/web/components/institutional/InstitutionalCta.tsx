@@ -1,5 +1,4 @@
-import { Button } from '@cabral-souza/ui'
-import Link from 'next/link'
+import { ButtonLink } from '@/components/ui/ButtonLink'
 
 export function InstitutionalCta() {
   return (
@@ -21,15 +20,15 @@ export function InstitutionalCta() {
           Explore o acervo, fale com nossa equipe ou solicite avaliação de uma obra.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-4">
-          <Button asChild variant="primary">
-            <Link href="/acervo">Explorar acervo</Link>
-          </Button>
-          <Button asChild variant="secondary">
-            <Link href="/contato">Falar com a galeria</Link>
-          </Button>
-          <Button asChild variant="tertiary" showChevron>
-            <Link href="/vender-obra">Avaliar uma obra</Link>
-          </Button>
+          <ButtonLink href="/acervo" variant="primary">
+            Explorar acervo
+          </ButtonLink>
+          <ButtonLink href="/contato" variant="secondary">
+            Falar com a galeria
+          </ButtonLink>
+          <ButtonLink href="/vender-obra" variant="tertiary" showChevron>
+            Avaliar uma obra
+          </ButtonLink>
         </div>
       </div>
     </section>

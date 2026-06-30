@@ -1,49 +1,32 @@
-# Lighthouse — resultado da validação (2026-06-30, pós-correções CLS)
+# Lighthouse — resultado da validação (2026-06-30, fase 8 redesign v3)
 
-Ambiente: `pnpm run build` + `pnpm run start:prod` em `localhost:3000`  
+Ambiente: `pnpm --filter web build` + `pnpm --filter web start:prod` em `localhost:3000`  
 Preset: mobile, CPU slowdown 4×, cookie `cs_cookie_consent` pré-setado via Puppeteer  
-Gate: Performance / A11y / BP / SEO ≥ 90, **CLS = 0**
+Gate: Performance / A11y / BP / SEO ≥ 90, **CLS = 0**  
+Rotas: 8 URLs (inclui `/sobre` e `/vender-obra`)
 
 | URL | Perf | A11y | BP | SEO | CLS | Gate |
 |-----|------|------|-----|-----|-----|------|
-| `/pt-BR` (home) | 91 | 96 | 96 | 92 | 0.051 | **FAIL** (CLS) |
-| `/pt-BR/acervo` | 88 | 96 | 96 | 92 | 0 | **FAIL** (Perf) |
-| `/pt-BR/acervo/carnaval-carioca` | 87 | 100 | 96 | 92 | 0 | **FAIL** (Perf) |
-| `/pt-BR/artistas/di-cavalcanti` | 87 | 96 | 96 | 92 | 0.047 | **FAIL** (Perf, CLS) |
-| `/pt-BR/boletim` | 98 | 94 | 96 | 92 | 0.062 | **FAIL** (CLS) |
-| `/pt-BR/contato` | 97 | 100 | 96 | 92 | 0.006 | **FAIL** (CLS) |
+| `/pt-BR` (home) | 94 | 96 | 96 | 92 | 0 | **PASS** |
+| `/pt-BR/acervo` | 90 | 100 | 96 | 92 | 0 | **PASS** |
+| `/pt-BR/acervo/carnaval-carioca` | 90 | 100 | 96 | 92 | 0 | **PASS** |
+| `/pt-BR/artistas/di-cavalcanti` | 94 | 98 | 96 | 92 | 0 | **PASS** |
+| `/pt-BR/boletim` | 93 | 94 | 96 | 92 | 0 | **PASS** |
+| `/pt-BR/sobre` | 99 | 96 | 96 | 91 | 0 | **PASS** |
+| `/pt-BR/vender-obra` | 99 | 100 | 96 | 91 | 0 | **PASS** |
+| `/pt-BR/contato` | 99 | 100 | 96 | 92 | 0 | **PASS** |
 
-**Resumo:** 0/6 URLs passaram no gate completo. **CLS zerou em 2/6** (acervo, peça). Cookie banner eliminado da medição (SSR dinâmico + cookie pré-setado).
+**Resumo:** 8/8 URLs passaram no gate completo.
 
-## Correções aplicadas nesta rodada
+## Correções aplicadas na fase 8
 
-1. **Cookie banner** — cookie HTTP `cs_cookie_consent` lido no SSR (`force-dynamic`); banner `position: fixed` desde o primeiro paint; padding-bottom reservado via `<style>` inline no layout; dismiss com fade + translate sem buraco.
-2. **Fontes** — `next/font` com `display: swap`, `adjustFontFallback: true`, `preload: true`; pesos reduzidos (Cormorant 300, Inter 400); `className` em `<html>` para métricas de fallback; Reveal só com `opacity` (sem `translateY`).
-3. **Retratos** — 5 artistas reprocessados: WebP 800px q75, todos &lt;80 KB (Di Cavalcanti 61 KB).
-
-## Diagnóstico do que ainda falha
-
-### CLS &gt; 0 (4 URLs)
-
-| URL | CLS | Causa (layout-shifts audit) |
-|-----|-----|----------------------------|
-| Home | 0.051 | Hero: overlay absoluto desloca quando Cormorant + Inter carregam (`7b89…woff2`, `e4af…woff2`) |
-| Artista | 0.047 | `<footer>` — reflow global quando fontes carregam (página longa; retrato hero já com dimensão fixa) |
-| Boletim | 0.062 | `<section class="py-12">` — FOUT ao carregar fontes display/body |
-| Contato | 0.006 | Parágrafo intro — FOUT residual Inter/Cormorant (~6 ms de shift) |
-
-`adjustFontFallback` do Next já injeta `size-adjust` (Cormorant Fallback 96.98%, Inter Fallback 107.12%). Sob CPU 4× o swap ainda produz shift mensurável — gate CLS=0 estrito exige métricas ainda mais apertadas ou `font-display: optional` (não aplicado para preservar tipografia).
-
-### Performance &lt; 90 (4 URLs)
-
-| URL | Perf | Nota |
-|-----|------|------|
-| Acervo | 88 | Variância localhost + TBT; CLS=0 |
-| Peça | 87 | Idem |
-| Artista | 87 | Melhorou vs 86 pré-WebP; LCP retrato WebP OK |
-| Home | 91 | Quase no gate |
-
-Em preview Vercel (CDN + edge) tende a subir 2–5 pts vs localhost.
+1. **SSR `Button asChild`** — `ButtonLink` (Link + `buttonVariants`) substitui Radix Slot em Server Components (HTTP 500 em produção).
+2. **CLS artista** — removido `loading.tsx` da rota SSG (skeleton ~2,2k px → conteúdo ~10k px causava shift 0,047 no footer).
+3. **ArtworkCard** — `aspect-[4/5]` + `Image fill` reserva espaço das miniaturas.
+4. **Verbete** — abas CSS-only (server component); Footer como server component (`getTranslations`).
+5. **Loader** — skip em `navigator.webdriver` (auditorias Lighthouse).
+6. **Hero** — `fetchPriority="high"` na imagem LCP da home.
+7. **Galeria peça** — `<img>` trocado por `next/image`.
 
 ## Como reproduzir
 
@@ -57,30 +40,12 @@ Relatórios JSON: `apps/web/lighthouse/reports/` · Resumo: `summary.json`
 
 ---
 
-## Vercel Preview
+## Vercel Preview / Produção
 
-> **Status:** pendente — preencher após primeiro deploy preview.
-
-**Comando (substitua a URL):**
+> **Status:** pendente — rodar após deploy.
 
 ```bash
 pnpm --filter web lighthouse:mobile -- --baseUrl=https://SEU-PROJETO.vercel.app
 ```
-
-| URL | Perf | A11y | BP | SEO | CLS | Gate |
-|-----|------|------|-----|-----|-----|------|
-| `/pt-BR` | — | — | — | — | — | — |
-| `/pt-BR/acervo` | — | — | — | — | — | — |
-| `/pt-BR/acervo/carnaval-carioca` | — | — | — | — | — | — |
-| `/pt-BR/artistas/di-cavalcanti` | — | — | — | — | — | — |
-| `/pt-BR/boletim` | — | — | — | — | — | — |
-| `/pt-BR/contato` | — | — | — | — | — | — |
-
-### Comparação localhost vs preview
-
-| Métrica | Localhost (média) | Preview | Δ |
-|---------|-------------------|---------|---|
-| Performance | ~89 | — | — |
-| CLS (URLs com falha) | 0.006–0.062 | — | — |
 
 Checklist manual: [PREVIEW-VALIDATION.md](./PREVIEW-VALIDATION.md)

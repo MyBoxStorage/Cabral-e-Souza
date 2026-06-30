@@ -1,6 +1,5 @@
-import { Button } from '@cabral-souza/ui'
+import { ButtonLink } from '@/components/ui/ButtonLink'
 import { BUSINESS } from '@cabral-souza/shared'
-import Link from 'next/link'
 
 const TRUST_BADGES = [
   `${new Date().getFullYear() - BUSINESS.foundedYear} anos`,
@@ -41,12 +40,12 @@ export function VenderObraCta() {
         </ul>
 
         <div className="flex flex-wrap items-center justify-center gap-4">
-          <Button asChild variant="primary" size="lg">
-            <Link href="/vender-obra">Solicitar avaliação</Link>
-          </Button>
-          <Button asChild variant="ghost" size="lg">
-            <Link href="/contato">Falar com a galeria</Link>
-          </Button>
+          <ButtonLink href="/vender-obra" variant="primary" size="lg">
+            Solicitar avaliação
+          </ButtonLink>
+          <ButtonLink href="/contato" variant="ghost" size="lg">
+            Falar com a galeria
+          </ButtonLink>
         </div>
       </div>
     </section>

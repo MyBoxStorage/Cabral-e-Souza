@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Button } from '@cabral-souza/ui'
+import { ButtonLink } from '@/components/ui/ButtonLink'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -197,9 +197,9 @@ export default async function BoletimPostPage({ params }: BoletimPostPageProps) 
           <p className="font-body text-body text-cream-300/80 mb-8 max-w-[48ch] mx-auto">
             Cadastre-se para receber as próximas publicações do Boletim Cabral &amp; Souza.
           </p>
-          <Button asChild variant="primary">
-            <Link href="/contato">Inscrever-se</Link>
-          </Button>
+          <ButtonLink href="/contato" variant="primary">
+            Inscrever-se
+          </ButtonLink>
         </div>
       </section>
     </>

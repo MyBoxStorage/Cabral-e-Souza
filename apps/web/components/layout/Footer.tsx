@@ -1,12 +1,10 @@
-'use client'
-
 import { BUSINESS, whatsappUrl } from '@cabral-souza/shared'
-import { useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'
 import { Logo } from './Logo'
 
-export function Footer() {
-  const t = useTranslations('footer')
+export async function Footer() {
+  const t = await getTranslations('footer')
   const year = new Date().getFullYear()
 
   const acervoLinks: { href: string; label: string }[] = [
@@ -44,7 +42,6 @@ export function Footer() {
     <footer className="bg-ink-900 text-cream-300">
       <div className="container-default py-24">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-10">
-          {/* Col 1 — Brand */}
           <div className="flex flex-col gap-6 sm:col-span-2 lg:col-span-1">
             <Logo tone="on-dark" href="/" />
             <p className="font-body text-eyebrow uppercase tracking-eyebrow text-bronze-500">
@@ -62,7 +59,6 @@ export function Footer() {
             </address>
           </div>
 
-          {/* Col 2 — Acervo */}
           <div>
             <p className="font-body font-medium uppercase tracking-eyebrow text-eyebrow text-bronze-500 mb-5">
               {t('acervo_title')}
@@ -78,7 +74,6 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Col 3 — Galeria */}
           <div>
             <p className="font-body font-medium uppercase tracking-eyebrow text-eyebrow text-bronze-500 mb-5">
               {t('gallery_title')}
@@ -94,7 +89,6 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Col 4 — Serviços */}
           <div>
             <p className="font-body font-medium uppercase tracking-eyebrow text-eyebrow text-bronze-500 mb-5">
               {t('services_title')}

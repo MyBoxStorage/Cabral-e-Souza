@@ -1,5 +1,4 @@
-import { Button } from '@cabral-souza/ui'
-import Link from 'next/link'
+import { ButtonLink } from '@/components/ui/ButtonLink'
 
 export function HomeAboutSection() {
   return (
@@ -39,9 +38,9 @@ export function HomeAboutSection() {
             Cada obra do acervo passa por verificação de autenticidade e proveniência antes de integrar
             o catálogo público — uma prática construída ao longo de quatro décadas no mercado carioca.
           </p>
-          <Button asChild variant="tertiary" showChevron>
-            <Link href="/sobre">Conheça nossa história</Link>
-          </Button>
+          <ButtonLink href="/sobre" variant="tertiary" showChevron>
+            Conheça nossa história
+          </ButtonLink>
         </div>
       </div>
     </section>

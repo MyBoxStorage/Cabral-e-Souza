@@ -1,6 +1,6 @@
 'use client'
 
-import { Button } from '@cabral-souza/ui'
+import { ButtonLink } from '@/components/ui/ButtonLink'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -99,9 +99,9 @@ export function Header() {
 
         <div className="flex items-center gap-4">
           <div className="hidden lg:block">
-            <Button asChild size="sm" variant="primary">
-              <Link href="/contato">{t('contato')}</Link>
-            </Button>
+            <ButtonLink href="/contato" size="sm" variant="primary">
+              {t('contato')}
+            </ButtonLink>
           </div>
 
           <MobileMenu links={navLinks} headerTone={scrolled || onDarkHero ? 'on-dark' : 'on-cream'} />

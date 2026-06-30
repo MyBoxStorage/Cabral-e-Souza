@@ -233,4 +233,31 @@
   .loader-artwork-in {
     animation: loader-artwork-in 500ms ease-editorial 1500ms forwards;
   }
+
+  /* Artist verbete — CSS-only tabs (sem hidratação client) */
+  .artist-verbete-tabs .artist-verbete-panel {
+    display: none;
+  }
+
+  .artist-verbete-tabs:has(#artist-verbete-biografia:checked) .artist-verbete-panel--biografia,
+  .artist-verbete-tabs:has(#artist-verbete-mercado:checked) .artist-verbete-panel--mercado,
+  .artist-verbete-tabs:has(#artist-verbete-referencias:checked) .artist-verbete-panel--referencias {
+    display: block;
+  }
+
+  .artist-verbete-tabs:has(#artist-verbete-biografia:checked) label[for='artist-verbete-biografia'],
+  .artist-verbete-tabs:has(#artist-verbete-mercado:checked) label[for='artist-verbete-mercado'],
+  .artist-verbete-tabs:has(#artist-verbete-referencias:checked) label[for='artist-verbete-referencias'] {
+    border-color: var(--color-bronze-500);
+    color: var(--color-bronze-500);
+  }
+
+  .editorial-dropcap::first-letter {
+    float: left;
+    margin-right: 0.6rem;
+    font-family: var(--font-display);
+    font-size: 3.25rem;
+    line-height: 0.85;
+    color: var(--color-bronze-500);
+  }
 }

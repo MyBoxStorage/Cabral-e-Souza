@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
-import { Button, FrameOrnamental, SectionHeader } from '@cabral-souza/ui'
+import { FrameOrnamental, SectionHeader } from '@cabral-souza/ui'
+import { ButtonLink } from '@/components/ui/ButtonLink'
 import { getLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
@@ -178,11 +179,9 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
                 </div>
                 {totalPieces > pieces.length && (
                   <div className="mt-12 text-center">
-                    <Button asChild variant="secondary">
-                      <Link href={`/acervo?artista=${artist.slug}`}>
-                        Ver todo o acervo de {artist.name}
-                      </Link>
-                    </Button>
+                    <ButtonLink href={`/acervo?artista=${artist.slug}`} variant="secondary">
+                      Ver todo o acervo de {artist.name}
+                    </ButtonLink>
                   </div>
                 )}
               </section>
@@ -195,9 +194,9 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
               <p className="font-body text-body text-cream-300/80 mb-8 max-w-[48ch] mx-auto">
                 Consulte nossa curadoria sobre disponibilidade, condições e dossiê de mercado.
               </p>
-              <Button asChild variant="primary">
-                <Link href="/contato">Solicitar dossiê</Link>
-              </Button>
+              <ButtonLink href="/contato" variant="primary">
+                Solicitar dossiê
+              </ButtonLink>
             </section>
           </div>
 
